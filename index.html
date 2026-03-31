@@ -3,100 +3,738 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <title>IKYO Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-     <section id="header">
-        <a href=""><img src="logo.png" class="logo"></a>
-        <div>
-            <ul id="navbar">
-                <li><a  href="index.html"  >Home</a></li>
-                <li><a href="All Categories.html">All Categories</a></li>
-                <li><a href="Shop.html">Shop</a></li>
-                <li><a href="Support.html">Support</a></li>
-                <li><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i>
-</a></li>
-                <li><a href="login.html">Login</a></li>
-            </ul>
-        </div>
-     </section>
-
-
-<section id="hero">
-    <h1>HAPPY BUYERS <BR>HAPPY CUSTOMERS</h1>
-</section>
-
-
-<section id="product">
-    <h2>featured product</h2>
-    <div class="pro-container">
-        <div class="pro">
-            <img src="section4.jpg" alt="">
-            <div class="des">
-                <span>zara</span>
-                <h3>tenue classique</h3>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$70</h4>
-            </div>
-            <a href=""><i class="fas fa-bag-shopping cart"></i></a>
-        </div>
-         <div class="pro">
-            <img src="section5.jpg" alt="">
-            <div class="des">
-                <span>zara</span>
-                <h3>tenue classique</h3>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$70</h4>
-            </div>
-            <a href=""><i class="fas fa-bag-shopping cart"></i></a>
-        </div>
-         <div class="pro">
-            <img src="section6.jpg" alt="">
-            <div class="des">
-                <span>zara</span>
-                <h3>tenue classique</h3>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$70</h4>
-            </div>
-            <a href=""><i class="fas fa-bag-shopping cart"></i></a>
-        </div>
-         <div class="pro">
-            <img src="section7.jpg" alt="">
-            <div class="des">
-                <span>zara</span>
-                <h3>tenue classique</h3>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>$70</h4>
-            </div>
-            <a href=""><i class="fas fa-bag-shopping cart"></i></a>
+<!-- ===== HEADER ===== -->
+<section id="header">
+    <a href="#" onclick="showPage('home',event)" style="text-decoration:none; font-family:'Playfair Display', Georgia, serif; font-size:2rem; font-weight:900; letter-spacing:6px; color:white; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.3);">IKYO</a>
+    <div>
+        <ul id="navbar">
+            <li><a href="#" onclick="showPage('home',event)">Home</a></li>
+            <li><a href="#" onclick="showPage('categories',event)">All Categories</a></li>
+            <li><a href="#" onclick="showPage('shop',event)">Shop</a></li>
+            <li><a href="#" onclick="showPage('support',event)">Support</a></li>
+            <li><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
     </div>
 </section>
 
+<!-- =================================================
+     HOME PAGE
+================================================== -->
+<div id="home-page">
+    <section id="hero" style="position:relative; width:100%; overflow:hidden;">
+        <img src="section3.jpg" alt="" style="width:100%; max-height:600px; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; background:linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); display:flex; align-items:center; padding:0 60px;">
+            <div>
+                <h1 style="color:white; font-family:'Playfair Display', Georgia, serif; font-size:3rem; font-weight:700; font-style:italic; line-height:1.3; margin-bottom:16px; text-shadow:0 3px 15px rgba(0,0,0,0.5); letter-spacing:2px;">Happy Buyers<br>Happy Customers</h1>
+                <p style="color:#ddd; font-size:1rem; margin-bottom:28px;">Découvrez les meilleurs produits des magasins partenaires</p>
+                <button onclick="showPage('shop',event)" style="background:#451d18; color:white; border:none; padding:13px 32px; border-radius:6px; font-size:0.95rem; font-weight:700; cursor:pointer; letter-spacing:1px;">Découvrir la Boutique &nbsp;<i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </section>
 
+    <section id="product">
+        <h2>featured product</h2>
+        <div class="pro-container">
+            <div class="pro">
+                <img src="section4.jpg" alt="">
+                <div class="des">
+                    <span>zara</span>
+                    <h3>tenue classique</h3>
+                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <h4>$70</h4>
+                </div>
+                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
+            </div>
+            <div class="pro">
+                <img src="section5.jpg" alt="">
+                <div class="des">
+                    <span>zara</span>
+                    <h3>tenue classique</h3>
+                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <h4>$70</h4>
+                </div>
+                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
+            </div>
+            <div class="pro">
+                <img src="section6.jpg" alt="">
+                <div class="des">
+                    <span>zara</span>
+                    <h3>tenue classique</h3>
+                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <h4>$70</h4>
+                </div>
+                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
+            </div>
+            <div class="pro">
+                <img src="section7.jpg" alt="">
+                <div class="des">
+                    <span>zara</span>
+                    <h3>tenue classique</h3>
+                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <h4>$70</h4>
+                </div>
+                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- =================================================
+     CATEGORIES PAGE
+================================================== -->
+<div id="categories-page">
+    <div class="cat-hero">
+        <h2>Toutes les Catégories</h2>
+        <p>Découvrez nos milliers de produits</p>
+    </div>
+    <div class="cat-container">
+
+        <div class="cat-block">
+            <h3><i class="fas fa-tshirt"></i> Mode & Vêtements</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-female"></i><span>Femme</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-male"></i><span>Homme</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-child"></i><span>Enfant</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-baby"></i><span>Bébé</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-vest"></i><span>Robes & Jupes</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-user-tie"></i><span>Costume</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-gem"></i><span>Bijoux</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-bag-shopping"></i><span>Sacs</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-glasses"></i><span>Lunettes</span></a>
+            </div>
+        </div>
+
+        <div class="cat-block">
+            <h3><i class="fas fa-couch"></i> Décoration & Maison</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-couch"></i><span>Salon</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-bed"></i><span>Chambre</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-door-open"></i><span>Rideaux</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-rug"></i><span>Tapis</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-lightbulb"></i><span>Luminaires</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-bath"></i><span>Salle de Bain</span></a>
+            </div>
+        </div>
+
+        <div class="cat-block">
+            <h3><i class="fas fa-utensils"></i> Cuisine & Ustensiles</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-blender"></i><span>Mixeurs</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-fire-burner"></i><span>Cuisinières</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-mug-hot"></i><span>Cafetières</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-knife"></i><span>Couteaux</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-refrigerator"></i><span>Réfrigérateurs</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-jar"></i><span>Vaisselle</span></a>
+            </div>
+        </div>
+
+        <div class="cat-block">
+            <h3><i class="fas fa-shoe-prints"></i> Chaussures</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-shoe-prints"></i><span>Femme</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-shoe-prints"></i><span>Homme</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-child"></i><span>Enfant</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-running"></i><span>Baskets</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-mountain"></i><span>Bottes</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-sun"></i><span>Sandales</span></a>
+            </div>
+        </div>
+
+        <div class="cat-block">
+            <h3><i class="fas fa-spa"></i> Cosmétique & Skincare</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-female"></i><span>Skincare Femme</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-male"></i><span>Skincare Homme</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-magic"></i><span>Maquillage</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-wind"></i><span>Parfums</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-scissors"></i><span>Cheveux</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-hand-sparkles"></i><span>Manucure</span></a>
+            </div>
+        </div>
+
+        <div class="cat-block">
+            <h3><i class="fas fa-graduation-cap"></i> Affaires Scolaires & Art</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-book"></i><span>Livres</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-pen"></i><span>Stylos</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-backpack"></i><span>Sacs à Dos</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-paint-brush"></i><span>Peinture</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-ruler"></i><span>Géométrie</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-palette"></i><span>Dessin</span></a>
+            </div>
+        </div>
+
+        <div class="cat-block">
+            <h3><i class="fas fa-mobile-screen"></i> Électronique & High-Tech</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-mobile-screen"></i><span>Téléphones</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-laptop"></i><span>Ordinateurs</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-headphones"></i><span>Audio</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-tv"></i><span>Télévisions</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-gamepad"></i><span>Gaming</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-camera"></i><span>Photo</span></a>
+            </div>
+        </div>
+
+        <div class="cat-block">
+            <h3><i class="fas fa-dumbbell"></i> Sport & Loisirs</h3>
+            <div class="cat-sub-grid">
+                <a href="#" class="cat-sub-item"><i class="fas fa-dumbbell"></i><span>Fitness</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-futbol"></i><span>Football</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-bicycle"></i><span>Vélos</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-tent"></i><span>Camping</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-person-running"></i><span>Running</span></a>
+                <a href="#" class="cat-sub-item"><i class="fas fa-chess"></i><span>Jeux</span></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- =================================================
+     SHOP PAGE
+================================================== -->
+<div id="shop-page">
+    <div class="shop-hero">
+        <h2>Notre Boutique</h2>
+        <p>Des centaines de produits des meilleurs magasins partenaires</p>
+    </div>
+    <div class="shop-filters">
+        <span><i class="fas fa-filter"></i> Filtrer :</span>
+        <button class="filter-btn active" onclick="filterShop('all',this)">Tous</button>
+        <button class="filter-btn" onclick="filterShop('mode',this)">Mode</button>
+        <button class="filter-btn" onclick="filterShop('maison',this)">Maison</button>
+        <button class="filter-btn" onclick="filterShop('cosmetique',this)">Cosmétique</button>
+        <button class="filter-btn" onclick="filterShop('electronique',this)">Électronique</button>
+        <button class="filter-btn" onclick="filterShop('sport',this)">Sport</button>
+        <div class="search-shop">
+            <input type="text" placeholder="Rechercher...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="shop-container">
+
+        <!-- Zara DZ -->
+        <div class="store-title">
+            <div class="store-icon">Z</div>
+            <div>
+                <h3>Zara DZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3>
+                <p>Mode Femme · Homme · Enfant</p>
+            </div>
+        </div>
+        <div class="shop-grid">
+            <div class="prod-card" data-cat="mode">
+                <span class="badge" style="background:#e67e22">🔥 Populaire</span>
+                <img src="section4.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm">Zara DZ</span>
+                    <h4>Robe Élégante Femme</h4>
+                    <div class="stars">★★★★★ <span>(128)</span></div>
+                    <div class="price-row">
+                        <div><span class="price">4 500 DA</span><span class="old-price">5 800 DA</span></div>
+                        <button class="add-btn"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="mode">
+                <span class="badge new-badge">Nouveau</span>
+                <img src="section5.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm">Zara DZ</span>
+                    <h4>Costume Homme Slim</h4>
+                    <div class="stars">★★★★☆ <span>(74)</span></div>
+                    <div class="price-row">
+                        <div><span class="price">8 200 DA</span></div>
+                        <button class="add-btn"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="mode">
+                <img src="section6.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm">Zara DZ</span>
+                    <h4>Ensemble Enfant Premium</h4>
+                    <div class="stars">★★★★★ <span>(56)</span></div>
+                    <div class="price-row">
+                        <div><span class="price">2 900 DA</span><span class="old-price">3 500 DA</span></div>
+                        <button class="add-btn"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="mode">
+                <img src="section7.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm">Zara DZ</span>
+                    <h4>Tenue Classique Femme</h4>
+                    <div class="stars">★★★★☆ <span>(90)</span></div>
+                    <div class="price-row">
+                        <div><span class="price">5 100 DA</span></div>
+                        <button class="add-btn"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ElectroDZ -->
+        <div class="store-title">
+            <div class="store-icon" style="background:#2c1654">E</div>
+            <div>
+                <h3>ElectroDZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3>
+                <p>Électronique · High-Tech · Gaming</p>
+            </div>
+        </div>
+        <div class="shop-grid">
+            <div class="prod-card" data-cat="electronique">
+                <span class="badge" style="background:#e67e22">🔥 Populaire</span>
+                <img src="section4.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#2c1654">ElectroDZ</span>
+                    <h4>Smartphone 128GB</h4>
+                    <div class="stars">★★★★★ <span>(312)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#2c1654">62 000 DA</span><span class="old-price">70 000 DA</span></div>
+                        <button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="electronique">
+                <img src="section5.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#2c1654">ElectroDZ</span>
+                    <h4>Laptop Intel i5 16GB</h4>
+                    <div class="stars">★★★★☆ <span>(180)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#2c1654">95 000 DA</span></div>
+                        <button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="electronique">
+                <span class="badge new-badge">Nouveau</span>
+                <img src="section6.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#2c1654">ElectroDZ</span>
+                    <h4>Écouteurs Bluetooth Pro</h4>
+                    <div class="stars">★★★★★ <span>(210)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#2c1654">7 500 DA</span><span class="old-price">9 000 DA</span></div>
+                        <button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="electronique">
+                <img src="section7.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#2c1654">ElectroDZ</span>
+                    <h4>Smart TV 55" 4K UHD</h4>
+                    <div class="stars">★★★★☆ <span>(95)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#2c1654">118 000 DA</span></div>
+                        <button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MaisonDZ -->
+        <div class="store-title">
+            <div class="store-icon" style="background:#6c4a2a">M</div>
+            <div>
+                <h3>MaisonDZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3>
+                <p>Décoration · Meubles · Cuisine</p>
+            </div>
+        </div>
+        <div class="shop-grid">
+            <div class="prod-card" data-cat="maison">
+                <img src="section4.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#6c4a2a">MaisonDZ</span>
+                    <h4>Canapé 3 Places Velours</h4>
+                    <div class="stars">★★★★★ <span>(47)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#6c4a2a">38 000 DA</span><span class="old-price">45 000 DA</span></div>
+                        <button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="maison">
+                <span class="badge new-badge">Nouveau</span>
+                <img src="section5.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#6c4a2a">MaisonDZ</span>
+                    <h4>Rideau Luxe Occultant</h4>
+                    <div class="stars">★★★★☆ <span>(88)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#6c4a2a">4 200 DA</span></div>
+                        <button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="maison">
+                <img src="section6.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#6c4a2a">MaisonDZ</span>
+                    <h4>Tapis Berbère 200x300</h4>
+                    <div class="stars">★★★★★ <span>(63)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#6c4a2a">12 500 DA</span><span class="old-price">15 000 DA</span></div>
+                        <button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="maison">
+                <img src="section7.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#6c4a2a">MaisonDZ</span>
+                    <h4>Blender Pro 1500W</h4>
+                    <div class="stars">★★★★☆ <span>(130)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#6c4a2a">5 800 DA</span></div>
+                        <button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BeautyDZ -->
+        <div class="store-title">
+            <div class="store-icon" style="background:#d81b60">B</div>
+            <div>
+                <h3>BeautyDZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3>
+                <p>Cosmétique · Skincare · Parfums</p>
+            </div>
+        </div>
+        <div class="shop-grid">
+            <div class="prod-card" data-cat="cosmetique">
+                <span class="badge" style="background:#e67e22">🔥 Best-Seller</span>
+                <img src="section4.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#d81b60">BeautyDZ</span>
+                    <h4>Crème Hydratante Visage</h4>
+                    <div class="stars">★★★★★ <span>(245)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#d81b60">1 800 DA</span><span class="old-price">2 400 DA</span></div>
+                        <button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="cosmetique">
+                <img src="section5.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#d81b60">BeautyDZ</span>
+                    <h4>Parfum Oriental 100ml</h4>
+                    <div class="stars">★★★★★ <span>(198)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#d81b60">3 200 DA</span></div>
+                        <button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="cosmetique">
+                <span class="badge new-badge">Nouveau</span>
+                <img src="section6.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#d81b60">BeautyDZ</span>
+                    <h4>Kit Maquillage Complet</h4>
+                    <div class="stars">★★★★☆ <span>(112)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#d81b60">2 600 DA</span><span class="old-price">3 100 DA</span></div>
+                        <button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="prod-card" data-cat="cosmetique">
+                <img src="section7.jpg" alt="">
+                <div class="prod-info">
+                    <span class="store-nm" style="color:#d81b60">BeautyDZ</span>
+                    <h4>Huile d'Argan Pure 100ml</h4>
+                    <div class="stars">★★★★★ <span>(320)</span></div>
+                    <div class="price-row">
+                        <div><span class="price" style="color:#d81b60">950 DA</span></div>
+                        <button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- =================================================
+     SUPPORT PAGE
+================================================== -->
+<div id="support-page">
+    <div class="support-hero">
+        <h2>Support & Contact</h2>
+        <p>Notre équipe est là pour vous aider 7j/7</p>
+    </div>
+    <div class="support-container">
+
+        <div class="support-stats">
+            <div class="stat-box"><i class="fas fa-headset"></i><h2>24/7</h2><p>Support disponible</p></div>
+            <div class="stat-box"><i class="fas fa-clock"></i><h2>&lt;2h</h2><p>Temps de réponse</p></div>
+            <div class="stat-box"><i class="fas fa-store"></i><h2>50+</h2><p>Magasins partenaires</p></div>
+            <div class="stat-box"><i class="fas fa-face-smile"></i><h2>98%</h2><p>Clients satisfaits</p></div>
+        </div>
+
+        <div class="support-grid">
+            <div class="support-box">
+                <h3><i class="fas fa-paper-plane"></i> Envoyez-nous un message</h3>
+                <p class="sub">Remplissez le formulaire, nous vous répondrons rapidement</p>
+                <div class="form-row2">
+                    <div class="form-grp"><label>Prénom</label><input type="text" placeholder="Votre prénom"></div>
+                    <div class="form-grp"><label>Nom</label><input type="text" placeholder="Votre nom"></div>
+                </div>
+                <div class="form-grp"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
+                <div class="form-grp"><label>Téléphone</label><input type="text" placeholder="+213 0XX XX XX XX"></div>
+                <div class="form-grp">
+                    <label>Sujet</label>
+                    <select>
+                        <option>Problème commande</option>
+                        <option>Remboursement / Retour</option>
+                        <option>Devenir partenaire magasin</option>
+                        <option>Problème technique</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+                <div class="form-grp"><label>Message</label><textarea placeholder="Décrivez votre problème..."></textarea></div>
+                <button class="btn-send">Envoyer <i class="fas fa-paper-plane"></i></button>
+            </div>
+
+            <div class="support-box">
+                <h3><i class="fas fa-address-book"></i> Nos Coordonnées</h3>
+                <p class="sub">Plusieurs façons de nous contacter</p>
+                <div class="contact-list">
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-phone"></i></div><div><h4>Téléphone</h4><p>0557647772</p></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>ikyoshop@gmail.com</p></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fab fa-whatsapp"></i></div><div><h4>WhatsApp</h4><p>+213 00000000</p></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-location-dot"></i></div><div><h4>Adresse</h4><p>97 Rue de la République Française, Alger</p></div></div>
+                    <div class="contact-item"><div class="c-icon"><i class="fas fa-truck"></i></div><div><h4>Livraison</h4><p>58 wilayas</p></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PARTNER BOX -->
+        <div class="partner-box">
+            <h2>🏪 Devenez Partenaire Magasin</h2>
+            <p>Bienvenue sur IKYO — votre partenaire e-commerce de confiance.<br>
+            Vous avez fait le bon choix en nous choisissant.<br>
+            Vous possédez un magasin ? Mettez-le en ligne et développez votre visibilité grâce à notre plateforme.<br>
+            Rejoignez IKYO dès maintenant et vendez vos produits à un large public en toute simplicité.</p>
+            <div class="partner-steps">
+                <div class="p-step"><div class="num">1</div><h4>Inscription</h4><p>Créez votre compte gratuitement</p></div>
+                <div class="p-step"><div class="num">2</div><h4>Validation</h4><p>Vérification sous 48h</p></div>
+                <div class="p-step"><div class="num">3</div><h4>Publication</h4><p>Publiez vos produits</p></div>
+                <div class="p-step"><div class="num">4</div><h4>Vente !</h4><p>Recevez vos commandes</p></div>
+            </div>
+            <button class="btn-outline-white" onclick="openPartnerForm()">
+                Commencer maintenant &nbsp;<i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-wrap">
+            <h3><i class="fas fa-circle-question"></i> Questions Fréquentes</h3>
+            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Comment passer une commande ? <i class="fas fa-chevron-down"></i></div><div class="faq-a">Choisissez vos produits, ajoutez-les au panier, puis procédez au paiement.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Quels modes de paiement acceptés ? <i class="fas fa-chevron-down"></i></div><div class="faq-a">Paiement à la livraison (cash), CCP, CIB/Dahabia, virement bancaire.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Quelle est la politique de retour ? <i class="fas fa-chevron-down"></i></div><div class="faq-a">7 jours après réception pour retourner un article non conforme.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Livrez-vous dans toute l'Algérie ? <i class="fas fa-chevron-down"></i></div><div class="faq-a">Oui ! Les 58 wilayas, délai 2 à 5 jours ouvrables.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Comment devenir partenaire ? <i class="fas fa-chevron-down"></i></div><div class="faq-a">Cliquez sur "Commencer maintenant" ci-dessus et remplissez le formulaire en ligne.</div></div>
+            <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Comment suivre ma commande ? <i class="fas fa-chevron-down"></i></div><div class="faq-a">Connectez-vous à votre compte → "Mes commandes" → statut en temps réel.</div></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- =================================================
+     PARTNER FORM MODAL
+================================================== -->
+<div id="partner-overlay">
+    <div class="p-modal" id="p-main-modal">
+
+        <div class="p-modal-header">
+            <button class="p-close-btn" onclick="closePartnerForm()">✕</button>
+            <h2>🏪 Devenez Partenaire IKYO</h2>
+            <p>Rejoignez notre réseau de magasins partenaires en quelques étapes</p>
+        </div>
+
+        <div class="p-steps-bar" id="p-steps-bar">
+            <div class="p-dot active" id="pdot1">1</div>
+            <div class="p-line" id="pline1"></div>
+            <div class="p-dot" id="pdot2">2</div>
+            <div class="p-line" id="pline2"></div>
+            <div class="p-dot" id="pdot3">3</div>
+        </div>
+
+        <div class="p-modal-body" id="p-form-body">
+
+            <!-- STEP 1 -->
+            <div class="p-step-page active" id="p-page1">
+                <div class="p-step-title">👤 Informations personnelles</div>
+                <div class="p-row2">
+                    <div class="p-form-group">
+                        <label>Prénom *</label>
+                        <input type="text" id="p-prenom" placeholder="Votre prénom">
+                        <div class="p-err" id="perr-prenom">Ce champ est requis</div>
+                    </div>
+                    <div class="p-form-group">
+                        <label>Nom *</label>
+                        <input type="text" id="p-nom" placeholder="Votre nom">
+                        <div class="p-err" id="perr-nom">Ce champ est requis</div>
+                    </div>
+                </div>
+                <div class="p-form-group">
+                    <label>Email professionnel *</label>
+                    <input type="email" id="p-email" placeholder="votre@email.com">
+                    <div class="p-err" id="perr-email">Adresse email invalide</div>
+                </div>
+                <div class="p-form-group">
+                    <label>Numéro de téléphone *</label>
+                    <input type="tel" id="p-tel" placeholder="+213 0XX XX XX XX">
+                    <div class="p-err" id="perr-tel">Ce champ est requis</div>
+                </div>
+                <div class="p-form-group">
+                    <label>Wilaya *</label>
+                    <select id="p-wilaya">
+                        <option value="">-- Sélectionnez votre wilaya --</option>
+                        <option>Alger</option><option>Oran</option><option>Constantine</option>
+                        <option>Annaba</option><option>Blida</option><option>Batna</option>
+                        <option>Sétif</option><option>Tizi Ouzou</option><option>Béjaïa</option>
+                        <option>Tlemcen</option><option>Mostaganem</option><option>Chlef</option>
+                        <option>Médéa</option><option>Skikda</option><option>Autres</option>
+                    </select>
+                    <div class="p-err" id="perr-wilaya">Veuillez sélectionner une wilaya</div>
+                </div>
+                <div class="p-btn-row">
+                    <button class="p-btn-next" onclick="pGoStep(2)">Suivant &nbsp;<i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="p-step-page" id="p-page2">
+                <div class="p-step-title">🏪 Informations du magasin</div>
+                <div class="p-form-group">
+                    <label>Nom du magasin *</label>
+                    <input type="text" id="p-magasin" placeholder="Ex: Fashion Store Oran">
+                    <div class="p-err" id="perr-magasin">Ce champ est requis</div>
+                </div>
+                <div class="p-form-group">
+                    <label>Catégorie principale *</label>
+                    <select id="p-categorie">
+                        <option value="">-- Choisissez une catégorie --</option>
+                        <option>Mode & Vêtements</option>
+                        <option>Électronique & High-Tech</option>
+                        <option>Décoration & Maison</option>
+                        <option>Cosmétique & Skincare</option>
+                        <option>Chaussures</option>
+                        <option>Sport & Loisirs</option>
+                        <option>Affaires Scolaires</option>
+                        <option>Cuisine & Ustensiles</option>
+                        <option>Autre</option>
+                    </select>
+                    <div class="p-err" id="perr-categorie">Veuillez sélectionner une catégorie</div>
+                </div>
+                <div class="p-form-group">
+                    <label>Adresse du magasin *</label>
+                    <input type="text" id="p-adresse" placeholder="Ex: 12 Rue Larbi Ben M'hidi, Oran">
+                    <div class="p-err" id="perr-adresse">Ce champ est requis</div>
+                </div>
+                <div class="p-form-group">
+                    <label>Nombre de produits estimés</label>
+                    <select id="p-nbprod">
+                        <option>Moins de 20 produits</option>
+                        <option>20 à 50 produits</option>
+                        <option>50 à 100 produits</option>
+                        <option>Plus de 100 produits</option>
+                    </select>
+                </div>
+                <div class="p-form-group">
+                    <label>Description du magasin</label>
+                    <textarea id="p-description" placeholder="Décrivez brièvement votre magasin et vos produits phares..."></textarea>
+                </div>
+                <div class="p-btn-row">
+                    <button class="p-btn-back" onclick="pGoStep(1)"><i class="fas fa-arrow-left"></i> Retour</button>
+                    <button class="p-btn-next" onclick="pGoStep(3)">Suivant &nbsp;<i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="p-step-page" id="p-page3">
+                <div class="p-step-title">📸 Photos & Finalisation</div>
+                <p style="font-size:0.82rem; color:#888; margin-bottom:14px;">Ajoutez jusqu'à 10 photos de vos produits pour présenter votre catalogue</p>
+                <div class="p-file-zone" onclick="document.getElementById('pf-input').click()">
+                    <div class="pf-icon">📁</div>
+                    <p>Cliquez pour ajouter des photos de produits</p>
+                    <strong>JPG, PNG — 10 fichiers maximum</strong>
+                    <div id="pf-count"></div>
+                </div>
+                <input type="file" id="pf-input" multiple accept="image/*" onchange="pCountFiles(this)">
+                <div class="p-form-group" style="margin-top:16px;">
+                    <label>Avez-vous un registre de commerce ?</label>
+                    <select id="p-rc">
+                        <option>Oui, je possède un RC</option>
+                        <option>Non, je suis particulier</option>
+                        <option>En cours d'obtention</option>
+                    </select>
+                </div>
+                <div class="p-form-group">
+                    <label>Comment avez-vous connu IKYO ?</label>
+                    <select id="p-source">
+                        <option>Réseaux sociaux (Facebook, Instagram...)</option>
+                        <option>Bouche à oreille</option>
+                        <option>Publicité en ligne</option>
+                        <option>Recommandation d'un partenaire</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+                <div class="p-btn-row">
+                    <button class="p-btn-back" onclick="pGoStep(2)"><i class="fas fa-arrow-left"></i> Retour</button>
+                    <button class="p-btn-next" id="p-submit-btn" onclick="pSubmitForm()">
+                        Envoyer la demande &nbsp;<i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SUCCESS SCREEN -->
+        <div class="p-success" id="p-success-screen">
+            <div class="p-success-icon">
+                <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="36" cy="36" r="36" fill="#f5ede9"/>
+                    <path d="M20 36l10 10 22-22" stroke="#451d18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>Demande bien reçue !</h3>
+            <p class="pmsg">Merci d'avoir soumis votre candidature pour devenir partenaire <strong>IKYO Shop</strong>.</p>
+            <p class="pmsg">Notre équipe va analyser votre dossier avec attention.</p>
+            <div class="p-delay-badge">
+                <i class="fas fa-clock"></i> Réponse sous 3 jours ouvrables
+            </div>
+            <p class="p-success-note">
+                Vous serez notifié par <strong>email</strong> selon la décision d'IKYO Shop :<br>
+                ✅ <strong>Accepté</strong> — bienvenue dans la famille IKYO !<br>
+                ❌ <strong>Refusé</strong> — avec les raisons expliquées.<br><br>
+                Pensez à vérifier votre dossier spam si vous ne recevez pas de réponse.
+            </p>
+            <button class="p-btn-close-final" onclick="closePartnerForm()">
+                Fermer &nbsp;<i class="fas fa-times"></i>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ===== NEWSLETTER ===== -->
 <section id="newsletter">
     <div class="newstext">
         <h4>Sign Up For NewsLetters</h4>
@@ -108,63 +746,53 @@
     </div>
 </section>
 
-
-
+<!-- ===== FOOTER ===== -->
 <footer class="section1">
     <div class="col">
-        
         <h4>Contact Us</h4>
-        <p><strong>ADRESSE:</strong>97 RUE DE LA REPUBLIQUE FRANCAISE </p>
-         <p><strong>PHONE:</strong>+33 93 118 5009 </p>
-             <p><strong>HOURS:</strong>10:00-18:00 MON- THUS</p>
-             <div class="follow">
-                <h4>FOLLOW US</h4>
-                <div class="icon">
-                    <i class="fab fa-facebook-f"></i>
-                    <i class="fab fa-instagram"></i>
-                     <i class="fab fa-twitter"></i>
-                      <i class="fab fa-pinterest-p"></i>
-                       <i class="fab fa-youtube"></i>
-                </div>
-             </div>
+        <p><strong>ADRESSE:</strong> 97 RUE DE LA REPUBLIQUE FRANCAISE</p>
+        <p><strong>PHONE:</strong> +33 93 118 5009</p>
+        <p><strong>HOURS:</strong> 10:00-18:00 MON-THUS</p>
+        <div class="follow">
+            <h4>FOLLOW US</h4>
+            <div class="icon">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-pinterest-p"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
     </div>
     <div class="col">
         <h4>ABOUT</h4>
         <a href="#">ABOUT US</a>
-         <a href="#">Delivery Information</a>
-          <a href="#">Privecy Policy</a>
-           <a href="#">Terms & Conditions</a>
-            <a href="#">Contact Us</a>
-
+        <a href="#">Delivery Information</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
     </div>
- <div class="col">
+    <div class="col">
         <h4>MY ACCOUNT</h4>
         <a href="#">Sign In</a>
-         <a href="#">View Cart</a>
-          <a href="#">My Wish List</a>
-           <a href="#">Track My Order</a>
-            <a href="#">Help</a>
-
+        <a href="#">View Cart</a>
+        <a href="#">My Wish List</a>
+        <a href="#">Track My Order</a>
+        <a href="#">Help</a>
     </div>
     <div class="col">
         <h4>INSTALL UP</h4>
-        <P>From Up Store Or Google Play</P> 
+        <p>From Up Store Or Google Play</p>
         <div class="pay">
-            <img src="pay3.png" class="CARTPHOTO">
-             <P>Securited Payement Getways</P>
-        <img src="pay1.png" alt="" class="photocart">
+            <img src="pay3.png" class="CARTPHOTO" alt="Payment">
+            <p>Securited Payement Getways</p>
+            <img src="pay1.png" alt="Payment methods" class="photocart">
         </div>
-       
     </div>
-    
-     
-
-
 </footer>
 
+<!-- Scripts -->
+<script src="script.js"></script>
 
-
-
-    <script src="script.js"></script>
 </body>
 </html>
