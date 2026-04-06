@@ -33,7 +33,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 16px 40px;
-    background: #451d18;
+    background: #250a06;
     position: sticky;
     top: 0;
     z-index: 200;
@@ -102,7 +102,7 @@ body {
 
 #newsletter .form button {
     background: white;
-    color: #451d18;
+    color: #2e0c08;
     border: none;
     padding: 10px 22px;
     border-radius: 6px;
@@ -288,7 +288,7 @@ body {
 
 /* ===== CATEGORIES ===== */
 .cat-hero {
-    background: #451d18;
+    background: #390505;
     color: white;
     text-align: center;
     padding: 50px 20px;
@@ -313,7 +313,7 @@ body {
 }
 
 .cat-block {
-    background: white;
+    background: rgb(49, 8, 8);
     border-radius: 8px;
     padding: 24px;
     margin-bottom: 30px;
@@ -323,7 +323,7 @@ body {
 .cat-block h3 {
     font-size: 1rem;
     font-weight: 700;
-    color: #451d18;
+    color: #fbfafa;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 16px;
@@ -370,7 +370,7 @@ body {
 
 /* ===== SHOP ===== */
 .shop-hero {
-    background: #451d18;
+    background: rgb(49, 8, 8);
     color: white;
     text-align: center;
     padding: 50px 20px;
@@ -420,8 +420,8 @@ body {
 
 .filter-btn:hover,
 .filter-btn.active {
-    background: #451d18;
-    border-color: #451d18;
+    background: #2e0c07;
+    border-color: rgb(49, 8, 8);
     color: white;
 }
 
@@ -443,7 +443,7 @@ body {
 }
 
 .search-shop button {
-    background: #451d18;
+    background: #390c06;
     border: none;
     padding: 7px 12px;
     cursor: pointer;
@@ -610,7 +610,7 @@ body {
 
 /* ===== SUPPORT ===== */
 .support-hero {
-    background: #451d18;
+    background: rgb(49, 8, 8);
     color: white;
     text-align: center;
     padding: 50px 20px;
@@ -641,7 +641,7 @@ body {
 }
 
 .stat-box {
-    background: white;
+    background: rgb(49, 8, 8);
     border-radius: 8px;
     padding: 24px;
     text-align: center;
@@ -651,14 +651,14 @@ body {
 
 .stat-box i {
     font-size: 1.8rem;
-    color: #451d18;
+    color: #f0ebeb;
     margin-bottom: 8px;
 }
 
 .stat-box h2 {
     font-size: 1.8rem;
     font-weight: 900;
-    color: #222;
+    color: #fdfbfb;
 }
 
 .stat-box p {
@@ -684,7 +684,7 @@ body {
 .support-box h3 {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 6px;
     display: flex;
     align-items: center;

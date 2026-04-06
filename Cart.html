@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKYO – Mon Panier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+
+<!--  HEADER  -->
+<section id="header">
+    <a href="index.html" style="text-decoration:none;font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:900;letter-spacing:6px;color:white;font-style:italic;text-shadow:0 2px 8px rgba(0,0,0,0.3);">IKYO</a>
+    <div>
+        <ul id="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">All Categories</a></li>
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="index.html">Support</a></li>
+            <li>
+                <a href="cart.html" style="position:relative;">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span id="cart-badge-header" class="cart-badge">0</span>
+                </a>
+            </li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </div>
+</section>
+
+<!--  BREADCRUMB  -->
+<div class="breadcrumb">
+    <a href="index.html"><i class="fas fa-house"></i> Accueil</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Mon Panier</span>
+</div>
+
+<!--  CART MAIN  -->
+<div class="cart-page">
+
+    <!-- STEPS BAR -->
+    <div class="checkout-steps">
+        <div class="step active"><span class="step-num">1</span><span class="step-label">Panier</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="step-num">2</span><span class="step-label">Livraison</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="step-num">3</span><span class="step-label">Paiement</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="step-num">4</span><span class="step-label">Confirmation</span></div>
+    </div>
+
+    <div class="cart-layout">
+
+        <!-- ── LEFT: Items ── -->
+        <div class="cart-left">
+
+            <div class="cart-left-header">
+                <h2><i class="fas fa-bag-shopping"></i> Mon Panier &nbsp;<span id="header-count" class="item-count-badge">0 article</span></h2>
+                <button class="btn-clear" id="btn-clear" onclick="clearCart()" style="display:none">
+                    <i class="fas fa-trash-can"></i> Vider
+                </button>
+            </div>
+
+            <!-- Empty state -->
+            <div class="cart-empty" id="cart-empty">
+                <div class="empty-lottie">
+                    <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="80" cy="80" r="80" fill="#f5ede9"/>
+                        <path d="M45 55h70l-8 45H53L45 55z" fill="#e0c4bc" stroke="#451d18" stroke-width="2.5" stroke-linejoin="round"/>
+                        <circle cx="63" cy="112" r="7" fill="#451d18"/>
+                        <circle cx="97" cy="112" r="7" fill="#451d18"/>
+                        <path d="M38 45h10l7 10" stroke="#451d18" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M72 75l8 8 16-16" stroke="#6c4a2a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>Votre panier est vide</h3>
+                <p>Ajoutez des articles depuis notre boutique et retrouvez-les ici</p>
+                <a href="index.html" class="btn-go-shop">
+                    <i class="fas fa-store"></i>&nbsp; Découvrir la Boutique
+                </a>
+            </div>
+
+            <!-- Table header -->
+            <div class="cart-table-head" id="cart-table-head" style="display:none">
+                <span>Produit</span>
+                <span>Prix</span>
+                <span>Quantité</span>
+                <span>Total</span>
+                <span></span>
+            </div>
+
+            <!-- Items list -->
+            <div id="cart-items-list"></div>
+
+            <!-- Continue shopping -->
+            <div class="cart-footer-row" id="cart-footer-row" style="display:none">
+                <a href="index.html" class="btn-continue">
+                    <i class="fas fa-arrow-left"></i>&nbsp; Continuer les achats
+                </a>
+                <div class="cart-saved">
+                    <i class="fas fa-shield-halved"></i> Commande 100% sécurisée
+                </div>
+            </div>
+        </div>
+
+        <!-- ── RIGHT: Summary ── -->
+        <div class="cart-right" id="cart-right" style="display:none">
+
+            <!-- Order Summary -->
+            <div class="summary-box">
+                <div class="summary-title">
+                    <i class="fas fa-receipt"></i> Résumé de commande
+                </div>
+
+                <div class="summary-lines">
+                    <div class="s-row">
+                        <span>Sous-total (<span id="s-count">0</span> art.)</span>
+                        <span id="s-subtotal">0 DA</span>
+                    </div>
+                    <div class="s-row" id="s-discount-row" style="display:none">
+                        <span><i class="fas fa-tag" style="color:#27ae60"></i> Réduction</span>
+                        <span id="s-discount" class="text-green">-0 DA</span>
+                    </div>
+                    <div class="s-row">
+                        <span><i class="fas fa-truck" style="color:#451d18"></i> Livraison</span>
+                        <span id="s-shipping">500 DA</span>
+                    </div>
+                </div>
+
+                <!-- Coupon -->
+                <div class="coupon-section">
+                    <div class="coupon-label"><i class="fas fa-ticket"></i> Code promo</div>
+                    <div class="coupon-row">
+                        <input id="coupon-input" type="text" placeholder="Ex: IKYO10" autocomplete="off">
+                        <button onclick="applyCoupon()">OK</button>
+                    </div>
+                    <div class="coupon-msg" id="coupon-msg"></div>
+                </div>
+
+                <div class="summary-total">
+                    <span>Total TTC</span>
+                    <span id="s-total">0 DA</span>
+                </div>
+
+                <button class="btn-order" onclick="goCheckout()">
+                    <i class="fas fa-lock"></i>&nbsp; Passer la commande
+                </button>
+
+                <div class="trust-row">
+                    <span><i class="fas fa-shield-halved"></i> Paiement sécurisé</span>
+                    <span><i class="fas fa-rotate-left"></i> Retour 7 jours</span>
+                    <span><i class="fas fa-truck"></i> 58 wilayas</span>
+                </div>
+
+                <div class="pay-logos">
+                    <span class="pay-chip">Cash</span>
+                    <span class="pay-chip">CIB</span>
+                    <span class="pay-chip">Dahabia</span>
+                    <span class="pay-chip">CCP</span>
+                </div>
+            </div>
+
+            <!-- Delivery info -->
+            <div class="delivery-card">
+                <div class="delivery-row">
+                    <div class="d-icon"><i class="fas fa-truck-fast"></i></div>
+                    <div>
+                        <strong>Livraison rapide</strong>
+                        <p>2–5 jours · 58 wilayas d'Algérie</p>
+                    </div>
+                </div>
+                <div class="delivery-row">
+                    <div class="d-icon"><i class="fas fa-box-open"></i></div>
+                    <div>
+                        <strong>Retour facile</strong>
+                        <p>7 jours après réception du colis</p>
+                    </div>
+                </div>
+                <div class="delivery-row">
+                    <div class="d-icon"><i class="fas fa-headset"></i></div>
+                    <div>
+                        <strong>Support 24/7</strong>
+                        <p>0557647772 · ikyoshop@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== RECENTLY VIEWED (placeholder) ===== -->
+<div class="recently-section" id="recently-section" style="display:none">
+    <div class="recently-inner">
+        <h3><i class="fas fa-clock-rotate-left"></i> Vous pourriez aussi aimer</h3>
+        <div class="recently-grid" id="recently-grid"></div>
+    </div>
+</div>
+
+<!-- ===== CHECKOUT MODAL ===== -->
+<div class="co-overlay" id="co-overlay">
+    <div class="co-modal">
+
+        <!-- Step: Delivery Info -->
+        <div class="co-step" id="co-step1">
+            <button class="co-close" onclick="closeCheckout()">✕</button>
+            <div class="co-header">
+                <div class="co-step-dots">
+                    <span class="co-dot active"></span>
+                    <span class="co-dot"></span>
+                    <span class="co-dot"></span>
+                </div>
+                <h3>Informations de livraison</h3>
+                <p>Renseignez vos coordonnées</p>
+            </div>
+            <div class="co-body">
+                <div class="co-row2">
+                    <div class="co-grp">
+                        <label>Prénom *</label>
+                        <input id="co-prenom" type="text" placeholder="Votre prénom">
+                        <span class="co-err" id="coerr-prenom">Requis</span>
+                    </div>
+                    <div class="co-grp">
+                        <label>Nom *</label>
+                        <input id="co-nom" type="text" placeholder="Votre nom">
+                        <span class="co-err" id="coerr-nom">Requis</span>
+                    </div>
+                </div>
+                <div class="co-grp">
+                    <label>Téléphone *</label>
+                    <input id="co-tel" type="tel" placeholder="+213 0XX XX XX XX">
+                    <span class="co-err" id="coerr-tel">Requis</span>
+                </div>
+                <div class="co-grp">
+                    <label>Wilaya *</label>
+                    <select id="co-wilaya">
+                        <option value="">-- Sélectionnez --</option>
+                        <option>Alger</option><option>Oran</option><option>Constantine</option>
+                        <option>Annaba</option><option>Blida</option><option>Batna</option>
+                        <option>Sétif</option><option>Tizi Ouzou</option><option>Béjaïa</option>
+                        <option>Tlemcen</option><option>Mostaganem</option><option>Chlef</option>
+                        <option>Médéa</option><option>Skikda</option><option>Autres</option>
+                    </select>
+                    <span class="co-err" id="coerr-wilaya">Requis</span>
+                </div>
+                <div class="co-grp">
+                    <label>Adresse complète *</label>
+                    <input id="co-adresse" type="text" placeholder="Rue, quartier, commune...">
+                    <span class="co-err" id="coerr-adresse">Requis</span>
+                </div>
+                <div class="co-grp">
+                    <label>Notes (optionnel)</label>
+                    <textarea id="co-notes" placeholder="Instructions spéciales pour le livreur..."></textarea>
+                </div>
+            </div>
+            <div class="co-btns">
+                <button class="co-btn-cancel" onclick="closeCheckout()">Annuler</button>
+                <button class="co-btn-next" onclick="coStep(2)">Suivant &nbsp;<i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Step: Payment -->
+        <div class="co-step" id="co-step2" style="display:none">
+            <button class="co-close" onclick="closeCheckout()">✕</button>
+            <div class="co-header">
+                <div class="co-step-dots">
+                    <span class="co-dot done"></span>
+                    <span class="co-dot active"></span>
+                    <span class="co-dot"></span>
+                </div>
+                <h3>Mode de paiement</h3>
+                <p>Choisissez comment payer</p>
+            </div>
+            <div class="co-body">
+                <div class="pay-options">
+                    <label class="pay-opt">
+                        <input type="radio" name="payment" value="cash" checked>
+                        <span class="pay-opt-box">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <strong>Paiement à la livraison</strong>
+                            <small>Payez cash en recevant votre colis</small>
+                        </span>
+                    </label>
+                    <label class="pay-opt">
+                        <input type="radio" name="payment" value="cib">
+                        <span class="pay-opt-box">
+                            <i class="fas fa-credit-card"></i>
+                            <strong>CIB / Dahabia</strong>
+                            <small>Carte bancaire algérienne</small>
+                        </span>
+                    </label>
+                    <label class="pay-opt">
+                        <input type="radio" name="payment" value="ccp">
+                        <span class="pay-opt-box">
+                            <i class="fas fa-building-columns"></i>
+                            <strong>Virement CCP</strong>
+                            <small>Virement postal / bancaire</small>
+                        </span>
+                    </label>
+                </div>
+                <!-- Order recap -->
+                <div class="co-recap" id="co-recap"></div>
+            </div>
+            <div class="co-btns">
+                <button class="co-btn-cancel" onclick="coStep(1)"><i class="fas fa-arrow-left"></i>&nbsp; Retour</button>
+                <button class="co-btn-next" onclick="coStep(3)">Confirmer &nbsp;<i class="fas fa-check"></i></button>
+            </div>
+        </div>
+
+        <!-- Step: Success -->
+        <div class="co-step" id="co-step3" style="display:none">
+            <div class="co-success">
+                <div class="co-success-anim">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="48" fill="#f5ede9" stroke="#451d18" stroke-width="2"/>
+                        <path class="checkmark" d="M28 50l14 14 30-30" stroke="#451d18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>Commande confirmée !</h3>
+                <p>Merci <strong id="co-name-confirm"></strong> 🎉<br>
+                Votre commande a bien été enregistrée.</p>
+                <div class="co-order-num">
+                    N° commande : <strong id="co-order-id"></strong>
+                </div>
+                <p class="co-note">Notre équipe vous contactera au <strong id="co-tel-confirm"></strong> pour confirmer la livraison sous 24h.</p>
+                <button class="co-btn-home" onclick="finishOrder()">
+                    <i class="fas fa-house"></i>&nbsp; Retour à l'accueil
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast"></div>
+
+<!-- ===== NEWSLETTER ===== -->
+<section id="newsletter">
+    <div class="newstext">
+        <h4>Sign Up For NewsLetters</h4>
+        <p>Get Email Updates about our latest shop and <span>special offre</span></p>
+    </div>
+    <div class="form">
+        <input type="text" placeholder="your email">
+        <button>Sign Up</button>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="section1">
+    <div class="col">
+        <h4>Contact Us</h4>
+        <p><strong>ADRESSE:</strong> 97 RUE DE LA REPUBLIQUE FRANCAISE</p>
+        <p><strong>PHONE:</strong> +33 93 118 5009</p>
+        <p><strong>HOURS:</strong> 10:00-18:00 MON-THUS</p>
+        <div class="follow">
+            <h4>FOLLOW US</h4>
+            <div class="icon">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-pinterest-p"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <h4>ABOUT</h4>
+        <a href="#">ABOUT US</a>
+        <a href="#">Delivery Information</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+    </div>
+    <div class="col">
+        <h4>MY ACCOUNT</h4>
+        <a href="#">Sign In</a>
+        <a href="cart.html">View Cart</a>
+        <a href="#">My Wish List</a>
+        <a href="#">Track My Order</a>
+        <a href="#">Help</a>
+    </div>
+    <div class="col">
+        <h4>INSTALL UP</h4>
+        <p>From Up Store Or Google Play</p>
+        <div class="pay">
+            <img src="pay3.png" class="CARTPHOTO" alt="">
+            <p>Securited Payement Getways</p>
+            <img src="pay1.png" alt="" class="photocart">
+        </div>
+    </div>
+</footer>
+
+<script src="cart.js"></script>
+</body>
+</html>
