@@ -1,6 +1,6 @@
 
 
-/* ══ ROLE SWITCH ══ */
+
 function switchRole(role) {
     const isClient = role === 'client';
 
@@ -13,7 +13,7 @@ function switchRole(role) {
     document.getElementById('pill-seller').classList.toggle('seller-active', !isClient);
 }
 
-/* ══ TAB SWITCH (Login / Register) ══ */
+
 function switchTab(role, tab) {
     const prefix = role === 'client' ? 'c' : 's';
     const tabPrefix = role === 'client' ? 'ctab' : 'stab';
