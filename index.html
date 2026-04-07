@@ -413,6 +413,12 @@
 
 <script src="script.js"></script>
 <script src="cart.js"></script>
-
+<script>
+(function(){
+    const u = JSON.parse(localStorage.getItem('ikyo_user') || 'null');
+    const el = document.querySelector('#navbar a[href="login.html"]');
+    if (u && el) el.innerHTML = '<i class="fas fa-user-check"></i> ' + u.name;
+})();
+</script>
 </body>
 </html>
