@@ -1,0 +1,513 @@
+/* ================================================================
+   LUXURY-ANIMATIONS.CSS — IKYO Premium Experience v2
+   Scroll reveals · Parallax · Glass · Gold shimmer · Preloader
+   Page transitions · Tilt 3D · Particles · Pro CSS3 effects
+================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+/* ══ CSS VARIABLES ══ */
+:root {
+  --gold:         #c9a96e;
+  --gold-lt:      #f0dfc0;
+  --gold-dk:      #a07840;
+  --brown:        #2b060a;
+  --brown-dk:     #240307;
+  --cream:        #faf7f3;
+  --dark:         #0d0705;
+  --glass:        rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.15);
+  --shadow-luxe:  0 30px 80px rgba(69,29,24,0.25);
+  --transition:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ══════════════════════════════════════════
+   1. PRELOADER PREMIUM
+══════════════════════════════════════════ */
+#lux-preloader {
+  position: fixed; inset: 0;
+  background: var(--brown-dk);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  z-index: 9999999;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#lux-preloader.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+.preloader-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4.5rem; font-style: italic; font-weight: 700;
+  letter-spacing: 16px; color: #fff;
+  animation: preloaderPulse 1.6s ease-in-out infinite alternate;
+}
+@keyframes preloaderPulse {
+  from { opacity: 0.3; letter-spacing: 10px; }
+  to   { opacity: 1;   letter-spacing: 16px; }
+}
+.preloader-bar {
+  width: 180px; height: 1px;
+  background: rgba(255,255,255,0.12);
+  margin-top: 28px; border-radius: 2px; overflow: hidden;
+}
+.preloader-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dk), var(--gold-lt), var(--gold-dk));
+  background-size: 200% auto;
+  animation: barFill 1.6s var(--transition) forwards,
+             shimmerBar 1.2s linear infinite;
+}
+@keyframes barFill    { from { width: 0; } to { width: 100%; } }
+@keyframes shimmerBar { to { background-position: 200% center; } }
+
+/* ══════════════════════════════════════════
+   2. SCROLL PROGRESS BAR
+══════════════════════════════════════════ */
+#scroll-progress {
+  position: fixed; top: 0; left: 0;
+  height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-lt));
+  z-index: 999997;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 10px rgba(228, 155, 18, 0.7), 0 0 20px rgba(201,169,110,0.3);
+}
+
+/* ══════════════════════════════════════════
+   3. PAGE TRANSITION — DIAGONAL WIPE
+══════════════════════════════════════════ */
+#page-transition-overlay {
+  position: fixed; inset: 0; z-index: 999990;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.pto-panel {
+  background: var(--brown-dk);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s var(--transition);
+}
+.pto-panel:nth-child(1) { transition-delay: 0.00s; }
+.pto-panel:nth-child(2) { transition-delay: 0.06s; }
+.pto-panel:nth-child(3) { transition-delay: 0.12s; }
+.pto-panel:nth-child(4) { transition-delay: 0.18s; }
+.pto-panel:nth-child(5) { transition-delay: 0.24s; }
+
+#page-transition-overlay.entering .pto-panel {
+  transform: scaleY(1); transform-origin: bottom;
+}
+#page-transition-overlay.leaving .pto-panel {
+  transform: scaleY(0); transform-origin: top;
+}
+
+/* ══════════════════════════════════════════
+   4. NAVBAR — PREMIUM SCROLL EFFECT
+══════════════════════════════════════════ */
+#header {
+  transition: padding 0.4s var(--transition),
+              box-shadow 0.4s ease,
+              background 0.5s ease;
+}
+#header.scrolled {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  background: rgba(22, 6, 4, 0.96) !important;
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  box-shadow: 0 2px 0 rgba(201,169,110,0.15),
+              0 8px 40px rgba(0,0,0,0.4);
+}
+
+/* Gold underline nav links */
+#navbar a {
+  position: relative;
+  overflow: hidden;
+}
+#navbar a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 50%; right: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transition: left 0.35s var(--transition), right 0.35s var(--transition);
+}
+#navbar a:hover::after { left: 0; right: 0; }
+
+/* ══════════════════════════════════════════
+   5. SCROLL REVEAL — MULTI DIRECTION
+══════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.75s var(--transition),
+              transform 0.75s var(--transition);
+}
+.reveal.from-left  { transform: translateX(-60px) rotate(-1deg); }
+.reveal.from-right { transform: translateX(60px) rotate(1deg); }
+.reveal.scale-in   { transform: scale(0.88) translateY(20px); }
+.reveal.flip-in    { transform: perspective(600px) rotateX(-20deg) translateY(30px); }
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1) rotate(0) rotateX(0);
+}
+
+.reveal[data-delay="1"] { transition-delay: 0.08s; }
+.reveal[data-delay="2"] { transition-delay: 0.18s; }
+.reveal[data-delay="3"] { transition-delay: 0.28s; }
+.reveal[data-delay="4"] { transition-delay: 0.38s; }
+.reveal[data-delay="5"] { transition-delay: 0.48s; }
+.reveal[data-delay="6"] { transition-delay: 0.58s; }
+
+/* ══════════════════════════════════════════
+   6. HERO — SPLIT TEXT ANIMATION
+══════════════════════════════════════════ */
+.hero-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(70px) rotateX(-25deg);
+  animation: wordReveal 0.9s var(--transition) forwards;
+}
+@keyframes wordReveal {
+  to { opacity: 1; transform: translateY(0) rotateX(0); }
+}
+
+/* ── Gold shimmer text ── */
+.shimmer-text {
+  background: linear-gradient(
+    110deg,
+    var(--brown) 0%,
+    var(--gold-lt) 35%,
+    var(--gold) 50%,
+    var(--gold-lt) 65%,
+    var(--brown) 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerMove 3.5s linear infinite;
+}
+@keyframes shimmerMove {
+  from { background-position: 0% center; }
+  to   { background-position: 250% center; }
+}
+
+/* ── Floating premium badge ── */
+.lux-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201,169,110,0.35);
+  color: var(--gold-lt);
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 8px 20px; border-radius: 40px;
+  margin-bottom: 22px;
+  animation: badgeFloat 4.5s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(201,169,110,0.08),
+              inset 0 1px 0 rgba(255,255,255,0.1);
+}
+@keyframes badgeFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ══════════════════════════════════════════
+   7. HERO BUTTON — LIQUID FILL EFFECT
+══════════════════════════════════════════ */
+#hero button {
+  position: relative; overflow: hidden;
+  background: transparent !important;
+  border: 1.5px solid rgba(240, 173, 49, 0.6) !important;
+  color: var(--gold-lt) !important;
+  letter-spacing: 2.5px;
+  font-size: 0.78rem !important;
+  padding: 15px 40px !important;
+  transition: color 0.4s ease !important;
+}
+#hero button::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 0%;
+  background: var(--gold);
+  transition: height 0.45s var(--transition);
+  z-index: 0;
+}
+#hero button:hover::before { height: 100%; }
+#hero button:hover { color: var(--dark) !important; }
+#hero button > * { position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════
+   8. PRODUCT CARDS — 3D TILT + LUXE HOVER
+══════════════════════════════════════════ */
+.pro, .prod-card {
+  transform-style: preserve-3d;
+  transition: transform 0.12s ease, box-shadow 0.4s ease;
+  will-change: transform;
+  position: relative;
+}
+.pro:hover, .prod-card:hover {
+  box-shadow:
+    0 24px 60px rgba(69,29,24,0.2),
+    0 0 0 1px rgba(201,169,110,0.18),
+    0 0 40px rgba(201,169,110,0.05) !important;
+}
+
+/* Gold corner ribbon */
+.pro::before, .prod-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 32px 32px 0;
+  border-color: transparent var(--gold) transparent transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+.pro:hover::before, .prod-card:hover::before { opacity: 1; }
+
+/* Image zoom */
+.pro img, .prod-card img {
+  transition: transform 0.65s var(--transition), filter 0.4s ease;
+}
+.pro:hover img, .prod-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.04) contrast(1.02);
+}
+
+/* ══════════════════════════════════════════
+   9. FLOATING PARTICLES
+══════════════════════════════════════════ */
+.particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  animation: particleFly var(--dur, 7s) var(--delay, 0s) ease-in-out infinite;
+}
+@keyframes particleFly {
+  0%   { opacity: 0; transform: translateY(100vh) scale(0) rotate(0deg); }
+  10%  { opacity: 0.5; }
+  90%  { opacity: 0.2; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(1) rotate(180deg); }
+}
+
+/* ══════════════════════════════════════════
+   10. GLASS CARDS
+══════════════════════════════════════════ */
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border-radius: 20px;
+}
+
+/* ══════════════════════════════════════════
+   11. MAGNETIC BUTTONS
+══════════════════════════════════════════ */
+.btn-magnetic {
+  transition: transform 0.3s var(--transition), box-shadow 0.3s ease !important;
+  will-change: transform;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dk), var(--gold), var(--gold-dk));
+  background-size: 200% auto;
+  color: #fff; border: none;
+  transition: background-position 0.5s ease, transform 0.2s ease, box-shadow 0.3s ease !important;
+}
+.btn-gold:hover {
+  background-position: right center;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 35px rgba(160,120,64,0.45) !important;
+}
+
+/* ══════════════════════════════════════════
+   12. LUXURY SCROLLBAR
+══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold-dk), var(--gold));
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--brown); }
+
+/* ══════════════════════════════════════════
+   13. TOAST UPGRADE
+══════════════════════════════════════════ */
+#toast, #toast-login {
+  background: linear-gradient(135deg, #1a0d0a, #2e110d) !important;
+  border: 1px solid rgba(201,169,110,0.25) !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(20px);
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3),
+              inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+
+/* ══════════════════════════════════════════
+   14. SECTION TITLES
+══════════════════════════════════════════ */
+#product h2 {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 2.5rem !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px;
+  text-transform: none !important;
+  position: relative;
+}
+#product h2::after {
+  content: '';
+  display: block;
+  width: 50px; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: 10px auto 0;
+}
+
+/* ══════════════════════════════════════════
+   15. NEWSLETTER
+══════════════════════════════════════════ */
+#newsletter {
+  position: relative; overflow: hidden;
+}
+#newsletter::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at center, rgba(201,169,110,0.07) 0%, transparent 65%);
+  animation: newsletterPulse 7s ease-in-out infinite;
+}
+@keyframes newsletterPulse {
+  0%,100% { transform: scale(1); opacity: 0.4; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+#newsletter button {
+  transition: transform 0.25s ease, box-shadow 0.3s ease !important;
+}
+#newsletter button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 22px rgba(69,29,24,0.3) !important;
+}
+
+/* ══════════════════════════════════════════
+   16. FAQ
+══════════════════════════════════════════ */
+.faq-q {
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+.faq-q:hover { padding-left: 10px !important; color: var(--brown) !important; }
+.faq-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.faq-item:hover {
+  transform: translateX(5px);
+  box-shadow: -3px 0 0 var(--gold);
+}
+
+/* ══════════════════════════════════════════
+   17. CATEGORY CARDS
+══════════════════════════════════════════ */
+.cat-sub-item {
+  transition: transform 0.3s var(--transition),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+}
+.cat-sub-item:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 14px 35px rgba(69,29,24,0.14);
+  border-color: var(--gold) !important;
+}
+.cat-block {
+  transition: transform 0.4s var(--transition), box-shadow 0.4s ease;
+}
+.cat-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 55px rgba(69,29,24,0.12);
+}
+
+/* ══════════════════════════════════════════
+   18. FOOTER SOCIAL ICONS
+══════════════════════════════════════════ */
+.section1 .icon i {
+  transition: transform 0.3s var(--transition), color 0.3s ease;
+}
+.section1 .icon i:hover {
+  transform: translateY(-5px) scale(1.25);
+  color: var(--gold) !important;
+}
+
+/* ══════════════════════════════════════════
+   19. IMAGE LAZY REVEAL
+══════════════════════════════════════════ */
+img {
+  transition: filter 0.5s ease, opacity 0.5s ease;
+}
+img.loading { filter: blur(10px) brightness(0.75); opacity: 0.6; }
+img.loaded  { filter: blur(0) brightness(1); opacity: 1; }
+
+/* ══════════════════════════════════════════
+   20. LOGO ANIMATION
+══════════════════════════════════════════ */
+#header > a {
+  transition: letter-spacing 0.45s var(--transition), opacity 0.3s ease;
+  display: inline-block;
+}
+#header > a:hover {
+  letter-spacing: 12px !important;
+  opacity: 0.82;
+}
+
+/* ══════════════════════════════════════════
+   21. SELECTION
+══════════════════════════════════════════ */
+::selection {
+  background: rgba(201,169,110,0.28);
+  color: var(--brown-dk);
+}
+
+/* ══════════════════════════════════════════
+   22. GOLD DIVIDER
+══════════════════════════════════════════ */
+.gold-divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 16px auto;
+}
+.gold-divider.left { margin-left: 0; }
+
+/* ══════════════════════════════════════════
+   23. ANIMATED COUNTER
+══════════════════════════════════════════ */
+.counter-num {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.1s ease;
+}
+
+/* ══════════════════════════════════════════
+   24. GLOW EFFECT ON HOVER — BUTTONS
+══════════════════════════════════════════ */
+.add-btn, .btn-send, .btn-outline-white {
+  transition: box-shadow 0.35s ease, transform 0.25s ease !important;
+}
+.add-btn:hover {
+  box-shadow: 0 0 20px rgba(173, 28, 9, 0.35) !important;
+  transform: scale(1.1) !important;
+}
+
+/* ══════════════════════════════════════════
+   25. SUPPORT STAT BOXES — COUNTER REVEAL
+══════════════════════════════════════════ */
+.stat-box {
+  transition: transform 0.35s var(--transition), box-shadow 0.35s ease;
+}
+.stat-box:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 20px 50px rgba(69,29,24,0.14) !important;
+}

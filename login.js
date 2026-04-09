@@ -1,6 +1,3 @@
-
-
-
 function switchRole(role) {
     const isClient = role === 'client';
 
@@ -162,8 +159,7 @@ function sellerLogin() {
         setSession({ role: 'seller', email, name: email.split('@')[0] });
         toast('<i class="fas fa-store"></i> Bienvenue sur votre tableau de bord !', 'info');
         setTimeout(() => {
-            // Rediriger vers le dashboard vendeur (à créer) ou index
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
         }, 1500);
     }, 1200);
 }

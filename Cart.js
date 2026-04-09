@@ -1,5 +1,3 @@
-
-
 const CART_KEY = 'ikyo_cart';
 const SHIPPING  = 500;
 const COUPONS   = { 'IKYO10': 10, 'PROMO20': 20, 'SOLDES15': 15 };

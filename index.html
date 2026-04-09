@@ -6,8 +6,9 @@
     <title>IKYO Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="luxury-animations.css">
 </head>
 <body>
 
@@ -22,6 +23,7 @@
             <li><a href="#" onclick="showPage('support',event)">Support</a></li>
             <li><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
             <li><a href="login.html">Login</a></li>
+            <li><a href="dashboard.html">dashboard</a></li>
         </ul>
     </div>
 </section>
@@ -323,7 +325,7 @@
     </div>
 </div>
 
-<!-- PARTNER MODAL — inchangé -->
+<!-- PARTNER MODAL -->
 <div id="partner-overlay">
     <div class="p-modal" id="p-main-modal">
         <div class="p-modal-header">
@@ -408,9 +410,23 @@
     <div class="col"><h4>INSTALL UP</h4><p>From Up Store Or Google Play</p><div class="pay"><img src="pay3.png" class="CARTPHOTO" alt=""><p>Securited Payement Getways</p><img src="pay1.png" alt="" class="photocart"></div></div>
 </footer>
 
-
 <script src="script.js"></script>
 <script src="cart.js"></script>
-
+<script src="luxury.js"></script>
+<script>
+(function(){
+    const u = JSON.parse(localStorage.getItem('ikyo_user') || 'null');
+    
+    // Si vendeur → rediriger vers dashboard
+    if (u && u.role === 'seller') {
+        window.location.href = 'dashboard.html';
+        return;
+    }
+    
+    // Si client → afficher son nom dans la navbar
+    const el = document.querySelector('#navbar a[href="login.html"]');
+    if (u && el) el.innerHTML = '<i class="fas fa-user-check"></i> ' + u.name;
+})();
+</script>
 </body>
 </html>

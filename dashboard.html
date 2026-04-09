@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IKYO — Tableau de Bord Vendeur</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="luxury-animations.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-text">IKYO</span>
+    <span class="logo-sub">Vendeur</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="#" class="nav-item active" data-page="overview" onclick="dashPage('overview',this)">
+      <i class="fas fa-chart-pie"></i>
+      <span>Vue d'ensemble</span>
+      <div class="nav-dot"></div>
+    </a>
+    <a href="#" class="nav-item" data-page="orders" onclick="dashPage('orders',this)">
+      <i class="fas fa-bag-shopping"></i>
+      <span>Commandes</span>
+      <span class="nav-badge" id="nb-orders">12</span>
+    </a>
+    <a href="#" class="nav-item" data-page="products" onclick="dashPage('products',this)">
+      <i class="fas fa-box-open"></i>
+      <span>Produits</span>
+    </a>
+    <a href="#" class="nav-item" data-page="analytics" onclick="dashPage('analytics',this)">
+      <i class="fas fa-chart-line"></i>
+      <span>Analytiques</span>
+    </a>
+
+    <div class="nav-section-label" style="margin-top:18px">Gestion</div>
+    <a href="#" class="nav-item" data-page="customers" onclick="dashPage('customers',this)">
+      <i class="fas fa-users"></i>
+      <span>Clients</span>
+    </a>
+    <a href="#" class="nav-item" data-page="reviews" onclick="dashPage('reviews',this)">
+      <i class="fas fa-star-half-stroke"></i>
+      <span>Avis</span>
+      <span class="nav-badge new" id="nb-reviews">3</span>
+    </a>
+    <a href="#" class="nav-item" data-page="settings" onclick="dashPage('settings',this)">
+      <i class="fas fa-gear"></i>
+      <span>Paramètres</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-profile">
+      <div class="sp-avatar">MB</div>
+      <div class="sp-info">
+        <strong>Mohamed Boutique</strong>
+        <span>Oran, Algérie</span>
+      </div>
+    </div>
+    <a href="index.html" class="btn-logout">
+      <i class="fas fa-arrow-right-from-bracket"></i>
+    </a>
+  </div>
+</aside>
+
+<!-- Mobile toggle -->
+<button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
+  <i class="fas fa-bars"></i>
+</button>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════ -->
+<main class="dash-main" id="dash-main">
+
+  <!-- ── TOP BAR ── -->
+  <header class="dash-topbar">
+    <div class="topbar-left">
+      <h1 class="page-title" id="page-title">Vue d'ensemble</h1>
+      <p class="page-date" id="page-date"></p>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Rechercher...">
+      </div>
+      <button class="topbar-notif" onclick="toggleNotif()">
+        <i class="fas fa-bell"></i>
+        <span class="notif-dot"></span>
+      </button>
+      <div class="topbar-avatar">MB</div>
+    </div>
+  </header>
+
+  <!-- Notification panel -->
+  <div class="notif-panel" id="notif-panel">
+    <div class="notif-header">
+      <strong>Notifications</strong>
+      <button onclick="markAllRead()">Tout lire</button>
+    </div>
+    <div class="notif-item unread">
+      <div class="notif-icon order"><i class="fas fa-bag-shopping"></i></div>
+      <div class="notif-body">
+        <strong>Nouvelle commande #IK-2847</strong>
+        <p>Tenue classique × 2 — 14 000 DA</p>
+        <span>Il y a 5 min</span>
+      </div>
+    </div>
+    <div class="notif-item unread">
+      <div class="notif-icon review"><i class="fas fa-star"></i></div>
+      <div class="notif-body">
+        <strong>Nouvel avis 5★</strong>
+        <p>"Livraison rapide, très bon produit !"</p>
+        <span>Il y a 22 min</span>
+      </div>
+    </div>
+    <div class="notif-item unread">
+      <div class="notif-icon alert"><i class="fas fa-triangle-exclamation"></i></div>
+      <div class="notif-body">
+        <strong>Stock faible</strong>
+        <p>Robe d'été — 2 unités restantes</p>
+        <span>Il y a 1h</span>
+      </div>
+    </div>
+    <div class="notif-item">
+      <div class="notif-icon payment"><i class="fas fa-wallet"></i></div>
+      <div class="notif-body">
+        <strong>Paiement reçu</strong>
+        <p>Virement de 45 000 DA</p>
+        <span>Hier, 16:30</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PAGE: OVERVIEW
+  ══════════════════════════════════ -->
+  <div class="dash-page active" id="page-overview">
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card reveal" data-delay="1">
+        <div class="kpi-icon revenue"><i class="fas fa-coins"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Revenus ce mois</span>
+          <div class="kpi-value" data-target="247500">0 DA</div>
+          <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +18.4%</div>
+        </div>
+        <div class="kpi-sparkline">
+          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
+            <polyline points="0,28 10,22 20,25 30,14 40,18 50,8 60,12 70,5 80,2" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="kpi-card reveal" data-delay="2">
+        <div class="kpi-icon orders"><i class="fas fa-bag-shopping"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Commandes</span>
+          <div class="kpi-value" data-target="143">0</div>
+          <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +6.2%</div>
+        </div>
+        <div class="kpi-sparkline">
+          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
+            <polyline points="0,26 10,20 20,22 30,16 40,18 50,10 60,14 70,8 80,6" fill="none" stroke="#6c63ff" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="kpi-card reveal" data-delay="3">
+        <div class="kpi-icon products"><i class="fas fa-box-open"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Produits actifs</span>
+          <div class="kpi-value" data-target="38">0</div>
+          <div class="kpi-trend neutral"><i class="fas fa-minus"></i> Stable</div>
+        </div>
+        <div class="kpi-sparkline">
+          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
+            <polyline points="0,20 10,18 20,20 30,19 40,21 50,18 60,20 70,19 80,18" fill="none" stroke="#27ae60" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="kpi-card reveal" data-delay="4">
+        <div class="kpi-icon rating"><i class="fas fa-star"></i></div>
+        <div class="kpi-body">
+          <span class="kpi-label">Note moyenne</span>
+          <div class="kpi-value" data-target="4.8">0</div>
+          <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +0.2</div>
+        </div>
+        <div class="kpi-sparkline">
+          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
+            <polyline points="0,20 10,18 20,16 30,14 40,12 50,11 60,10 70,8 80,7" fill="none" stroke="#f39c12" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-row">
+      <!-- Revenue Chart -->
+      <div class="chart-card reveal" data-delay="1">
+        <div class="chart-header">
+          <div>
+            <h3>Revenus mensuels</h3>
+            <p>Janvier — Décembre 2025</p>
+          </div>
+          <div class="chart-period">
+            <button class="period-btn active">Mensuel</button>
+            <button class="period-btn">Hebdo</button>
+          </div>
+        </div>
+        <div class="bar-chart-wrap">
+          <div class="bar-chart" id="revenue-chart">
+            <!-- bars injected by JS -->
+          </div>
+          <div class="bar-chart-labels" id="revenue-labels"></div>
+        </div>
+      </div>
+
+      <!-- Order status donut -->
+      <div class="chart-card small reveal" data-delay="2">
+        <div class="chart-header">
+          <div><h3>Statut commandes</h3><p>Ce mois</p></div>
+        </div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 120 120">
+            <circle class="donut-track" cx="60" cy="60" r="46" fill="none" stroke="#f0ebe8" stroke-width="14"/>
+            <circle class="donut-seg delivered" cx="60" cy="60" r="46" fill="none" stroke="#27ae60" stroke-width="14"
+              stroke-dasharray="115 174" stroke-dashoffset="0" stroke-linecap="round"/>
+            <circle class="donut-seg transit" cx="60" cy="60" r="46" fill="none" stroke="var(--gold)" stroke-width="14"
+              stroke-dasharray="58 231" stroke-dashoffset="-115" stroke-linecap="round"/>
+            <circle class="donut-seg pending" cx="60" cy="60" r="46" fill="none" stroke="#e74c3c" stroke-width="14"
+              stroke-dasharray="29 260" stroke-dashoffset="-173" stroke-linecap="round"/>
+            <text x="60" y="56" text-anchor="middle" font-size="14" font-weight="700" fill="#333">143</text>
+            <text x="60" y="70" text-anchor="middle" font-size="7" fill="#999">Commandes</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="dl-item"><span class="dl-dot" style="background:#27ae60"></span> Livrées <strong>80%</strong></div>
+            <div class="dl-item"><span class="dl-dot" style="background:var(--gold)"></span> En route <strong>14%</strong></div>
+            <div class="dl-item"><span class="dl-dot" style="background:#e74c3c"></span> En attente <strong>6%</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders + Top Products -->
+    <div class="tables-row">
+      <!-- Recent Orders -->
+      <div class="table-card reveal" data-delay="1">
+        <div class="table-header">
+          <h3><i class="fas fa-clock-rotate-left"></i> Dernières commandes</h3>
+          <button class="btn-see-all" onclick="dashPage('orders', document.querySelector('[data-page=orders]'))">Voir tout</button>
+        </div>
+        <table class="dash-table">
+          <thead>
+            <tr><th>ID</th><th>Client</th><th>Produit</th><th>Montant</th><th>Statut</th></tr>
+          </thead>
+          <tbody id="recent-orders-tbody">
+            <!-- injected by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Top Products -->
+      <div class="table-card small reveal" data-delay="2">
+        <div class="table-header">
+          <h3><i class="fas fa-fire"></i> Top Produits</h3>
+        </div>
+        <div class="top-products" id="top-products-list">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-overview -->
+
+  <!-- ══════════════════════════════════
+       PAGE: ORDERS
+  ══════════════════════════════════ -->
+  <div class="dash-page" id="page-orders">
+    <div class="page-actions">
+      <div class="search-filter">
+        <div class="sf-search"><i class="fas fa-search"></i><input type="text" placeholder="Chercher une commande..." oninput="filterOrders(this.value)"></div>
+        <select class="sf-select" onchange="filterOrderStatus(this.value)">
+          <option value="">Tous les statuts</option>
+          <option value="Livrée">Livrée</option>
+          <option value="En transit">En transit</option>
+          <option value="En attente">En attente</option>
+          <option value="Annulée">Annulée</option>
+        </select>
+      </div>
+      <button class="btn-export" onclick="exportOrders()"><i class="fas fa-download"></i> Exporter</button>
+    </div>
+
+    <div class="table-card full-width">
+      <table class="dash-table full">
+        <thead>
+          <tr>
+            <th>ID Commande</th>
+            <th>Client</th>
+            <th>Produits</th>
+            <th>Wilaya</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="orders-tbody">
+          <!-- injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PAGE: PRODUCTS
+  ══════════════════════════════════ -->
+  <div class="dash-page" id="page-products">
+    <div class="page-actions">
+      <div class="search-filter">
+        <div class="sf-search"><i class="fas fa-search"></i><input type="text" placeholder="Chercher un produit..." oninput="filterProducts(this.value)"></div>
+        <select class="sf-select">
+          <option>Toutes catégories</option>
+          <option>Mode Femme</option>
+          <option>Mode Homme</option>
+          <option>Accessoires</option>
+        </select>
+      </div>
+      <button class="btn-add-product" onclick="openAddProduct()"><i class="fas fa-plus"></i> Ajouter un produit</button>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PAGE: ANALYTICS
+  ══════════════════════════════════ -->
+  <div class="dash-page" id="page-analytics">
+    <div class="analytics-kpis">
+      <div class="akpi-card">
+        <span>Taux de conversion</span>
+        <strong>3.8%</strong>
+        <div class="akpi-bar"><div class="akpi-fill" style="width:38%"></div></div>
+      </div>
+      <div class="akpi-card">
+        <span>Panier moyen</span>
+        <strong>4 800 DA</strong>
+        <div class="akpi-bar"><div class="akpi-fill" style="width:64%"></div></div>
+      </div>
+      <div class="akpi-card">
+        <span>Retours</span>
+        <strong>2.1%</strong>
+        <div class="akpi-bar"><div class="akpi-fill" style="width:21%; background:#e74c3c"></div></div>
+      </div>
+      <div class="akpi-card">
+        <span>Clients fidèles</span>
+        <strong>68%</strong>
+        <div class="akpi-bar"><div class="akpi-fill" style="width:68%; background:#27ae60"></div></div>
+      </div>
+    </div>
+
+    <!-- Wilaya map table -->
+    <div class="chart-card reveal">
+      <div class="chart-header"><div><h3>Ventes par Wilaya</h3><p>Top 8 régions</p></div></div>
+      <div class="wilaya-bars" id="wilaya-bars">
+        <!-- injected by JS -->
+      </div>
+    </div>
+
+    <!-- Monthly trend line -->
+    <div class="chart-card reveal" style="margin-top:20px">
+      <div class="chart-header"><div><h3>Évolution des ventes</h3><p>12 derniers mois</p></div></div>
+      <div class="line-chart-wrap">
+        <svg class="line-chart-svg" viewBox="0 0 600 180" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Grid lines -->
+          <line x1="40" y1="20" x2="40" y2="155" stroke="#f0e9e7" stroke-width="1"/>
+          <line x1="40" y1="155" x2="590" y2="155" stroke="#f0e9e7" stroke-width="1"/>
+          <!-- Area fill -->
+          <path id="area-path" fill="url(#lineGrad)"/>
+          <!-- Line -->
+          <path id="line-path" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Points -->
+          <g id="line-points"></g>
+          <!-- Labels -->
+          <g id="line-labels" font-size="8" fill="#aaa" text-anchor="middle"></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PAGE: CUSTOMERS
+  ══════════════════════════════════ -->
+  <div class="dash-page" id="page-customers">
+    <div class="table-card full-width">
+      <div class="table-header">
+        <h3><i class="fas fa-users"></i> Mes Clients</h3>
+        <div class="sf-search compact"><i class="fas fa-search"></i><input type="text" placeholder="Chercher..."></div>
+      </div>
+      <table class="dash-table full">
+        <thead>
+          <tr><th>Client</th><th>Email</th><th>Wilaya</th><th>Commandes</th><th>Total dépensé</th><th>Dernier achat</th><th>Statut</th></tr>
+        </thead>
+        <tbody id="customers-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PAGE: REVIEWS
+  ══════════════════════════════════ -->
+  <div class="dash-page" id="page-reviews">
+    <div class="reviews-summary">
+      <div class="rs-score">
+        <div class="rs-big">4.8</div>
+        <div class="rs-stars">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i>
+        </div>
+        <p>Sur 87 avis</p>
+      </div>
+      <div class="rs-bars">
+        <div class="rb-row"><span>5★</span><div class="rb-bar"><div class="rb-fill" style="width:72%"></div></div><span>72%</span></div>
+        <div class="rb-row"><span>4★</span><div class="rb-bar"><div class="rb-fill" style="width:18%"></div></div><span>18%</span></div>
+        <div class="rb-row"><span>3★</span><div class="rb-bar"><div class="rb-fill" style="width:6%"></div></div><span>6%</span></div>
+        <div class="rb-row"><span>2★</span><div class="rb-bar"><div class="rb-fill" style="width:3%"></div></div><span>3%</span></div>
+        <div class="rb-row"><span>1★</span><div class="rb-bar"><div class="rb-fill" style="width:1%; background:#e74c3c"></div></div><span>1%</span></div>
+      </div>
+    </div>
+    <div class="reviews-list" id="reviews-list"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PAGE: SETTINGS
+  ══════════════════════════════════ -->
+  <div class="dash-page" id="page-settings">
+    <div class="settings-grid">
+      <div class="settings-card">
+        <h3><i class="fas fa-store"></i> Mon Magasin</h3>
+        <div class="set-group"><label>Nom du magasin</label><input type="text" value="Mohamed Boutique"></div>
+        <div class="set-group"><label>Wilaya</label><select><option selected>Oran</option><option>Alger</option></select></div>
+        <div class="set-group"><label>Téléphone</label><input type="tel" value="+213 0555 123 456"></div>
+        <div class="set-group"><label>Description</label><textarea>Boutique spécialisée en mode algérienne moderne...</textarea></div>
+        <button class="btn-save" onclick="saveSettings()"><i class="fas fa-check"></i> Sauvegarder</button>
+      </div>
+      <div class="settings-card">
+        <h3><i class="fas fa-bell"></i> Notifications</h3>
+        <div class="toggle-row">
+          <div class="tr-info"><strong>Nouvelles commandes</strong><p>Recevoir un email pour chaque commande</p></div>
+          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="tr-info"><strong>Avis clients</strong><p>Être notifié des nouveaux avis</p></div>
+          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="tr-info"><strong>Stock faible</strong><p>Alerte quand < 5 unités</p></div>
+          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="tr-info"><strong>Rapports hebdo</strong><p>Résumé des performances</p></div>
+          <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+      <div class="settings-card">
+        <h3><i class="fas fa-lock"></i> Sécurité</h3>
+        <div class="set-group"><label>Email</label><input type="email" value="boutique@example.com"></div>
+        <div class="set-group"><label>Mot de passe actuel</label><input type="password" value="••••••••"></div>
+        <div class="set-group"><label>Nouveau mot de passe</label><input type="password" placeholder="Minimum 8 caractères"></div>
+        <button class="btn-save" onclick="saveSettings()"><i class="fas fa-check"></i> Mettre à jour</button>
+      </div>
+      <div class="settings-card">
+        <h3><i class="fas fa-credit-card"></i> Paiements</h3>
+        <div class="bank-info">
+          <div class="bi-row"><span>RIB</span><strong>007 00100 0001234567 89</strong></div>
+          <div class="bi-row"><span>Banque</span><strong>CPA — Agence Oran Centre</strong></div>
+          <div class="bi-row"><span>Virement min.</span><strong>5 000 DA</strong></div>
+        </div>
+        <button class="btn-save" style="margin-top:16px" onclick="saveSettings()"><i class="fas fa-plus"></i> Ajouter un compte</button>
+      </div>
+    </div>
+  </div>
+
+</main><!-- /dash-main -->
+
+<!-- ══════════════════════════════════
+     ADD PRODUCT MODAL
+══════════════════════════════════ -->
+<div class="modal-overlay" id="add-product-overlay">
+  <div class="modal-box large">
+    <button class="modal-close-btn" onclick="closeAddProduct()">✕</button>
+    <h2 class="modal-title"><i class="fas fa-box-open"></i> Ajouter un Produit</h2>
+    <div class="modal-form-grid">
+      <div class="mfg-col">
+        <div class="mf-group"><label>Nom du produit *</label><input type="text" id="np-name" placeholder="Ex: Robe d'été fleurie"></div>
+        <div class="mf-group"><label>Catégorie *</label>
+          <select id="np-cat">
+            <option value="">-- Sélectionner --</option>
+            <option>Mode Femme</option><option>Mode Homme</option>
+            <option>Accessoires</option><option>Chaussures</option>
+          </select>
+        </div>
+        <div class="mf-row2">
+          <div class="mf-group"><label>Prix (DA) *</label><input type="number" id="np-price" placeholder="0"></div>
+          <div class="mf-group"><label>Stock *</label><input type="number" id="np-stock" placeholder="0"></div>
+        </div>
+        <div class="mf-group"><label>Description</label><textarea id="np-desc" placeholder="Décrivez votre produit..."></textarea></div>
+      </div>
+      <div class="mfg-col">
+        <div class="mf-group"><label>Photos du produit</label>
+          <div class="upload-zone" onclick="document.getElementById('np-imgs').click()">
+            <i class="fas fa-cloud-arrow-up"></i>
+            <p>Glisser ou cliquer pour ajouter</p>
+            <small>JPG, PNG — max 5 photos</small>
+          </div>
+          <input type="file" id="np-imgs" multiple accept="image/*" style="display:none" onchange="previewImgs(this)">
+          <div class="img-previews" id="img-previews"></div>
+        </div>
+        <div class="mf-row2">
+          <div class="mf-group"><label>Tailles disponibles</label><input type="text" placeholder="S, M, L, XL"></div>
+          <div class="mf-group"><label>Couleurs</label><input type="text" placeholder="Rouge, Bleu..."></div>
+        </div>
+        <div class="mf-group">
+          <label>Statut</label>
+          <select id="np-status">
+            <option value="active">Actif (visible en boutique)</option>
+            <option value="draft">Brouillon</option>
+            <option value="sold_out">Rupture de stock</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddProduct()">Annuler</button>
+      <button class="btn-save-product" onclick="saveProduct()"><i class="fas fa-check"></i> Publier le produit</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="dash-toast"></div>
+
+<script src="dashboard.js"></script>
+<script src="luxury.js"></script>
+</body>
+</html>
