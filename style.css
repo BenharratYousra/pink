@@ -1,15 +1,12 @@
 
-/*
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
 
 /* ===== RESET & BASE ===== */
+
+
 * {
     margin: 0;
     padding: 0;
@@ -1364,3 +1361,81 @@ body {
         padding: 30px 20px;
     }
 }
+
+
+.genre-btn, .taille-btn, .note-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #ddd;
+    background: white;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #555;
+}
+.genre-btn.active, .taille-btn.active, .note-btn.active {
+    background: #451d18;
+    color: white;
+    border-color: #451d18;
+}
+.clr-btn {
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.clr-btn.active { border-color: #ffd700 !important; transform: scale(1.1); }
+.prix-quick {
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    font-size: 0.72rem;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.2s;
+}
+.prix-quick:hover { background: #451d18; color: white; border-color: #451d18; }
+
+/* Carte produit résultat */
+.rch-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+.rch-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(69,29,24,0.15);
+}
+.rch-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+.rch-card:hover img { transform: scale(1.05); }
+.rch-card-info { padding: 12px 14px; }
+.rch-card .store-nm { font-size: 0.68rem; color: #451d18; font-weight: 800; text-transform: uppercase; }
+.rch-card h4 { font-size: 0.88rem; color: #222; margin: 4px 0; font-weight: 600; line-height: 1.3; }
+.rch-card .stars { color: #f39c12; font-size: 0.72rem; margin-bottom: 8px; }
+.rch-card .prix-new { font-size: 1rem; font-weight: 800; color: #451d18; }
+.rch-card .prix-old { font-size: 0.78rem; color: #aaa; text-decoration: line-through; margin-left: 6px; }
+.rch-card .remise { background: #e74c3c; color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 10px; }
+.rch-tag { background: #f5ede9; color: #451d18; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+.rch-tag button { background: none; border: none; cursor: pointer; color: #451d18; font-size: 0.8rem; padding: 0; line-height: 1; }
+.pag-btn { padding: 8px 14px; border-radius: 8px; border: 1.5px solid #ddd; background: white; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+.pag-btn.active { background: #451d18; color: white; border-color: #451d18; }
+.pag-btn:hover:not(.active) { border-color: #451d18; color: #451d18; }
+
+@media (max-width: 768px) {
+    #filtres-panel { width: 100%; }
+    #recherche-page > div:last-child { flex-direction: column; }
+}
+

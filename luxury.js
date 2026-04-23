@@ -1,8 +1,3 @@
-/* ================================================================
-   LUXURY.JS — IKYO Premium Interactions Engine v2
-   Sans cursor · Scroll reveals · 3D Tilt · Parallax
-   Preloader · Counters · Particles · Magnetic · Transitions
-================================================================ */
 
 (function () {
   'use strict';
@@ -21,9 +16,7 @@
     });
   }
 
-  /* ══════════════════════════════════════════
-     2. SCROLL PROGRESS BAR
-  ══════════════════════════════════════════ */
+ 
   function initScrollProgress() {
     var bar = document.getElementById('scroll-progress');
     if (!bar) return;
@@ -34,9 +27,7 @@
     }, { passive: true });
   }
 
-  /* ══════════════════════════════════════════
-     3. NAVBAR SCROLL EFFECT
-  ══════════════════════════════════════════ */
+  
   function initNavbar() {
     var header = document.getElementById('header');
     if (!header) return;
@@ -46,9 +37,7 @@
     }, { passive: true });
   }
 
-  /* ══════════════════════════════════════════
-     4. SCROLL REVEAL
-  ══════════════════════════════════════════ */
+  
   function initScrollReveal() {
     var els = document.querySelectorAll('.reveal');
     if (!els.length) return;
@@ -92,9 +81,9 @@
     });
   }
 
-  /* ══════════════════════════════════════════
+  /* 
      6. 3D CARD TILT
-  ══════════════════════════════════════════ */
+   */
   function initTilt() {
     function applyTilt(cards) {
       cards.forEach(function (card) {

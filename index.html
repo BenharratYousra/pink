@@ -19,7 +19,8 @@
         <ul id="navbar">
             <li><a href="#" onclick="showPage('home',event)">Home</a></li>
             <li><a href="#" onclick="showPage('categories',event)">All Categories</a></li>
-            <li><a href="#" onclick="showPage('shop',event)">Shop</a></li>
+           <li><a href="#" onclick="showPage('shop',event)">Shop</a></li>
+
             <li><a href="#" onclick="showPage('support',event)">Support</a></li>
             <li><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
             <li><a href="login.html">Login</a></li>
@@ -85,6 +86,7 @@
             </div>
         </div>
     </section>
+    
 </div>
 
 <!--
@@ -324,7 +326,7 @@
         </div>
     </div>
 </div>
-
+<li><a href="#" onclick="showPage('recherche',event)" style="color:#ffd700;font-weight:800;">🔍 Recherche</a></li>
 <!-- PARTNER MODAL -->
 <div id="partner-overlay">
     <div class="p-modal" id="p-main-modal">
@@ -414,19 +416,217 @@
 <script src="cart.js"></script>
 <script src="luxury.js"></script>
 <script>
-(function(){
-    const u = JSON.parse(localStorage.getItem('ikyo_user') || 'null');
-    
-    // Si vendeur → rediriger vers dashboard
-    if (u && u.role === 'seller') {
-        window.location.href = 'dashboard.html';
-        return;
-    }
-    
-    // Si client → afficher son nom dans la navbar
-    const el = document.querySelector('#navbar a[href="login.html"]');
-    if (u && el) el.innerHTML = '<i class="fas fa-user-check"></i> ' + u.name;
-})();
+
 </script>
+
+<div id="recherche-page" style="display:none;">
+
+    <!-- Hero -->
+    <div style="background:#390505;color:white;padding:40px 20px;text-align:center;">
+        <h2 style="font-size:1.8rem;font-weight:800;letter-spacing:2px;margin-bottom:16px;">🔍 Recherche Avancée</h2>
+
+        <!-- Barre de recherche principale -->
+        <div style="max-width:600px;margin:0 auto;display:flex;gap:0;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+            <input type="text" id="rch-q" placeholder="Ex: tshirt homme, robe, adidas..."
+                style="flex:1;padding:16px 20px;border:none;outline:none;font-size:1rem;font-family:inherit;"
+                onkeydown="if(event.key==='Enter') lancerRecherche()">
+            <button onclick="lancerRecherche()"
+                style="background:#ffd700;color:#451d18;border:none;padding:16px 28px;font-size:1rem;font-weight:800;cursor:pointer;">
+                <i class="fas fa-search"></i> Chercher
+            </button>
+        </div>
+    </div>
+
+    <div style="max-width:1200px;margin:30px auto;padding:0 20px;display:flex;gap:24px;flex-wrap:wrap;">
+
+        <!-- ═══ FILTRES (colonne gauche) ═══ -->
+        <div style="width:240px;flex-shrink:0;" id="filtres-panel">
+
+            <div style="background:white;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.08);margin-bottom:16px;">
+                <h3 style="font-size:0.95rem;font-weight:800;color:#451d18;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-filter"></i> Filtres
+                    <button onclick="resetFiltres()" style="margin-left:auto;background:none;border:none;color:#aaa;font-size:0.75rem;cursor:pointer;font-weight:600;">Réinitialiser</button>
+                </h3>
+
+                <!-- Wilaya -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">📍 Wilaya</label>
+                    <select id="rch-wilaya" style="width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:0.85rem;outline:none;font-family:inherit;">
+                        <option value="">Toutes les wilayas</option>
+                        <option value="16">Alger</option>
+                        <option value="31">Oran</option>
+                        <option value="25">Constantine</option>
+                        <option value="23">Annaba</option>
+                        <option value="09">Blida</option>
+                        <option value="05">Batna</option>
+                        <option value="19">Sétif</option>
+                        <option value="15">Tizi Ouzou</option>
+                        <option value="06">Béjaïa</option>
+                        <option value="13">Tlemcen</option>
+                        <option value="27">Mostaganem</option>
+                        <option value="22">Sidi Bel Abbès</option>
+                        <option value="29">Mascara</option>
+                        <option value="26">Médéa</option>
+                        <option value="42">Tipaza</option>
+                        <option value="35">Boumerdès</option>
+                    </select>
+                </div>
+
+                <!-- Catégorie -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">📦 Catégorie</label>
+                    <select id="rch-categorie" style="width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:0.85rem;outline:none;font-family:inherit;">
+                        <option value="">Toutes</option>
+                        <option value="1">Mode Homme</option>
+                        <option value="2">Mode Femme</option>
+                        <option value="3">Enfants</option>
+                        <option value="4">Électronique</option>
+                        <option value="5">Maison & Jardin</option>
+                        <option value="6">Sport & Loisirs</option>
+                        <option value="7">Beauté & Santé</option>
+                        <option value="9">T-shirts Homme</option>
+                        <option value="10">Pantalons Homme</option>
+                        <option value="13">Robes</option>
+                    </select>
+                </div>
+
+                <!-- Genre -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">👤 Genre</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                        <button class="genre-btn active" onclick="setGenre('',this)">Tous</button>
+                        <button class="genre-btn" onclick="setGenre('homme',this)">Homme</button>
+                        <button class="genre-btn" onclick="setGenre('femme',this)">Femme</button>
+                        <button class="genre-btn" onclick="setGenre('enfant',this)">Enfant</button>
+                    </div>
+                </div>
+
+                <!-- Prix -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">💰 Prix (DA)</label>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <input type="number" id="rch-prix-min" placeholder="Min" min="0"
+                            style="width:50%;padding:8px 10px;border:1.5px solid #ddd;border-radius:8px;font-size:0.82rem;outline:none;">
+                        <span style="color:#aaa;font-size:0.8rem;">–</span>
+                        <input type="number" id="rch-prix-max" placeholder="Max" min="0"
+                            style="width:50%;padding:8px 10px;border:1.5px solid #ddd;border-radius:8px;font-size:0.82rem;outline:none;">
+                    </div>
+                    <!-- Suggestions prix rapides -->
+                    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">
+                        <button onclick="setPrix(0,2000)" class="prix-quick">-2000</button>
+                        <button onclick="setPrix(2000,5000)" class="prix-quick">2k-5k</button>
+                        <button onclick="setPrix(5000,15000)" class="prix-quick">5k-15k</button>
+                        <button onclick="setPrix(15000,0)" class="prix-quick">+15k</button>
+                    </div>
+                </div>
+
+                <!-- Couleur -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">🎨 Couleur</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;" id="couleur-btns">
+                        <button class="clr-btn" onclick="setCouleur('',this)" data-clr="" style="background:#f0f0f0;color:#333;">Toutes</button>
+                        <button class="clr-btn" onclick="setCouleur('noir',this)" data-clr="noir" style="background:#222;color:white;">Noir</button>
+                        <button class="clr-btn" onclick="setCouleur('blanc',this)" data-clr="blanc" style="background:#fff;color:#333;border:2px solid #ddd;">Blanc</button>
+                        <button class="clr-btn" onclick="setCouleur('rouge',this)" data-clr="rouge" style="background:#e74c3c;color:white;">Rouge</button>
+                        <button class="clr-btn" onclick="setCouleur('bleu',this)" data-clr="bleu" style="background:#3498db;color:white;">Bleu</button>
+                        <button class="clr-btn" onclick="setCouleur('vert',this)" data-clr="vert" style="background:#27ae60;color:white;">Vert</button>
+                        <button class="clr-btn" onclick="setCouleur('gris',this)" data-clr="gris" style="background:#95a5a6;color:white;">Gris</button>
+                        <button class="clr-btn" onclick="setCouleur('rose',this)" data-clr="rose" style="background:#e91e8c;color:white;">Rose</button>
+                        <button class="clr-btn" onclick="setCouleur('jaune',this)" data-clr="jaune" style="background:#f1c40f;color:#333;">Jaune</button>
+                    </div>
+                </div>
+
+                <!-- Taille -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">📐 Taille</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                        <button class="taille-btn active" onclick="setTaille('',this)">Toutes</button>
+                        <button class="taille-btn" onclick="setTaille('XS',this)">XS</button>
+                        <button class="taille-btn" onclick="setTaille('S',this)">S</button>
+                        <button class="taille-btn" onclick="setTaille('M',this)">M</button>
+                        <button class="taille-btn" onclick="setTaille('L',this)">L</button>
+                        <button class="taille-btn" onclick="setTaille('XL',this)">XL</button>
+                        <button class="taille-btn" onclick="setTaille('XXL',this)">XXL</button>
+                        <button class="taille-btn" onclick="setTaille('38',this)">38</button>
+                        <button class="taille-btn" onclick="setTaille('40',this)">40</button>
+                        <button class="taille-btn" onclick="setTaille('42',this)">42</button>
+                        <button class="taille-btn" onclick="setTaille('44',this)">44</button>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">⚡ Options</label>
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:8px;font-size:0.85rem;">
+                        <input type="checkbox" id="rch-promo"> Promotions seulement
+                    </label>
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;">
+                        <input type="checkbox" id="rch-stock"> En stock seulement
+                    </label>
+                </div>
+
+                <!-- Note minimum -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">⭐ Note minimum</label>
+                    <div style="display:flex;gap:6px;">
+                        <button class="note-btn active" onclick="setNote(0,this)">Toutes</button>
+                        <button class="note-btn" onclick="setNote(3,this)">3+</button>
+                        <button class="note-btn" onclick="setNote(4,this)">4+</button>
+                        <button class="note-btn" onclick="setNote(5,this)">5★</button>
+                    </div>
+                </div>
+
+                <button onclick="lancerRecherche()" style="width:100%;background:#451d18;color:white;border:none;padding:13px;border-radius:8px;font-size:0.9rem;font-weight:800;cursor:pointer;letter-spacing:0.5px;">
+                    <i class="fas fa-search"></i> Appliquer les filtres
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══ RÉSULTATS (colonne droite) ═══ -->
+        <div style="flex:1;min-width:0;">
+
+            <!-- Barre résultats + tri -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+                <div>
+                    <span id="rch-count" style="font-size:0.9rem;color:#555;font-weight:600;"></span>
+                    <div id="rch-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"></div>
+                </div>
+                <select id="rch-tri" onchange="lancerRecherche()" style="padding:8px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:0.85rem;outline:none;font-family:inherit;">
+                    <option value="pertinence">Pertinence</option>
+                    <option value="prix_asc">Prix croissant</option>
+                    <option value="prix_desc">Prix décroissant</option>
+                    <option value="note">Mieux notés</option>
+                    <option value="nouveau">Plus récents</option>
+                    <option value="ventes">Plus vendus</option>
+                </select>
+            </div>
+
+            <!-- Loading -->
+            <div id="rch-loading" style="display:none;text-align:center;padding:60px 20px;">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#451d18;"></i>
+                <p style="margin-top:12px;color:#888;">Recherche en cours...</p>
+            </div>
+
+            <!-- Vide -->
+            <div id="rch-vide" style="display:none;text-align:center;padding:60px 20px;background:white;border-radius:12px;">
+                <i class="fas fa-search" style="font-size:3rem;color:#ddd;"></i>
+                <h3 style="color:#888;margin-top:16px;font-size:1.1rem;">Aucun résultat trouvé</h3>
+                <p style="color:#aaa;margin-top:8px;font-size:0.85rem;">Essayez d'autres mots-clés ou élargissez vos filtres</p>
+                <button onclick="resetFiltres()" style="margin-top:16px;background:#451d18;color:white;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:700;">
+                    Réinitialiser les filtres
+                </button>
+            </div>
+
+            <!-- Grille produits -->
+            <div id="rch-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;"></div>
+
+            <!-- Pagination -->
+            <div id="rch-pagination" style="display:flex;justify-content:center;gap:8px;margin-top:30px;flex-wrap:wrap;"></div>
+        </div>
+    </div>
+</div>
+
+
+
 </body>
 </html>
