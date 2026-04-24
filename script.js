@@ -203,8 +203,7 @@ function resetFiltres() {
     document.getElementById('rch-vide').style.display = 'none';
     document.getElementById('rch-pagination').innerHTML = '';
 }
-
-/* ── Lancer la recherche ── */
+  
 async function lancerRecherche(page) {
     if (page) rchPage = page;
     else rchPage = 1;
@@ -218,6 +217,50 @@ async function lancerRecherche(page) {
     const stock     = document.getElementById('rch-stock').checked;
     const tri       = document.getElementById('rch-tri').value;
 
+    let url = 'api/recherche.php?page=' + rchPage;
+
+    if (q)         url += '&q=' + encodeURIComponent(q);
+    if (wilaya)    url += '&wilaya=' + wilaya;
+    if (categorie) url += '&categorie=' + categorie;
+    if (prixMin)   url += '&prix_min=' + prixMin;
+    if (prixMax)   url += '&prix_max=' + prixMax;
+    if (rchGenre)  url += '&genre=' + rchGenre;
+    if (rchCouleur)url += '&couleur=' + encodeURIComponent(rchCouleur);
+    if (rchTaille) url += '&taille=' + rchTaille;
+    if (rchNote)   url += '&note_min=' + rchNote;
+    if (promo)     url += '&promo=1';
+    if (stock)     url += '&stock=1';
+
+    url += '&tri=' + tri;
+
+    document.getElementById('rch-loading').style.display = 'block';
+    document.getElementById('rch-grid').innerHTML = '';
+
+    try {
+        const res  = await fetch(url);
+        const data = await res.json();
+
+        document.getElementById('rch-loading').style.display = 'none';
+
+       
+        if (!data.success || data.data.produits.length === 0) {
+            document.getElementById('rch-vide').style.display = 'block';
+            document.getElementById('rch-count').textContent = '0 résultat';
+            return;
+        }
+
+        document.getElementById('rch-count').textContent =
+            data.data.pagination.total + ' résultat(s)';
+
+        afficherProduits(data.data.produits);
+        afficherPagination(data.data.pagination);
+
+    } catch (e) {
+        console.error(e);
+        document.getElementById('rch-loading').style.display = 'none';
+        alert("Erreur serveur ❌");
+    }
+}
     /* Construire URL */
     let url = 'api/recherche.php?page=' + rchPage;
     if (q)         url += '&q='         + encodeURIComponent(q);
@@ -264,7 +307,7 @@ async function lancerRecherche(page) {
         document.getElementById('rch-loading').style.display = 'none';
         document.getElementById('rch-count').textContent = '⚠ Erreur serveur — vérifiez XAMPP';
     }
-}
+
 
 /* ── Afficher les produits ── */
 function afficherProduits(produits) {
@@ -368,6 +411,7 @@ async function toggleFavoriRch(produitId) {
 }
 
 /* ── Lancer recherche automatiquement quand on ouvre la page ── */
+
 document.addEventListener('DOMContentLoaded', function() {
-    /* Si l'utilisateur clique sur Recherche dans le menu */
+    lancerRecherche();
 });

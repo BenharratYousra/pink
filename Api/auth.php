@@ -129,6 +129,22 @@ switch ($action) {
         $stmt = $db->prepare("INSERT INTO vendeurs (prenom, nom, nom_magasin, email, telephone, mot_de_passe, wilaya_id, statut) VALUES (?,?,?,?,?,?,?,'en_attente')");
         $stmt->execute([$prenom, $nom, $magasin, $email, $tel, $hash, $wilayaId ?: null]);
 
+        // ── Notifications email ─────────────────────────────
+        $vendeurData = [
+            'prenom'      => $prenom,
+            'nom'         => $nom,
+            'nom_magasin' => $magasin,
+            'email'       => $email,
+            'telephone'   => $tel,
+            'wilaya'      => $data['wilaya'] ?? ''
+        ];
+        $emailFile = dirname(__DIR__) . '/config/email.php';
+        if (file_exists($emailFile)) {
+            require_once $emailFile;
+            emailNotifAdmin($vendeurData);
+            emailAccuseReception($vendeurData);
+        }
+
         jsonResponse(true, 'Demande envoyée ! Vous serez contacté après vérification sous 24h.', []);
         break;
 
