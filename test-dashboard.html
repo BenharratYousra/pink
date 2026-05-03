@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><title>IKYO Dashboard</title></head>
+<body>
+<h1>Dashboard Vendeur</h1>
+<div id="content">Chargement...</div>
+<script>
+const vendeur = localStorage.getItem('vendeur');
+if(vendeur) {
+    const v = JSON.parse(vendeur);
+    document.getElementById('content').innerHTML = `
+        <p>Bienvenue ${v.nom_magasin} !</p>
+        <p>Email: ${v.email}</p>
+        <p>ID: ${v.id}</p>
+        <button onclick="logout()">Se déconnecter</button>
+    `;
+} else {
+    document.getElementById('content').innerHTML = `
+        <p style="color:red">Non connecté</p>
+        <a href="login.html">Se connecter</a>
+    `;
+}
+function logout() {
+    localStorage.removeItem('vendeur');
+    localStorage.removeItem('vendeur_id');
+    location.href = 'login.html';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IKYO Dashboard</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        .header { background: #451d18; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        button { background: #451d18; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-card .value { font-size: 24px; font-weight: bold; color: #451d18; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #451d18; color: white; }
+        .nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .nav-btn { background: #ddd; color: #333; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .nav-btn.active { background: #451d18; color: white; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .delete-btn { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); justify-content: center; align-items: center;
+        }
+        .modal-content { background: white; padding: 20px; border-radius: 10px; width: 500px; }
+        input, select, textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; }
+        .status { padding: 3px 8px; border-radius: 3px; font-size: 12px; }
+        .status.livree { background: #27ae60; color: white; }
+        .status.en_attente { background: #f39c12; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>👗 fashion ikram - Dashboard</h2>
+        <button onclick="logout()">🚪 Déconnexion</button>
+    </div>
+
+    <div class="nav">
+        <button class="nav-btn active" onclick="showPage('stats')">📊 Stats</button>
+        <button class="nav-btn" onclick="showPage('products')">📦 Produits</button>
+        <button class="nav-btn" onclick="showPage('orders')">🛒 Commandes</button>
+    </div>
+
+    <!-- Page Stats -->
+    <div id="stats-page" class="page active">
+        <div class="stats">
+            <div class="stat-card"><h3>💰 Revenus</h3><div class="value" id="revenus">0 DA</div></div>
+            <div class="stat-card"><h3>📦 Commandes</h3><div class="value" id="commandes">0</div></div>
+            <div class="stat-card"><h3>🏷️ Produits</h3><div class="value" id="produits">4</div></div>
+            <div class="stat-card"><h3>⭐ Note</h3><div class="value" id="note">0.0</div></div>
+        </div>
+        <h3>📋 Dernières commandes</h3>
+        <table><thead><tr><th>N°</th><th>Client</th><th>Total</th><th>Statut</th></tr></thead><tbody id="recent-orders"></tbody></table>
+    </div>
+
+    <!-- Page Produits -->
+    <div id="products-page" class="page">
+        <button onclick="openModal()">➕ Ajouter un produit</button>
+        <table><thead><tr><th>Nom</th><th>Prix</th><th>Stock</th><th>Action</th></tr></thead><tbody id="products-list"></tbody></table>
+    </div>
+
+    <!-- Page Commandes -->
+    <div id="orders-page" class="page">
+        <table><thead><tr><th>N°</th><th>Client</th><th>Total</th><th>Statut</th><th>Action</th></tr></thead><tbody id="orders-list"></tbody></table>
+    </div>
+</div>
+
+<!-- Modal Ajout Produit -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <h3>Ajouter un produit</h3>
+        <input type="text" id="nom" placeholder="Nom du produit">
+        <textarea id="description" placeholder="Description"></textarea>
+        <input type="number" id="prix" placeholder="Prix (DA)">
+        <input type="number" id="stock" placeholder="Stock">
+        <select id="categorie"><option value="2">Mode Femme</option><option value="1">Mode Homme</option></select>
+        <button onclick="saveProduct()">💾 Enregistrer</button>
+        <button onclick="closeModal()">❌ Annuler</button>
+    </div>
+</div>
+
+<script>
+const API_URL = 'http://localhost/ikyo/api/';
+
+function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(page + '-page').classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    if(page === 'stats') { loadStats(); loadRecentOrders(); }
+    if(page === 'products') loadProducts();
+    if(page === 'orders') loadOrders();
+}
+
+async function loadStats() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=stats');
+        const data = await res.json();
+        if(data.success) {
+            document.getElementById('revenus').innerText = (data.revenus || 0).toLocaleString() + ' DA';
+            document.getElementById('commandes').innerText = data.nb_commandes || 0;
+            document.getElementById('produits').innerText = data.nb_produits || 0;
+            document.getElementById('note').innerText = (data.note_moyenne || 0).toFixed(1);
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function loadRecentOrders() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=commandes&limite=5');
+        const data = await res.json();
+        if(data.success && data.commandes) {
+            document.getElementById('recent-orders').innerHTML = data.commandes.map(c => `
+                <tr><td>${c.numero_commande}</td><td>${c.client_nom}</td><td>${c.total_final?.toLocaleString()} DA</td><td><span class="status ${c.statut}">${c.statut}</span></td></tr>
+            `).join('');
+        } else {
+            document.getElementById('recent-orders').innerHTML = '<tr><td colspan="4">Aucune commande</td></tr>';
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function loadProducts() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=produits');
+        const data = await res.json();
+        if(data.success && data.produits) {
+            document.getElementById('products-list').innerHTML = data.produits.map(p => `
+                <tr><td>${p.nom}</td><td>${p.prix?.toLocaleString()} DA</td><td>${p.stock}</td><td><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️ Supprimer</button></td></tr>
+            `).join('');
+        } else {
+            document.getElementById('products-list').innerHTML = '<tr><td colspan="4">Aucun produit</td></tr>';
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function deleteProduct(id) {
+    if(!confirm('Supprimer ce produit ?')) return;
+    try {
+        await fetch(API_URL + 'dashboard.php?action=supprimer_produit', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ produit_id: id })
+        });
+        loadProducts();
+        loadStats();
+    } catch(e) { console.error(e); }
+}
+
+async function loadOrders() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=commandes');
+        const data = await res.json();
+        if(data.success && data.commandes && data.commandes.length > 0) {
+            document.getElementById('orders-list').innerHTML = data.commandes.map(c => `
+                <tr>
+                    <td>${c.numero_commande}</td>
+                    <td>${c.client_nom}</td>
+                    <td>${c.total_final?.toLocaleString()} DA</td>
+                    <td><span class="status ${c.statut}">${c.statut}</span></td>
+                    <td><select onchange="updateStatus(${c.id}, this.value)">
+                        <option value="en_attente" ${c.statut=='en_attente'?'selected':''}>En attente</option>
+                        <option value="confirmee" ${c.statut=='confirmee'?'selected':''}>Confirmée</option>
+                        <option value="livree" ${c.statut=='livree'?'selected':''}>Livrée</option>
+                        <option value="annulee" ${c.statut=='annulee'?'selected':''}>Annulée</option>
+                    </select></td>
+                </tr>
+            `).join('');
+        } else {
+            document.getElementById('orders-list').innerHTML = '<tr><td colspan="5">Aucune commande</td></tr>';
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function updateStatus(orderId, status) {
+    try {
+        await fetch(API_URL + 'dashboard.php?action=changer_statut', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ commande_id: orderId, statut: status })
+        });
+        loadOrders();
+    } catch(e) { console.error(e); }
+}
+
+function openModal() {
+    document.getElementById('productModal').style.display = 'flex';
+}
+function closeModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
+
+async function saveProduct() {
+    const data = {
+        nom: document.getElementById('nom').value,
+        description: document.getElementById('description').value,
+        prix: parseFloat(document.getElementById('prix').value),
+        stock: parseInt(document.getElementById('stock').value),
+        categorie_id: parseInt(document.getElementById('categorie').value)
+    };
+    if(!data.nom || !data.prix) { alert('Nom et prix requis'); return; }
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=ajouter_produit', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if(result.success) {
+            closeModal();
+            loadProducts();
+            loadStats();
+            document.getElementById('nom').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('prix').value = '';
+            document.getElementById('stock').value = '';
+            alert('✅ Produit ajouté !');
+        } else {
+            alert('Erreur: ' + result.message);
+        }
+    } catch(e) {
+        alert('Erreur serveur');
+        console.error(e);
+    }
+}
+
+function logout() {
+    localStorage.removeItem('vendeur');
+    localStorage.removeItem('vendeur_id');
+    window.location.href = 'login.html';
+}
+
+// Initialisation
+const vendeur = localStorage.getItem('vendeur');
+if(!vendeur) {
+    window.location.href = 'login.html';
+} else {
+    const v = JSON.parse(vendeur);
+    document.querySelector('.header h2').innerHTML = `👗 ${v.nom_magasin} - Dashboard`;
+    loadStats();
+    loadRecentOrders();
+    loadProducts();
+    loadOrders();
+}
+</script>
+</body>
+</html>

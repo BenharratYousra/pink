@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test API</title></head>
+<body>
+<h2>Test connexion API</h2>
+<div id="result">Test en cours...</div>
+
+<script>
+async function test() {
+    const formData = new FormData();
+    formData.append('email', 'boutique@gmail.com');
+    formData.append('mot_de_passe', 'ikramzenatiziani');
+    
+    try {
+        const res = await fetch('api/auth.php?action=vendeur_login', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        document.getElementById('result').innerHTML = 
+            '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        
+        if(data.success) {
+            document.getElementById('result').innerHTML += '<br><span style="color:green">✅ Succès ! localStorage va être rempli.</span>';
+            localStorage.setItem('vendeur', JSON.stringify(data.vendeur));
+            localStorage.setItem('vendeur_id', data.vendeur.id);
+        } else {
+            document.getElementById('result').innerHTML += '<br><span style="color:red">❌ ' + data.message + '</span>';
+        }
+    } catch(e) {
+        document.getElementById('result').innerHTML = '<span style="color:red">Erreur: ' + e.message + '</span>';
+    }
+}
+
+test();
+</script>
+</body>
+</html>

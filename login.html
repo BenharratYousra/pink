@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IKYO – Connexion</title>
+    <title>IKYO – Connexion & Inscription</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="login.css">
@@ -11,148 +11,87 @@
 </head>
 <body>
 
-
 <a href="index.html" class="back-home">
     <i class="fas fa-arrow-left"></i> Retour à l'accueil
 </a>
 
-
 <div class="page-wrapper">
-
+    <!-- Hero Panel -->
     <div class="hero-panel">
         <div class="hero-inner">
             <div class="logo-mark">IKYO</div>
             <p class="hero-tagline">La marketplace algérienne<br>de confiance</p>
-
-            <!-- Toggle pills -->
             <div class="role-toggle">
-                <button class="role-pill active" id="pill-client" onclick="switchRole('client')">
-                    <i class="fas fa-user"></i> Client
-                </button>
-                <button class="role-pill" id="pill-seller" onclick="switchRole('seller')">
-                    <i class="fas fa-store"></i> Vendeur
-                </button>
+                <button class="role-pill active" id="pill-client" onclick="switchRole('client')"><i class="fas fa-user"></i> Client</button>
+                <button class="role-pill" id="pill-seller" onclick="switchRole('seller')"><i class="fas fa-store"></i> Vendeur</button>
             </div>
-
             <div class="hero-stats">
                 <div class="h-stat"><strong>50+</strong><span>Magasins</span></div>
                 <div class="h-stat"><strong>98%</strong><span>Satisfaction</span></div>
                 <div class="h-stat"><strong>58</strong><span>Wilayas</span></div>
             </div>
         </div>
-
-        <!-- Decorative shapes -->
         <div class="deco-circle c1"></div>
         <div class="deco-circle c2"></div>
         <div class="deco-circle c3"></div>
     </div>
 
-
-   
+    <!-- Form Panel -->
     <div class="form-panel">
 
-        <!-- ─── CLIENT FORM ─── -->
+        <!-- CLIENT FORM -->
         <div class="form-card" id="form-client">
             <div class="form-header">
                 <div class="form-icon client-icon"><i class="fas fa-user"></i></div>
                 <h2>Espace Client</h2>
-                <p>Connectez-vous pour accéder à vos commandes</p>
+                <p>Connectez-vous ou créez votre compte</p>
             </div>
-
-        
             <div class="tab-row">
                 <button class="tab active" id="ctab-login" onclick="switchTab('client','login')">Connexion</button>
                 <button class="tab" id="ctab-register" onclick="switchTab('client','register')">Inscription</button>
             </div>
 
-            <!-- LOGIN -->
+            <!-- CLIENT LOGIN -->
             <div id="client-login">
                 <div class="input-group">
                     <label><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="cl-email" placeholder="votre@email.com" autocomplete="email">
+                    <input type="email" id="cl-email" placeholder="votre@email.com">
                     <span class="field-err" id="cl-email-err"></span>
                 </div>
                 <div class="input-group">
                     <label><i class="fas fa-lock"></i> Mot de passe</label>
                     <div class="pw-wrap">
-                        <input type="password" id="cl-pw" placeholder="••••••••" autocomplete="current-password">
-                        <button class="eye-btn" onclick="togglePw('cl-pw',this)" tabindex="-1">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                        <input type="password" id="cl-pw" placeholder="••••••••">
+                        <button class="eye-btn" onclick="togglePw('cl-pw',this)"><i class="fas fa-eye"></i></button>
                     </div>
                     <span class="field-err" id="cl-pw-err"></span>
                 </div>
-                <div class="forgot-row">
-                    <a href="#" onclick="showForgot(event)">Mot de passe oublié ?</a>
-                </div>
-                <button class="btn-submit" onclick="clientLogin()">
-                    <span>Se connecter</span><i class="fas fa-arrow-right"></i>
-                </button>
-                <div class="divider"><span>ou continuer avec</span></div>
-                <div class="social-row">
-                    <button class="social-btn" onclick="socialLogin('Google')"><i class="fab fa-google"></i> Google</button>
-                    <button class="social-btn" onclick="socialLogin('Facebook')"><i class="fab fa-facebook-f"></i> Facebook</button>
-                </div>
+                <div class="forgot-row"><a href="#" onclick="showForgot(event)">Mot de passe oublié ?</a></div>
+                <button class="btn-submit" onclick="clientLogin()"><span>Se connecter</span><i class="fas fa-arrow-right"></i></button>
             </div>
 
-            <!-- REGISTER -->
+            <!-- CLIENT REGISTER -->
             <div id="client-register" style="display:none">
                 <div class="two-col">
-                    <div class="input-group">
-                        <label>Prénom</label>
-                        <input type="text" id="cr-prenom" placeholder="Prénom">
-                        <span class="field-err" id="cr-prenom-err"></span>
-                    </div>
-                    <div class="input-group">
-                        <label>Nom</label>
-                        <input type="text" id="cr-nom" placeholder="Nom">
-                        <span class="field-err" id="cr-nom-err"></span>
-                    </div>
+                    <div class="input-group"><label>Prénom</label><input type="text" id="cr-prenom"><span class="field-err" id="cr-prenom-err"></span></div>
+                    <div class="input-group"><label>Nom</label><input type="text" id="cr-nom"><span class="field-err" id="cr-nom-err"></span></div>
                 </div>
-                <div class="input-group">
-                    <label><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="cr-email" placeholder="votre@email.com">
-                    <span class="field-err" id="cr-email-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-phone"></i> Téléphone</label>
-                    <input type="tel" id="cr-tel" placeholder="+213 0XX XX XX XX">
-                    <span class="field-err" id="cr-tel-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Mot de passe</label>
-                    <div class="pw-wrap">
-                        <input type="password" id="cr-pw" placeholder="Minimum 6 caractères">
-                        <button class="eye-btn" onclick="togglePw('cr-pw',this)" tabindex="-1"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <span class="field-err" id="cr-pw-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Confirmer</label>
-                    <div class="pw-wrap">
-                        <input type="password" id="cr-pw2" placeholder="Répétez le mot de passe">
-                        <button class="eye-btn" onclick="togglePw('cr-pw2',this)" tabindex="-1"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <span class="field-err" id="cr-pw2-err"></span>
-                </div>
-                <label class="checkbox-row">
-                    <input type="checkbox" id="cr-terms">
-                    <span>J'accepte les <a href="#">conditions d'utilisation</a></span>
-                </label>
-                <button class="btn-submit" onclick="clientRegister()">
-                    <span>Créer mon compte</span><i class="fas fa-arrow-right"></i>
-                </button>
+                <div class="input-group"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="cr-email"><span class="field-err" id="cr-email-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-phone"></i> Téléphone</label><input type="tel" id="cr-tel"><span class="field-err" id="cr-tel-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-lock"></i> Mot de passe</label><div class="pw-wrap"><input type="password" id="cr-pw"><button class="eye-btn" onclick="togglePw('cr-pw',this)"><i class="fas fa-eye"></i></button></div><span class="field-err" id="cr-pw-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-lock"></i> Confirmer</label><div class="pw-wrap"><input type="password" id="cr-pw2"><button class="eye-btn" onclick="togglePw('cr-pw2',this)"><i class="fas fa-eye"></i></button></div><span class="field-err" id="cr-pw2-err"></span></div>
+                <label class="checkbox-row"><input type="checkbox" id="cr-terms"><span>J'accepte les <a href="#">conditions</a></span></label>
+                <button class="btn-submit" onclick="clientRegister()"><span>Créer mon compte</span><i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
 
-        <!-- ─── SELLER FORM ─── -->
+        <!-- SELLER FORM -->
         <div class="form-card seller-card" id="form-seller" style="display:none">
             <div class="form-header">
                 <div class="form-icon seller-icon"><i class="fas fa-store"></i></div>
                 <h2>Espace Vendeur</h2>
-                <p>Gérez votre boutique et vos commandes</p>
+                <p>Gérez votre boutique</p>
             </div>
-
             <div class="tab-row">
                 <button class="tab active seller-tab" id="stab-login" onclick="switchTab('seller','login')">Connexion</button>
                 <button class="tab seller-tab" id="stab-register" onclick="switchTab('seller','register')">Devenir vendeur</button>
@@ -160,112 +99,43 @@
 
             <!-- SELLER LOGIN -->
             <div id="seller-login">
-                <div class="seller-badge">
-                    <i class="fas fa-circle-check"></i> Réservé aux magasins partenaires vérifiés
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-envelope"></i> Email professionnel</label>
-                    <input type="email" id="sl-email" placeholder="boutique@email.com">
-                    <span class="field-err" id="sl-email-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Mot de passe</label>
-                    <div class="pw-wrap">
-                        <input type="password" id="sl-pw" placeholder="••••••••">
-                        <button class="eye-btn" onclick="togglePw('sl-pw',this)" tabindex="-1"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <span class="field-err" id="sl-pw-err"></span>
-                </div>
-                <div class="forgot-row">
-                    <a href="#" onclick="showForgot(event)">Mot de passe oublié ?</a>
-                </div>
-                <button class="btn-submit seller-submit" onclick="sellerLogin()">
-                    <span>Accéder au tableau de bord</span><i class="fas fa-arrow-right"></i>
-                </button>
-                <div class="seller-help">
-                    <i class="fas fa-circle-info"></i>
-                    Pas encore partenaire ? <a href="index.html">Faites une demande ici</a>
-                </div>
+                <div class="seller-badge"><i class="fas fa-circle-check"></i> Réservé aux magasins partenaires</div>
+                <div class="input-group"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="sl-email"><span class="field-err" id="sl-email-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-lock"></i> Mot de passe</label><div class="pw-wrap"><input type="password" id="sl-pw"><button class="eye-btn" onclick="togglePw('sl-pw',this)"><i class="fas fa-eye"></i></button></div><span class="field-err" id="sl-pw-err"></span></div>
+                <div class="forgot-row"><a href="#" onclick="showForgot(event)">Mot de passe oublié ?</a></div>
+                <button class="btn-submit seller-submit" onclick="sellerLogin()"><span>Accéder au tableau de bord</span><i class="fas fa-arrow-right"></i></button>
             </div>
 
             <!-- SELLER REGISTER -->
             <div id="seller-register" style="display:none">
-                <div class="seller-badge">
-                    <i class="fas fa-rocket"></i> Rejoignez +50 magasins sur IKYO
-                </div>
+                <div class="seller-badge"><i class="fas fa-rocket"></i> Rejoignez IKYO</div>
                 <div class="two-col">
-                    <div class="input-group">
-                        <label>Prénom</label>
-                        <input type="text" id="sr-prenom" placeholder="Prénom">
-                        <span class="field-err" id="sr-prenom-err"></span>
-                    </div>
-                    <div class="input-group">
-                        <label>Nom</label>
-                        <input type="text" id="sr-nom" placeholder="Nom">
-                        <span class="field-err" id="sr-nom-err"></span>
-                    </div>
+                    <div class="input-group"><label>Prénom</label><input type="text" id="sr-prenom"><span class="field-err" id="sr-prenom-err"></span></div>
+                    <div class="input-group"><label>Nom</label><input type="text" id="sr-nom"><span class="field-err" id="sr-nom-err"></span></div>
                 </div>
-                <div class="input-group">
-                    <label><i class="fas fa-store"></i> Nom du magasin</label>
-                    <input type="text" id="sr-shop" placeholder="Ex: Fashion Store Oran">
-                    <span class="field-err" id="sr-shop-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-envelope"></i> Email professionnel</label>
-                    <input type="email" id="sr-email" placeholder="boutique@email.com">
-                    <span class="field-err" id="sr-email-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-phone"></i> Téléphone</label>
-                    <input type="tel" id="sr-tel" placeholder="+213 0XX XX XX XX">
-                    <span class="field-err" id="sr-tel-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-map-marker-alt"></i> Wilaya</label>
-                    <select id="sr-wilaya">
-                        <option value="">-- Sélectionnez --</option>
-                        <option>Alger</option><option>Oran</option><option>Constantine</option>
-                        <option>Annaba</option><option>Blida</option><option>Batna</option>
-                        <option>Sétif</option><option>Tizi Ouzou</option><option>Béjaïa</option>
-                        <option>Tlemcen</option><option>Mostaganem</option><option>Autres</option>
-                    </select>
-                    <span class="field-err" id="sr-wilaya-err"></span>
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Mot de passe</label>
-                    <div class="pw-wrap">
-                        <input type="password" id="sr-pw" placeholder="Minimum 6 caractères">
-                        <button class="eye-btn" onclick="togglePw('sr-pw',this)" tabindex="-1"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <span class="field-err" id="sr-pw-err"></span>
-                </div>
-                <button class="btn-submit seller-submit" onclick="sellerRegister()">
-                    <span>Envoyer </span><i class="fas fa-paper-plane"></i>
-                </button>
-               
+                <div class="input-group"><label><i class="fas fa-store"></i> Nom du magasin</label><input type="text" id="sr-shop"><span class="field-err" id="sr-shop-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="sr-email"><span class="field-err" id="sr-email-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-phone"></i> Téléphone</label><input type="tel" id="sr-tel"><span class="field-err" id="sr-tel-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-map-marker-alt"></i> Wilaya</label><select id="sr-wilaya"><option value="">Sélectionnez</option><option>Alger</option><option>Oran</option><option>Constantine</option></select><span class="field-err" id="sr-wilaya-err"></span></div>
+                <div class="input-group"><label><i class="fas fa-lock"></i> Mot de passe</label><div class="pw-wrap"><input type="password" id="sr-pw"><button class="eye-btn" onclick="togglePw('sr-pw',this)"><i class="fas fa-eye"></i></button></div><span class="field-err" id="sr-pw-err"></span></div>
+                <button class="btn-submit seller-submit" onclick="sellerRegister()"><span>Envoyer</span><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
+    </div>
+</div>
 
-    </div><!-- /form-panel -->
-</div><!-- /page-wrapper -->
-
-<!-- ── FORGOT PASSWORD MODAL ── -->
+<!-- Forgot Password Modal -->
 <div class="modal-overlay" id="forgot-overlay">
     <div class="modal-box">
         <button class="modal-close" onclick="closeForgot()">✕</button>
         <div class="modal-icon"><i class="fas fa-key"></i></div>
         <h3>Réinitialiser le mot de passe</h3>
-        <p>Entrez votre email, nous vous enverrons un lien de réinitialisation.</p>
-        <div class="input-group" style="margin-top:18px">
-            <input type="email" id="forgot-email" placeholder="votre@email.com">
-        </div>
-        <button class="btn-submit" style="margin-top:12px" onclick="sendReset()">
-            <span>Envoyer le lien</span><i class="fas fa-paper-plane"></i>
-        </button>
+        <p>Entrez votre email</p>
+        <div class="input-group" style="margin-top:18px"><input type="email" id="forgot-email"></div>
+        <button class="btn-submit" style="margin-top:12px" onclick="sendReset()"><span>Envoyer</span><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
-<!-- ── TOAST ── -->
 <div id="toast-login"></div>
 
 <script src="login.js"></script>

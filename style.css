@@ -1,12 +1,4 @@
 
-
-*/
-
-
-
-/* ===== RESET & BASE ===== */
-
-
 * {
     margin: 0;
     padding: 0;
@@ -1439,3 +1431,6 @@ body {
     #recherche-page > div:last-child { flex-direction: column; }
 }
 
+#boutiques-page {
+    display: none;
+}

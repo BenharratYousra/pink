@@ -9,6 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="luxury-animations.css">
+    <link rel="stylesheet" href="cart.css">
+    <style>
+        #home-page, #categories-page, #shop-page, #support-page, #recherche-page, #cart-page, #login-page, #dashboard-page, #boutiques-page {
+            display: none;
+        }
+        .loading { text-align: center; padding: 50px; color: #999; font-size: 1rem; }
+        .cart-count { background: #ffd700; color: #451d18; border-radius: 50%; padding: 2px 6px; font-size: 10px; margin-left: 5px; display: inline-block; }
+    </style>
 </head>
 <body>
 
@@ -19,17 +27,18 @@
         <ul id="navbar">
             <li><a href="#" onclick="showPage('home',event)">Home</a></li>
             <li><a href="#" onclick="showPage('categories',event)">All Categories</a></li>
-           <li><a href="#" onclick="showPage('shop',event)">Shop</a></li>
-
+            <li><a href="#" onclick="showPage('shop',event)">Shop</a></li>
             <li><a href="#" onclick="showPage('support',event)">Support</a></li>
-            <li><a href="cart.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="dashboard.html">dashboard</a></li>
+            <li><a href="#" onclick="showPage('boutiques',event)"><i class="fas fa-store"></i> Boutiques</a></li>
+            <li><a href="#" onclick="showPage('cart',event)"><i class="fa-solid fa-bag-shopping"></i><span id="cart-count-badge" class="cart-count" style="display:none;">0</span></a></li>
+            <li><a href="#" onclick="redirectToLogin()">Login</a></li>
+           <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="#" onclick="showPage('recherche',event)" style="color:#ffd700;font-weight:800;">🔍 Recherche</a></li>
         </ul>
     </div>
 </section>
 
-
+<!-- ===== HOME PAGE ===== -->
 <div id="home-page">
     <section id="hero" style="position:relative; width:100%; overflow:hidden;">
         <img src="section3.jpg" alt="" style="width:100%; max-height:600px; object-fit:cover; display:block;">
@@ -40,235 +49,107 @@
             </div>
         </div>
     </section>
-
     <section id="product">
         <h2>featured product</h2>
-        <div class="pro-container">
-            <div class="pro">
-                <img src="section4.jpg" alt="">
-                <div class="des">
-                    <span>zara</span>
-                    <h3>tenue classique</h3>
-                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <h4>$70</h4>
-                </div>
-                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
-            </div>
-            <div class="pro">
-                <img src="section5.jpg" alt="">
-                <div class="des">
-                    <span>zara</span>
-                    <h3>tenue classique</h3>
-                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <h4>$70</h4>
-                </div>
-                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
-            </div>
-            <div class="pro">
-                <img src="section6.jpg" alt="">
-                <div class="des">
-                    <span>zara</span>
-                    <h3>tenue classique</h3>
-                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <h4>$70</h4>
-                </div>
-                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
-            </div>
-            <div class="pro">
-                <img src="section7.jpg" alt="">
-                <div class="des">
-                    <span>zara</span>
-                    <h3>tenue classique</h3>
-                    <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <h4>$70</h4>
-                </div>
-                <a href=""><i class="fas fa-bag-shopping cart"></i></a>
-            </div>
+        <div class="pro-container" id="home-products">
+            <div class="loading">Chargement des produits...</div>
         </div>
     </section>
-    
 </div>
 
-<!--
-     CATEGORIES PAGE
--->
+<!-- ===== CATEGORIES PAGE ===== -->
 <div id="categories-page">
-    <div class="cat-hero">
-        <h2>Toutes les Catégories</h2>
-        <p>Découvrez nos milliers de produits</p>
-    </div>
+    <div class="cat-hero"><h2>Toutes les Catégories</h2><p>Découvrez nos milliers de produits</p></div>
     <div class="cat-container">
-        <div class="cat-block">
-            <h3><i class="fas fa-tshirt"></i> Mode & Vêtements</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-female"></i><span>Femme</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-male"></i><span>Homme</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-child"></i><span>Enfant</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-baby"></i><span>Bébé</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-vest"></i><span>Robes & Jupes</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-user-tie"></i><span>Costume</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-gem"></i><span>Bijoux</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-bag-shopping"></i><span>Sacs</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-glasses"></i><span>Lunettes</span></a>
-            </div>
-        </div>
-        <div class="cat-block">
-            <h3><i class="fas fa-couch"></i> Décoration & Maison</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-couch"></i><span>Salon</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-bed"></i><span>Chambre</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-door-open"></i><span>Rideaux</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-rug"></i><span>Tapis</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-lightbulb"></i><span>Luminaires</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-bath"></i><span>Salle de Bain</span></a>
-            </div>
-        </div>
-        <div class="cat-block">
-            <h3><i class="fas fa-utensils"></i> Cuisine & Ustensiles</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-blender"></i><span>Mixeurs</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-fire-burner"></i><span>Cuisinières</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-mug-hot"></i><span>Cafetières</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-knife"></i><span>Couteaux</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-refrigerator"></i><span>Réfrigérateurs</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-jar"></i><span>Vaisselle</span></a>
-            </div>
-        </div>
-        <div class="cat-block">
-            <h3><i class="fas fa-shoe-prints"></i> Chaussures</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-shoe-prints"></i><span>Femme</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-shoe-prints"></i><span>Homme</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-child"></i><span>Enfant</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-running"></i><span>Baskets</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-mountain"></i><span>Bottes</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-sun"></i><span>Sandales</span></a>
-            </div>
-        </div>
-        <div class="cat-block">
-            <h3><i class="fas fa-spa"></i> Cosmétique & Skincare</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-female"></i><span>Skincare Femme</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-male"></i><span>Skincare Homme</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-magic"></i><span>Maquillage</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-wind"></i><span>Parfums</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-scissors"></i><span>Cheveux</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-hand-sparkles"></i><span>Manucure</span></a>
-            </div>
-        </div>
-        <div class="cat-block">
-            <h3><i class="fas fa-graduation-cap"></i> Affaires Scolaires & Art</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-book"></i><span>Livres</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-pen"></i><span>Stylos</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-backpack"></i><span>Sacs à Dos</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-paint-brush"></i><span>Peinture</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-ruler"></i><span>Géométrie</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-palette"></i><span>Dessin</span></a>
-            </div>
-        </div>
-        <div class="cat-block">
-            <h3><i class="fas fa-mobile-screen"></i> Électronique & High-Tech</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-mobile-screen"></i><span>Téléphones</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-laptop"></i><span>Ordinateurs</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-headphones"></i><span>Audio</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-tv"></i><span>Télévisions</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-gamepad"></i><span>Gaming</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-camera"></i><span>Photo</span></a>
-            </div>
-        </div>
-        <div class="cat-block">
-            <h3><i class="fas fa-dumbbell"></i> Sport & Loisirs</h3>
-            <div class="cat-sub-grid">
-                <a href="#" class="cat-sub-item"><i class="fas fa-dumbbell"></i><span>Fitness</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-futbol"></i><span>Football</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-bicycle"></i><span>Vélos</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-tent"></i><span>Camping</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-person-running"></i><span>Running</span></a>
-                <a href="#" class="cat-sub-item"><i class="fas fa-chess"></i><span>Jeux</span></a>
-            </div>
-        </div>
+        <div class="cat-block"><h3><i class="fas fa-tshirt"></i> Mode & Vêtements</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-female"></i><span>Femme</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-male"></i><span>Homme</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-child"></i><span>Enfant</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-baby"></i><span>Bébé</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-vest"></i><span>Robes & Jupes</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-user-tie"></i><span>Costume</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-gem"></i><span>Bijoux</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-bag-shopping"></i><span>Sacs</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-glasses"></i><span>Lunettes</span></a>
+        </div></div>
+        <div class="cat-block"><h3><i class="fas fa-couch"></i> Décoration & Maison</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-couch"></i><span>Salon</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-bed"></i><span>Chambre</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-door-open"></i><span>Rideaux</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-rug"></i><span>Tapis</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-lightbulb"></i><span>Luminaires</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-bath"></i><span>Salle de Bain</span></a>
+        </div></div>
+        <div class="cat-block"><h3><i class="fas fa-utensils"></i> Cuisine & Ustensiles</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-blender"></i><span>Mixeurs</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-fire-burner"></i><span>Cuisinières</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-mug-hot"></i><span>Cafetières</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-knife"></i><span>Couteaux</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-refrigerator"></i><span>Réfrigérateurs</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-jar"></i><span>Vaisselle</span></a>
+        </div></div>
+        <div class="cat-block"><h3><i class="fas fa-shoe-prints"></i> Chaussures</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-shoe-prints"></i><span>Femme</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-shoe-prints"></i><span>Homme</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-child"></i><span>Enfant</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-running"></i><span>Baskets</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-mountain"></i><span>Bottes</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-sun"></i><span>Sandales</span></a>
+        </div></div>
+        <div class="cat-block"><h3><i class="fas fa-spa"></i> Cosmétique & Skincare</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-female"></i><span>Skincare Femme</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-male"></i><span>Skincare Homme</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-magic"></i><span>Maquillage</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-wind"></i><span>Parfums</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-scissors"></i><span>Cheveux</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-hand-sparkles"></i><span>Manucure</span></a>
+        </div></div>
+        <div class="cat-block"><h3><i class="fas fa-graduation-cap"></i> Affaires Scolaires & Art</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-book"></i><span>Livres</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-pen"></i><span>Stylos</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-backpack"></i><span>Sacs à Dos</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-paint-brush"></i><span>Peinture</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-ruler"></i><span>Géométrie</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-palette"></i><span>Dessin</span></a>
+        </div></div>
+        <div class="cat-block"><h3><i class="fas fa-mobile-screen"></i> Électronique & High-Tech</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-mobile-screen"></i><span>Téléphones</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-laptop"></i><span>Ordinateurs</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-headphones"></i><span>Audio</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-tv"></i><span>Télévisions</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-gamepad"></i><span>Gaming</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-camera"></i><span>Photo</span></a>
+        </div></div>
+        <div class="cat-block"><h3><i class="fas fa-dumbbell"></i> Sport & Loisirs</h3><div class="cat-sub-grid">
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-dumbbell"></i><span>Fitness</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-futbol"></i><span>Football</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-bicycle"></i><span>Vélos</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-tent"></i><span>Camping</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-person-running"></i><span>Running</span></a>
+            <a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;"><i class="fas fa-chess"></i><span>Jeux</span></a>
+        </div></div>
     </div>
 </div>
 
-<!-- =================================================
-     SHOP PAGE
-================================================== -->
+<!-- ===== SHOP PAGE ===== -->
 <div id="shop-page">
-    <div class="shop-hero">
-        <h2>Notre Boutique</h2>
-        <p>Des centaines de produits des meilleurs magasins partenaires</p>
-    </div>
+    <div class="shop-hero"><h2>Notre Boutique</h2><p>Des centaines de produits des meilleurs magasins partenaires</p></div>
     <div class="shop-filters">
         <span><i class="fas fa-filter"></i> Filtrer :</span>
         <button class="filter-btn active" onclick="filterShop('all',this)">Tous</button>
         <button class="filter-btn" onclick="filterShop('mode',this)">Mode</button>
-        <button class="filter-btn" onclick="filterShop('maison',this)">Maison</button>
-        <button class="filter-btn" onclick="filterShop('cosmetique',this)">Cosmétique</button>
         <button class="filter-btn" onclick="filterShop('electronique',this)">Électronique</button>
-        <button class="filter-btn" onclick="filterShop('sport',this)">Sport</button>
-        <div class="search-shop">
-            <input type="text" placeholder="Rechercher...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
+        <button class="filter-btn" onclick="filterShop('cosmetique',this)">Cosmétique</button>
     </div>
     <div class="shop-container">
-        <!-- Zara DZ -->
-        <div class="store-title">
-            <div class="store-icon">Z</div>
-            <div><h3>Zara DZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3><p>Mode Femme · Homme · Enfant</p></div>
-        </div>
-        <div class="shop-grid">
-            <div class="prod-card" data-cat="mode">
-                <span class="badge" style="background:#e67e22">🔥 Populaire</span>
-                <img src="section4.jpg" alt="">
-                <div class="prod-info"><span class="store-nm">Zara DZ</span><h4>Robe Élégante Femme</h4><div class="stars">★★★★★ <span>(128)</span></div><div class="price-row"><div><span class="price">4 500 DA</span><span class="old-price">5 800 DA</span></div><button class="add-btn"><i class="fas fa-cart-plus"></i></button></div></div>
-            </div>
-            <div class="prod-card" data-cat="mode">
-                <span class="badge new-badge">Nouveau</span>
-                <img src="section5.jpg" alt="">
-                <div class="prod-info"><span class="store-nm">Zara DZ</span><h4>Costume Homme Slim</h4><div class="stars">★★★★☆ <span>(74)</span></div><div class="price-row"><div><span class="price">8 200 DA</span></div><button class="add-btn"><i class="fas fa-cart-plus"></i></button></div></div>
-            </div>
-            <div class="prod-card" data-cat="mode">
-                <img src="section6.jpg" alt="">
-                <div class="prod-info"><span class="store-nm">Zara DZ</span><h4>Ensemble Enfant Premium</h4><div class="stars">★★★★★ <span>(56)</span></div><div class="price-row"><div><span class="price">2 900 DA</span><span class="old-price">3 500 DA</span></div><button class="add-btn"><i class="fas fa-cart-plus"></i></button></div></div>
-            </div>
-            <div class="prod-card" data-cat="mode">
-                <img src="section7.jpg" alt="">
-                <div class="prod-info"><span class="store-nm">Zara DZ</span><h4>Tenue Classique Femme</h4><div class="stars">★★★★☆ <span>(90)</span></div><div class="price-row"><div><span class="price">5 100 DA</span></div><button class="add-btn"><i class="fas fa-cart-plus"></i></button></div></div>
-            </div>
-        </div>
-        <!-- ElectroDZ -->
-        <div class="store-title"><div class="store-icon" style="background:#2c1654">E</div><div><h3>ElectroDZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3><p>Électronique · High-Tech · Gaming</p></div></div>
-        <div class="shop-grid">
-            <div class="prod-card" data-cat="electronique"><span class="badge" style="background:#e67e22">🔥 Populaire</span><img src="section4.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#2c1654">ElectroDZ</span><h4>Smartphone 128GB</h4><div class="stars">★★★★★ <span>(312)</span></div><div class="price-row"><div><span class="price" style="color:#2c1654">62 000 DA</span><span class="old-price">70 000 DA</span></div><button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="electronique"><img src="section5.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#2c1654">ElectroDZ</span><h4>Laptop Intel i5 16GB</h4><div class="stars">★★★★☆ <span>(180)</span></div><div class="price-row"><div><span class="price" style="color:#2c1654">95 000 DA</span></div><button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="electronique"><span class="badge new-badge">Nouveau</span><img src="section6.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#2c1654">ElectroDZ</span><h4>Écouteurs Bluetooth Pro</h4><div class="stars">★★★★★ <span>(210)</span></div><div class="price-row"><div><span class="price" style="color:#2c1654">7 500 DA</span><span class="old-price">9 000 DA</span></div><button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="electronique"><img src="section7.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#2c1654">ElectroDZ</span><h4>Smart TV 55" 4K UHD</h4><div class="stars">★★★★☆ <span>(95)</span></div><div class="price-row"><div><span class="price" style="color:#2c1654">118 000 DA</span></div><button class="add-btn" style="background:#2c1654"><i class="fas fa-cart-plus"></i></button></div></div></div>
-        </div>
-        <!-- MaisonDZ -->
-        <div class="store-title"><div class="store-icon" style="background:#6c4a2a">M</div><div><h3>MaisonDZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3><p>Décoration · Meubles · Cuisine</p></div></div>
-        <div class="shop-grid">
-            <div class="prod-card" data-cat="maison"><img src="section4.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#6c4a2a">MaisonDZ</span><h4>Canapé 3 Places Velours</h4><div class="stars">★★★★★ <span>(47)</span></div><div class="price-row"><div><span class="price" style="color:#6c4a2a">38 000 DA</span><span class="old-price">45 000 DA</span></div><button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="maison"><span class="badge new-badge">Nouveau</span><img src="section5.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#6c4a2a">MaisonDZ</span><h4>Rideau Luxe Occultant</h4><div class="stars">★★★★☆ <span>(88)</span></div><div class="price-row"><div><span class="price" style="color:#6c4a2a">4 200 DA</span></div><button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="maison"><img src="section6.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#6c4a2a">MaisonDZ</span><h4>Tapis Berbère 200x300</h4><div class="stars">★★★★★ <span>(63)</span></div><div class="price-row"><div><span class="price" style="color:#6c4a2a">12 500 DA</span><span class="old-price">15 000 DA</span></div><button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="maison"><img src="section7.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#6c4a2a">MaisonDZ</span><h4>Blender Pro 1500W</h4><div class="stars">★★★★☆ <span>(130)</span></div><div class="price-row"><div><span class="price" style="color:#6c4a2a">5 800 DA</span></div><button class="add-btn" style="background:#6c4a2a"><i class="fas fa-cart-plus"></i></button></div></div></div>
-        </div>
-        <!-- BeautyDZ -->
-        <div class="store-title"><div class="store-icon" style="background:#d81b60">B</div><div><h3>BeautyDZ <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3><p>Cosmétique · Skincare · Parfums</p></div></div>
-        <div class="shop-grid">
-            <div class="prod-card" data-cat="cosmetique"><span class="badge" style="background:#e67e22">🔥 Best-Seller</span><img src="section4.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#d81b60">BeautyDZ</span><h4>Crème Hydratante Visage</h4><div class="stars">★★★★★ <span>(245)</span></div><div class="price-row"><div><span class="price" style="color:#d81b60">1 800 DA</span><span class="old-price">2 400 DA</span></div><button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="cosmetique"><img src="section5.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#d81b60">BeautyDZ</span><h4>Parfum Oriental 100ml</h4><div class="stars">★★★★★ <span>(198)</span></div><div class="price-row"><div><span class="price" style="color:#d81b60">3 200 DA</span></div><button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="cosmetique"><span class="badge new-badge">Nouveau</span><img src="section6.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#d81b60">BeautyDZ</span><h4>Kit Maquillage Complet</h4><div class="stars">★★★★☆ <span>(112)</span></div><div class="price-row"><div><span class="price" style="color:#d81b60">2 600 DA</span><span class="old-price">3 100 DA</span></div><button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button></div></div></div>
-            <div class="prod-card" data-cat="cosmetique"><img src="section7.jpg" alt=""><div class="prod-info"><span class="store-nm" style="color:#d81b60">BeautyDZ</span><h4>Huile d'Argan Pure 100ml</h4><div class="stars">★★★★★ <span>(320)</span></div><div class="price-row"><div><span class="price" style="color:#d81b60">950 DA</span></div><button class="add-btn" style="background:#d81b60"><i class="fas fa-cart-plus"></i></button></div></div></div>
+        <div class="store-title"><div class="store-icon">Z</div><div><h3>IKYO Shop <span class="verified"><i class="fas fa-circle-check"></i> Vérifié</span></h3></div></div>
+        <div class="shop-grid" id="shop-products">
+            <div class="loading">Chargement des produits...</div>
         </div>
     </div>
 </div>
 
-<!-- =================================================
-     SUPPORT PAGE
-================================================== -->
+<!-- ===== SUPPORT PAGE ===== -->
 <div id="support-page">
     <div class="support-hero"><h2>Support & Contact</h2><p>Notre équipe est là pour vous aider 7j/7</p></div>
     <div class="support-container">
@@ -283,14 +164,16 @@
                 <h3><i class="fas fa-paper-plane"></i> Envoyez-nous un message</h3>
                 <p class="sub">Remplissez le formulaire, nous vous répondrons rapidement</p>
                 <div class="form-row2">
-                    <div class="form-grp"><label>Prénom</label><input type="text" placeholder="Votre prénom"></div>
-                    <div class="form-grp"><label>Nom</label><input type="text" placeholder="Votre nom"></div>
+                    <div class="form-grp"><label>Prénom</label><input type="text" id="support-prenom" placeholder="Votre prénom"></div>
+                    <div class="form-grp"><label>Nom</label><input type="text" id="support-nom" placeholder="Votre nom"></div>
                 </div>
-                <div class="form-grp"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
-                <div class="form-grp"><label>Téléphone</label><input type="text" placeholder="+213 0XX XX XX XX"></div>
-                <div class="form-grp"><label>Sujet</label><select><option>Problème commande</option><option>Remboursement / Retour</option><option>Devenir partenaire magasin</option><option>Problème technique</option><option>Autre</option></select></div>
-                <div class="form-grp"><label>Message</label><textarea placeholder="Décrivez votre problème..."></textarea></div>
-                <button class="btn-send">Envoyer <i class="fas fa-paper-plane"></i></button>
+                <div class="form-grp"><label>Email</label><input type="email" id="support-email" placeholder="votre@email.com"></div>
+                <div class="form-grp"><label>Téléphone</label><input type="text" id="support-tel" placeholder="+213 0XX XX XX XX"></div>
+                <div class="form-grp"><label>Sujet</label>
+                    <select id="support-sujet"><option>Problème commande</option><option>Remboursement / Retour</option><option>Devenir partenaire magasin</option><option>Problème technique</option><option>Autre</option></select>
+                </div>
+                <div class="form-grp"><label>Message</label><textarea id="support-message" placeholder="Décrivez votre problème..."></textarea></div>
+                <button class="btn-send" onclick="sendSupportMessage()">Envoyer <i class="fas fa-paper-plane"></i></button>
             </div>
             <div class="support-box">
                 <h3><i class="fas fa-address-book"></i> Nos Coordonnées</h3>
@@ -326,307 +209,535 @@
         </div>
     </div>
 </div>
-<li><a href="#" onclick="showPage('recherche',event)" style="color:#ffd700;font-weight:800;">🔍 Recherche</a></li>
-<!-- PARTNER MODAL -->
-<div id="partner-overlay">
-    <div class="p-modal" id="p-main-modal">
-        <div class="p-modal-header">
-            <button class="p-close-btn" onclick="closePartnerForm()">✕</button>
-            <h2>🏪 Devenez Partenaire IKYO</h2>
-            <p>Rejoignez notre réseau de magasins partenaires en quelques étapes</p>
+
+<!-- ===== RECHERCHE PAGE ===== -->
+<div id="recherche-page">
+    <div style="background:#390505;color:white;padding:40px 20px;text-align:center;">
+        <h2>🔍 Recherche Avancée</h2>
+        <div style="max-width:500px;margin:20px auto;display:flex;">
+            <input type="text" id="rch-q" placeholder="Rechercher..." style="flex:1;padding:12px;border:none;border-radius:8px 0 0 8px;">
+            <button onclick="lancerRecherche()" style="background:#ffd700;color:#451d18;border:none;padding:12px 24px;border-radius:0 8px 8px 0;">Chercher</button>
         </div>
-        <div class="p-steps-bar" id="p-steps-bar">
-            <div class="p-dot active" id="pdot1">1</div><div class="p-line" id="pline1"></div>
-            <div class="p-dot" id="pdot2">2</div><div class="p-line" id="pline2"></div>
-            <div class="p-dot" id="pdot3">3</div>
+    </div>
+    <div class="products-grid" id="search-results" style="max-width:1200px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;">
+        <div class="loading">Entrez un terme de recherche</div>
+    </div>
+</div>
+
+<!-- ===== CART PAGE ===== -->
+<div id="cart-page">
+    <div class="cart-page">
+        <div class="checkout-steps">
+            <div class="step active"><span class="step-num">1</span><span class="step-label">Panier</span></div>
+            <div class="step-line"></div>
+            <div class="step"><span class="step-num">2</span><span class="step-label">Livraison</span></div>
+            <div class="step-line"></div>
+            <div class="step"><span class="step-num">3</span><span class="step-label">Paiement</span></div>
+            <div class="step-line"></div>
+            <div class="step"><span class="step-num">4</span><span class="step-label">Confirmation</span></div>
         </div>
-        <div class="p-modal-body" id="p-form-body">
-            <div class="p-step-page active" id="p-page1">
-                <div class="p-step-title">👤 Informations personnelles</div>
-                <div class="p-row2"><div class="p-form-group"><label>Prénom *</label><input type="text" id="p-prenom" placeholder="Votre prénom"><div class="p-err" id="perr-prenom">Ce champ est requis</div></div><div class="p-form-group"><label>Nom *</label><input type="text" id="p-nom" placeholder="Votre nom"><div class="p-err" id="perr-nom">Ce champ est requis</div></div></div>
-                <div class="p-form-group"><label>Email professionnel *</label><input type="email" id="p-email" placeholder="votre@email.com"><div class="p-err" id="perr-email">Adresse email invalide</div></div>
-                <div class="p-form-group"><label>Numéro de téléphone *</label><input type="tel" id="p-tel" placeholder="+213 0XX XX XX XX"><div class="p-err" id="perr-tel">Ce champ est requis</div></div>
-                <div class="p-form-group"><label>Wilaya *</label><select id="p-wilaya"><option value="">-- Sélectionnez votre wilaya --</option><option>Alger</option><option>Oran</option><option>Constantine</option><option>Annaba</option><option>Blida</option><option>Batna</option><option>Sétif</option><option>Tizi Ouzou</option><option>Béjaïa</option><option>Tlemcen</option><option>Mostaganem</option><option>Chlef</option><option>Médéa</option><option>Skikda</option><option>Autres</option></select><div class="p-err" id="perr-wilaya">Veuillez sélectionner une wilaya</div></div>
-                <div class="p-btn-row"><button class="p-btn-next" onclick="pGoStep(2)">Suivant &nbsp;<i class="fas fa-arrow-right"></i></button></div>
+        <div class="cart-layout">
+            <div class="cart-left">
+                <div class="cart-left-header">
+                    <h2><i class="fas fa-bag-shopping"></i> Mon Panier &nbsp;<span id="header-count" class="item-count-badge">0 article</span></h2>
+                    <button class="btn-clear" id="btn-clear" onclick="clearCart()" style="display:none"><i class="fas fa-trash-can"></i> Vider</button>
+                </div>
+                <div class="cart-empty" id="cart-empty">
+                    <div class="empty-lottie"><svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="80" fill="#f5ede9"/><path d="M45 55h70l-8 45H53L45 55z" fill="#e0c4bc" stroke="#451d18" stroke-width="2.5"/><circle cx="63" cy="112" r="7" fill="#451d18"/><circle cx="97" cy="112" r="7" fill="#451d18"/><path d="M38 45h10l7 10" stroke="#451d18" stroke-width="2.5"/><path d="M72 75l8 8 16-16" stroke="#6c4a2a" stroke-width="3"/></svg></div>
+                    <h3>Votre panier est vide</h3>
+                    <p>Ajoutez des articles depuis notre boutique et retrouvez-les ici</p>
+                    <a href="#" onclick="showPage('shop',event)" class="btn-go-shop"><i class="fas fa-store"></i>&nbsp; Découvrir la Boutique</a>
+                </div>
+                <div class="cart-table-head" id="cart-table-head" style="display:none"><span>Produit</span><span>Prix</span><span>Quantité</span><span>Total</span><span></span></div>
+                <div id="cart-items-list"></div>
+                <div class="cart-footer-row" id="cart-footer-row" style="display:none">
+                    <a href="#" onclick="showPage('shop',event)" class="btn-continue"><i class="fas fa-arrow-left"></i>&nbsp; Continuer les achats</a>
+                    <div class="cart-saved"><i class="fas fa-shield-halved"></i> Commande 100% sécurisée</div>
+                </div>
             </div>
-            <div class="p-step-page" id="p-page2">
-                <div class="p-step-title">🏪 Informations du magasin</div>
-                <div class="p-form-group"><label>Nom du magasin *</label><input type="text" id="p-magasin" placeholder="Ex: Fashion Store Oran"><div class="p-err" id="perr-magasin">Ce champ est requis</div></div>
-                <div class="p-form-group"><label>Catégorie principale *</label><select id="p-categorie"><option value="">-- Choisissez une catégorie --</option><option>Mode & Vêtements</option><option>Électronique & High-Tech</option><option>Décoration & Maison</option><option>Cosmétique & Skincare</option><option>Chaussures</option><option>Sport & Loisirs</option><option>Affaires Scolaires</option><option>Cuisine & Ustensiles</option><option>Autre</option></select><div class="p-err" id="perr-categorie">Veuillez sélectionner une catégorie</div></div>
-                <div class="p-form-group"><label>Adresse du magasin *</label><input type="text" id="p-adresse" placeholder="Ex: 12 Rue Larbi Ben M'hidi, Oran"><div class="p-err" id="perr-adresse">Ce champ est requis</div></div>
-                <div class="p-form-group"><label>Nombre de produits estimés</label><select id="p-nbprod"><option>Moins de 20 produits</option><option>20 à 50 produits</option><option>50 à 100 produits</option><option>Plus de 100 produits</option></select></div>
-                <div class="p-form-group"><label>Description du magasin</label><textarea id="p-description" placeholder="Décrivez brièvement votre magasin et vos produits phares..."></textarea></div>
-                <div class="p-btn-row"><button class="p-btn-back" onclick="pGoStep(1)"><i class="fas fa-arrow-left"></i> Retour</button><button class="p-btn-next" onclick="pGoStep(3)">Suivant &nbsp;<i class="fas fa-arrow-right"></i></button></div>
-            </div>
-            <div class="p-step-page" id="p-page3">
-                <div class="p-step-title">📸 Photos & Finalisation</div>
-                <p style="font-size:0.82rem; color:#888; margin-bottom:14px;">Ajoutez jusqu'à 10 photos de vos produits pour présenter votre catalogue</p>
-                <div class="p-file-zone" onclick="document.getElementById('pf-input').click()"><div class="pf-icon">📁</div><p>Cliquez pour ajouter des photos de produits</p><strong>JPG, PNG — 10 fichiers maximum</strong><div id="pf-count"></div></div>
-                <input type="file" id="pf-input" multiple accept="image/*" onchange="pCountFiles(this)">
-                <div class="p-form-group" style="margin-top:16px;"><label>Avez-vous un registre de commerce ?</label><select id="p-rc"><option>Oui, je possède un RC</option><option>Non, je suis particulier</option><option>En cours d'obtention</option></select></div>
-                <div class="p-form-group"><label>Comment avez-vous connu IKYO ?</label><select id="p-source"><option>Réseaux sociaux (Facebook, Instagram...)</option><option>Bouche à oreille</option><option>Publicité en ligne</option><option>Recommandation d'un partenaire</option><option>Autre</option></select></div>
-                <div class="p-btn-row"><button class="p-btn-back" onclick="pGoStep(2)"><i class="fas fa-arrow-left"></i> Retour</button><button class="p-btn-next" id="p-submit-btn" onclick="pSubmitForm()">Envoyer la demande &nbsp;<i class="fas fa-paper-plane"></i></button></div>
+            <div class="cart-right" id="cart-right" style="display:none">
+                <div class="summary-box">
+                    <div class="summary-title"><i class="fas fa-receipt"></i> Résumé de commande</div>
+                    <div class="summary-lines">
+                        <div class="s-row"><span>Sous-total (<span id="s-count">0</span> art.)</span><span id="s-subtotal">0 DA</span></div>
+                        <div class="s-row" id="s-discount-row" style="display:none"><span><i class="fas fa-tag"></i> Réduction</span><span id="s-discount" class="text-green">-0 DA</span></div>
+                        <div class="s-row"><span><i class="fas fa-truck"></i> Livraison</span><span id="s-shipping">500 DA</span></div>
+                    </div>
+                    <div class="coupon-section">
+                        <div class="coupon-label"><i class="fas fa-ticket"></i> Code promo</div>
+                        <div class="coupon-row"><input id="coupon-input" type="text" placeholder="Ex: IKYO10"><button onclick="applyCoupon()">OK</button></div>
+                        <div class="coupon-msg" id="coupon-msg"></div>
+                    </div>
+                    <div class="summary-total"><span>Total TTC</span><span id="s-total">0 DA</span></div>
+                    <button class="btn-order" onclick="goCheckout()"><i class="fas fa-lock"></i>&nbsp; Passer la commande</button>
+                    <div class="trust-row"><span><i class="fas fa-shield-halved"></i> Paiement sécurisé</span><span><i class="fas fa-rotate-left"></i> Retour 7 jours</span><span><i class="fas fa-truck"></i> 58 wilayas</span></div>
+                    <div class="pay-logos"><span class="pay-chip">Cash</span><span class="pay-chip">CIB</span><span class="pay-chip">Dahabia</span><span class="pay-chip">CCP</span></div>
+                </div>
+                <div class="delivery-card">
+                    <div class="delivery-row"><div class="d-icon"><i class="fas fa-truck-fast"></i></div><div><strong>Livraison rapide</strong><p>2–5 jours · 58 wilayas</p></div></div>
+                    <div class="delivery-row"><div class="d-icon"><i class="fas fa-box-open"></i></div><div><strong>Retour facile</strong><p>7 jours après réception</p></div></div>
+                    <div class="delivery-row"><div class="d-icon"><i class="fas fa-headset"></i></div><div><strong>Support 24/7</strong><p>0557647772 · ikyoshop@gmail.com</p></div></div>
+                </div>
             </div>
         </div>
-        <div class="p-success" id="p-success-screen">
-            <div class="p-success-icon"><svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="36" cy="36" r="36" fill="#f5ede9"/><path d="M20 36l10 10 22-22" stroke="#451d18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <h3>Demande bien reçue !</h3>
-            <p class="pmsg">Merci d'avoir soumis votre candidature pour devenir partenaire <strong>IKYO Shop</strong>.</p>
-            <p class="pmsg">Notre équipe va analyser votre dossier avec attention.</p>
-            <div class="p-delay-badge"><i class="fas fa-clock"></i> Réponse sous 3 jours ouvrables</div>
-            <p class="p-success-note">Vous serez notifié par <strong>email</strong> selon la décision d'IKYO Shop :<br>✅ <strong>Accepté</strong> — bienvenue dans la famille IKYO !<br>❌ <strong>Refusé</strong> — avec les raisons expliquées.<br><br>Pensez à vérifier votre dossier spam si vous ne recevez pas de réponse.</p>
-            <button class="p-btn-close-final" onclick="closePartnerForm()">Fermer &nbsp;<i class="fas fa-times"></i></button>
+    </div>
+    <div class="co-overlay" id="co-overlay"><div class="co-modal"><div class="co-step" id="co-step1"><button class="co-close" onclick="closeCheckout()">✕</button><div class="co-header"><div class="co-step-dots"><span class="co-dot active"></span><span class="co-dot"></span><span class="co-dot"></span></div><h3>Informations de livraison</h3><p>Renseignez vos coordonnées</p></div><div class="co-body"><div class="co-row2"><div class="co-grp"><label>Prénom *</label><input id="co-prenom" type="text"><span class="co-err" id="coerr-prenom">Requis</span></div><div class="co-grp"><label>Nom *</label><input id="co-nom" type="text"><span class="co-err" id="coerr-nom">Requis</span></div></div><div class="co-grp"><label>Téléphone *</label><input id="co-tel" type="tel"><span class="co-err" id="coerr-tel">Requis</span></div><div class="co-grp"><label>Wilaya *</label><select id="co-wilaya"><option value="">-- Sélectionnez --</option><option>Alger</option><option>Oran</option><option>Constantine</option><option>Annaba</option><option>Blida</option><option>Batna</option><option>Sétif</option><option>Tizi Ouzou</option><option>Béjaïa</option><option>Tlemcen</option><option>Mostaganem</option></select><span class="co-err" id="coerr-wilaya">Requis</span></div><div class="co-grp"><label>Adresse *</label><input id="co-adresse" type="text"><span class="co-err" id="coerr-adresse">Requis</span></div><div class="co-grp"><label>Notes</label><textarea id="co-notes"></textarea></div></div><div class="co-btns"><button class="co-btn-cancel" onclick="closeCheckout()">Annuler</button><button class="co-btn-next" onclick="coStep(2)">Suivant →</button></div></div><div class="co-step" id="co-step2" style="display:none"><button class="co-close" onclick="closeCheckout()">✕</button><div class="co-header"><div class="co-step-dots"><span class="co-dot done"></span><span class="co-dot active"></span><span class="co-dot"></span></div><h3>Mode de paiement</h3><p>Choisissez comment payer</p></div><div class="co-body"><div class="pay-options"><label class="pay-opt"><input type="radio" name="payment" value="cash" checked><span class="pay-opt-box"><i class="fas fa-money-bill-wave"></i><strong>Paiement à la livraison</strong><small>Payez cash</small></span></label><label class="pay-opt"><input type="radio" name="payment" value="cib"><span class="pay-opt-box"><i class="fas fa-credit-card"></i><strong>CIB / Dahabia</strong><small>Carte bancaire</small></span></label><label class="pay-opt"><input type="radio" name="payment" value="ccp"><span class="pay-opt-box"><i class="fas fa-building-columns"></i><strong>Virement CCP</strong><small>Virement postal</small></span></label></div><div class="co-recap" id="co-recap"></div></div><div class="co-btns"><button class="co-btn-cancel" onclick="coStep(1)">← Retour</button><button class="co-btn-next" onclick="coStep(3)">Confirmer ✓</button></div></div><div class="co-step" id="co-step3" style="display:none"><div class="co-success"><div class="co-success-anim"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#f5ede9" stroke="#451d18" stroke-width="2"/><path d="M28 50l14 14 30-30" stroke="#451d18" stroke-width="5"/></svg></div><h3>Commande confirmée !</h3><p>Merci <strong id="co-name-confirm"></strong> 🎉<br>Votre commande a bien été enregistrée.</p><div class="co-order-num">N° commande : <strong id="co-order-id"></strong></div><p class="co-note">Notre équipe vous contactera au <strong id="co-tel-confirm"></strong> sous 24h.</p><button class="co-btn-home" onclick="finishOrder()">Retour à l'accueil</button></div></div></div></div>
+</div>
+
+<!-- ===== BOUTIQUES PAGE ===== -->
+<div id="boutiques-page">
+    <div class="shop-hero">
+        <h2>🏪 Nos boutiques partenaires</h2>
+        <p>Découvrez tous les magasins présents sur IKYO</p>
+    </div>
+    <div class="products-grid" id="boutiques-list" style="max-width:1200px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:25px;">
+        <div class="loading">Chargement des boutiques...</div>
+    </div>
+</div>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="login-page">
+    <div style="max-width:400px;margin:50px auto;background:white;padding:30px;border-radius:12px;text-align:center;">
+        <h2 style="color:#451d18;">Connexion</h2>
+        <input type="email" id="login-email" placeholder="Email" style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;">
+        <input type="password" id="login-password" placeholder="Mot de passe" style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;">
+        <button onclick="doLogin()" style="width:100%;background:#451d18;color:white;padding:12px;border:none;border-radius:8px;">Se connecter</button>
+        <p style="margin-top:20px;color:#999;">Test: client@test.com</p>
+    </div>
+</div>
+
+<!-- ===== DASHBOARD PAGE ===== -->
+<div id="dashboard-page">
+    <div class="shop-hero"><h2>📊 Tableau de bord</h2></div>
+    <div style="max-width:1200px;margin:30px auto;padding:0 20px;">
+        <div id="dashboard-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+            <div class="loading">Chargement...</div>
         </div>
     </div>
 </div>
 
-<!-- ===== NEWSLETTER ===== -->
+<!-- ===== NEWSLETTER & FOOTER ===== -->
 <section id="newsletter">
-    <div class="newstext">
-        <h4>Sign Up For NewsLetters</h4>
-        <p>Get Email Updates about our latest shop and <span>special offre</span></p>
-    </div>
-    <div class="form">
-        <input type="text" placeholder="your email">
-        <button>Sign Up</button>
-    </div>
+    <div class="newstext"><h4>Sign Up For NewsLetters</h4><p>Get Email Updates about our latest shop and <span>special offre</span></p></div>
+    <div class="form"><input type="text" placeholder="your email"><button>Sign Up</button></div>
 </section>
 
-<!-- ===== FOOTER ===== -->
 <footer class="section1">
-    <div class="col">
-        <h4>Contact Us</h4>
-        <p><strong>ADRESSE:</strong> 97 RUE DE LA REPUBLIQUE FRANCAISE</p>
-        <p><strong>PHONE:</strong> +33 93 118 5009</p>
-        <p><strong>HOURS:</strong> 10:00-18:00 MON-THUS</p>
-        <div class="follow">
-            <h4>FOLLOW US</h4>
-            <div class="icon">
-                <i class="fab fa-facebook-f"></i><i class="fab fa-instagram"></i>
-                <i class="fab fa-twitter"></i><i class="fab fa-pinterest-p"></i><i class="fab fa-youtube"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col"><h4>ABOUT</h4><a href="#">ABOUT US</a><a href="#">Delivery Information</a><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a><a href="#">Contact Us</a></div>
-    <div class="col"><h4>MY ACCOUNT</h4><a href="#">Sign In</a><a href="cart.html">View Cart</a><a href="#">My Wish List</a><a href="#">Track My Order</a><a href="#">Help</a></div>
-    <div class="col"><h4>INSTALL UP</h4><p>From Up Store Or Google Play</p><div class="pay"><img src="pay3.png" class="CARTPHOTO" alt=""><p>Securited Payement Getways</p><img src="pay1.png" alt="" class="photocart"></div></div>
+    <div class="col"><h4>Contact Us</h4><p><strong>ADRESSE:</strong> 97 RUE DE LA REPUBLIQUE FRANCAISE</p><p><strong>PHONE:</strong> +33 93 118 5009</p></div>
+    <div class="col"><h4>ABOUT</h4><a href="#">About Us</a><a href="#">Delivery</a></div>
+    <div class="col"><h4>MY ACCOUNT</h4><a href="#" onclick="showPage('cart',event)">Panier</a><a href="#" onclick="showPage('login',event)">Connexion</a></div>
 </footer>
 
-<script src="script.js"></script>
-<script src="cart.js"></script>
 <script src="luxury.js"></script>
 <script>
+// ========== REDIRECTION ==========
+function redirectToLogin() { window.location.href = 'login.html'; }
 
+// ========== NAVIGATION ==========
+function showPage(page, e) {
+    if(e) e.preventDefault();
+    var pages = ['home', 'categories', 'shop', 'support', 'recherche', 'cart', 'login', 'dashboard', 'boutiques'];
+    for(var i = 0; i < pages.length; i++) {
+        var el = document.getElementById(pages[i] + '-page');
+        if(el) el.style.display = 'none';
+    }
+    var target = document.getElementById(page + '-page');
+    if(target) target.style.display = 'block';
+    window.scrollTo(0, 0);
+    if(page === 'home') loadHomeProducts();
+    if(page === 'shop') loadShopProducts();
+    if(page === 'recherche') lancerRecherche();
+    if(page === 'cart') renderCart();
+    if(page === 'boutiques') loadBoutiques();
+    if(page === 'dashboard') loadDashboard();
+}
+
+/* ===== SHOP FILTER ===== */
+function filterShop(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    if(btn) btn.classList.add('active');
+    document.querySelectorAll('.prod-card').forEach(function(card) {
+        var cardCat = card.dataset.cat;
+        card.style.display = (cat === 'all' || cardCat === cat) ? 'block' : 'none';
+    });
+}
+
+/* ===== FAQ ACCORDION ===== */
+function toggleFaq(el) {
+    el.classList.toggle('open');
+    if(el.nextElementSibling) el.nextElementSibling.classList.toggle('open');
+}
+
+/* ===== PARTNER FORM MODAL ===== */
+function openPartnerForm() { alert('Formulaire partenaire - Fonctionnalité à venir'); }
+function closePartnerForm() {}
+
+/* ===== API CONFIGURATION ===== */
+const API_URL = 'http://localhost/ikyo/api/';
+let cart = JSON.parse(localStorage.getItem('ikyo_cart')) || [];
+
+/* ===== LOAD HOME PRODUCTS ===== */
+async function loadHomeProducts() {
+    try {
+        const res = await fetch(API_URL + 'products.php');
+        const data = await res.json();
+        const products = data.data || [];
+        const container = document.getElementById('home-products');
+        if(container) {
+            container.innerHTML = products.slice(0,4).map(p => `
+                <div class="pro">
+                    <img src="${p.image_url || 'section4.jpg'}" style="width:100%;height:220px;object-fit:cover;">
+                    <div class="des">
+                        <span>${p.vendeur_nom || 'IKYO'}</span>
+                        <h3>${p.nom.substring(0,30)}</h3>
+                        <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <h4>${parseInt(p.prix).toLocaleString()} DA</h4>
+                    </div>
+                    <a href="#" onclick="event.preventDefault(); addToCart(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix})">
+                        <i class="fas fa-bag-shopping cart"></i>
+                    </a>
+                </div>
+            `).join('');
+        }
+    } catch(e) { console.error('Erreur home:', e); }
+}
+
+/* ===== LOAD SHOP PRODUCTS ===== */
+async function loadShopProducts() {
+    try {
+        const res = await fetch(API_URL + 'products.php');
+        const data = await res.json();
+        const products = data.data || [];
+        const container = document.getElementById('shop-products');
+        if(container) {
+            container.innerHTML = products.map(p => `
+                <div class="prod-card" data-cat="${p.categorie_nom ? p.categorie_nom.toLowerCase() : 'all'}">
+                    <img src="${p.image_url || 'section4.jpg'}" style="width:100%;height:200px;object-fit:cover;">
+                    <div class="prod-info">
+                        <span class="store-nm">${p.vendeur_nom || 'IKYO'}</span>
+                        <h4>${p.nom.substring(0,35)}</h4>
+                        <div class="stars">★★★★★ <span>(${Math.floor(Math.random()*200)})</span></div>
+                        <div class="price-row">
+                            <div><span class="price">${parseInt(p.prix).toLocaleString()} DA</span></div>
+                            <button class="add-btn" onclick="addToCart(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix})">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch(e) { console.error('Erreur shop:', e); }
+}
+
+/* ===== SEARCH ===== */
+async function lancerRecherche() {
+    const q = document.getElementById('rch-q')?.value.trim();
+    if(!q) { document.getElementById('search-results').innerHTML = '<div class="loading">Entrez un terme</div>'; return; }
+    document.getElementById('search-results').innerHTML = '<div class="loading">Recherche...</div>';
+    try {
+        const res = await fetch(API_URL + 'recherche.php?q=' + encodeURIComponent(q));
+        const data = await res.json();
+        const products = data.data || [];
+        const container = document.getElementById('search-results');
+        if(products.length === 0) container.innerHTML = '<div class="loading">Aucun résultat</div>';
+        else {
+            container.innerHTML = products.map(p => `
+                <div class="product-card" style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+                    <img src="${p.image_url || 'section4.jpg'}" style="width:100%;height:180px;object-fit:cover;">
+                    <div style="padding:15px;"><h3>${p.nom}</h3><div class="price">${parseInt(p.prix).toLocaleString()} DA</div><button onclick="addToCart(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix})" style="background:#451d18;color:white;border:none;padding:10px;width:100%;border-radius:8px;">Ajouter</button></div>
+                </div>
+            `).join('');
+        }
+    } catch(e) { container.innerHTML = '<div class="loading">Erreur serveur</div>'; }
+}
+
+/* ===== CART FUNCTIONS ===== */
+function updateCartBadge() {
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    var badge = document.getElementById('cart-count-badge');
+    if(badge) { if(total > 0) { badge.textContent = total; badge.style.display = 'inline-block'; } else { badge.style.display = 'none'; } }
+}
+
+function addToCart(id, name, price) {
+    let existing = cart.find(i => i.id === id);
+    if(existing) existing.qty++;
+    else cart.push({ id, name, price, qty: 1, store: 'IKYO', img: 'section4.jpg' });
+    localStorage.setItem('ikyo_cart', JSON.stringify(cart));
+    updateCartBadge();
+    alert(name + ' ajouté au panier !');
+}
+
+function renderCart() {
+    const list = document.getElementById('cart-items-list');
+    const empty = document.getElementById('cart-empty');
+    const right = document.getElementById('cart-right');
+    const thead = document.getElementById('cart-table-head');
+    const tfooter = document.getElementById('cart-footer-row');
+    const btnClear = document.getElementById('btn-clear');
+    const headerCount = document.getElementById('header-count');
+    
+    if(!list) return;
+    const hasItems = cart.length > 0;
+    
+    if(empty) empty.classList.toggle('visible', !hasItems);
+    if(right) right.style.display = hasItems ? 'block' : 'none';
+    if(thead) thead.style.display = hasItems ? 'grid' : 'none';
+    if(tfooter) tfooter.style.display = hasItems ? 'flex' : 'none';
+    if(btnClear) btnClear.style.display = hasItems ? 'flex' : 'none';
+    if(headerCount) headerCount.textContent = cart.reduce((s,i) => s + i.qty, 0) + (cart.length > 1 ? ' articles' : ' article');
+    
+    if(!hasItems) { list.innerHTML = ''; renderSummary(); return; }
+    
+    list.innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+            <div class="ci-product">
+                <img src="${item.img || 'section4.jpg'}" onerror="this.src='section4.jpg'">
+                <div class="ci-info"><div class="ci-store">${item.store || 'IKYO'}</div><div class="ci-name">${item.name}</div></div>
+            </div>
+            <div class="ci-price">${fmtDA(item.price)}</div>
+            <div class="qty-box">
+                <button onclick="changeQty(${i},-1)">−</button>
+                <span>${item.qty}</span>
+                <button onclick="changeQty(${i},+1)">+</button>
+            </div>
+            <div class="ci-total">${fmtDA(item.price * item.qty)}</div>
+            <button class="ci-remove" onclick="removeItem(${i})"><i class="fas fa-xmark"></i></button>
+        </div>
+    `).join('');
+    renderSummary();
+}
+
+function changeQty(idx, delta) {
+    let newQty = cart[idx].qty + delta;
+    if(newQty <= 0) cart.splice(idx, 1);
+    else cart[idx].qty = newQty;
+    localStorage.setItem('ikyo_cart', JSON.stringify(cart));
+    renderCart();
+    updateCartBadge();
+}
+
+function removeItem(idx) {
+    cart.splice(idx, 1);
+    localStorage.setItem('ikyo_cart', JSON.stringify(cart));
+    renderCart();
+    updateCartBadge();
+    showToast('Article retiré', 'err');
+}
+
+function clearCart() {
+    if(!confirm('Vider tout le panier ?')) return;
+    cart = [];
+    localStorage.setItem('ikyo_cart', JSON.stringify(cart));
+    renderCart();
+    updateCartBadge();
+    showToast('Panier vidé', 'err');
+}
+
+function applyCoupon() {
+    const code = document.getElementById('coupon-input')?.value.trim().toUpperCase();
+    const msg = document.getElementById('coupon-msg');
+    const COUPONS = { 'IKYO10': 10, 'PROMO20': 20, 'SOLDES15': 15 };
+    if(COUPONS[code]) {
+        window.appliedDiscount = COUPONS[code];
+        window.appliedCode = code;
+        msg.textContent = `✔ Code "${code}" — -${window.appliedDiscount}% appliqué !`;
+        msg.className = 'coupon-msg ok';
+        showToast(`Réduction -${window.appliedDiscount}%`, 'success');
+    } else {
+        window.appliedDiscount = 0; window.appliedCode = '';
+        msg.textContent = '✘ Code promo invalide';
+        msg.className = 'coupon-msg err';
+    }
+    renderSummary();
+}
+
+function fmtDA(n) { return Number(n).toLocaleString('fr-DZ') + ' DA'; }
+
+function renderSummary() {
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    const discount = Math.round(subtotal * (window.appliedDiscount || 0) / 100);
+    const hasItems = subtotal > 0;
+    const total = Math.max(0, subtotal - discount + (hasItems ? 500 : 0));
+    
+    const sCount = document.getElementById('s-count');
+    const sSubtotal = document.getElementById('s-subtotal');
+    const sShipping = document.getElementById('s-shipping');
+    const sTotal = document.getElementById('s-total');
+    const sDiscountRow = document.getElementById('s-discount-row');
+    const sDiscount = document.getElementById('s-discount');
+    
+    if(sCount) sCount.textContent = cart.reduce((s,i) => s + i.qty, 0);
+    if(sSubtotal) sSubtotal.textContent = fmtDA(subtotal);
+    if(sShipping) sShipping.textContent = hasItems ? fmtDA(500) : '0 DA';
+    if(sTotal) sTotal.textContent = fmtDA(total);
+    if(sDiscountRow && sDiscount) {
+        if(discount > 0) { sDiscount.textContent = '-' + fmtDA(discount); sDiscountRow.style.display = 'flex'; }
+        else { sDiscountRow.style.display = 'none'; }
+    }
+}
+
+function goCheckout() {
+    if(cart.length === 0) return;
+    document.getElementById('co-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderRecap();
+    showCoStep(1);
+}
+
+function closeCheckout() {
+    document.getElementById('co-overlay')?.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function showCoStep(n) {
+    for(let i=1; i<=3; i++) { const s = document.getElementById('co-step' + i); if(s) s.style.display = i === n ? 'block' : 'none'; }
+}
+
+function coStep(n) {
+    if(n === 2) {
+        const fields = ['co-prenom', 'co-nom', 'co-tel', 'co-wilaya', 'co-adresse'];
+        let ok = true;
+        fields.forEach(f => {
+            const val = document.getElementById(f)?.value.trim();
+            const err = document.getElementById('coerr-' + f.replace('co-',''));
+            if(!val) { if(err) err.classList.add('show'); ok = false; }
+            else { if(err) err.classList.remove('show'); }
+        });
+        if(!ok) return;
+        renderRecap();
+    }
+    if(n === 3) {
+        document.getElementById('co-name-confirm').textContent = document.getElementById('co-prenom')?.value.trim() || '';
+        document.getElementById('co-tel-confirm').textContent = document.getElementById('co-tel')?.value.trim() || '';
+        document.getElementById('co-order-id').textContent = 'IKYO-' + Date.now().toString(36).toUpperCase().slice(-6);
+        cart = [];
+        localStorage.setItem('ikyo_cart', JSON.stringify(cart));
+        window.appliedDiscount = 0; window.appliedCode = '';
+        updateCartBadge();
+    }
+    showCoStep(n);
+}
+
+function renderRecap() {
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    const discount = Math.round(subtotal * (window.appliedDiscount || 0) / 100);
+    const total = subtotal - discount + 500;
+    const el = document.getElementById('co-recap');
+    if(el) {
+        el.innerHTML = `<div class="co-recap-row"><span>Sous-total</span><span>${fmtDA(subtotal)}</span></div>
+            ${discount > 0 ? `<div class="co-recap-row"><span>Réduction (${window.appliedCode})</span><span style="color:#27ae60">-${fmtDA(discount)}</span></div>` : ''}
+            <div class="co-recap-row"><span>Livraison</span><span>${fmtDA(500)}</span></div>
+            <div class="co-recap-row"><span>Total</span><span>${fmtDA(total)}</span></div>`;
+    }
+}
+
+function finishOrder() { closeCheckout(); renderCart(); showPage('home'); }
+
+let _toastTimer;
+function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    if(!t) return;
+    t.innerHTML = msg;
+    t.className = 'show' + (type === 'success' ? ' toast-success' : (type === 'err' ? ' toast-err' : ''));
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => t.className = '', 2800);
+}
+
+/* ===== SUPPORT ===== */
+function sendSupportMessage() {
+    const prenom = document.getElementById('support-prenom')?.value.trim() || '';
+    const nom = document.getElementById('support-nom')?.value.trim() || '';
+    const email = document.getElementById('support-email')?.value.trim() || '';
+    const message = document.getElementById('support-message')?.value.trim() || '';
+    if(!prenom || !nom || !email || !message) { alert('Veuillez remplir tous les champs'); return; }
+    alert('✅ Message envoyé ! Nous vous répondrons sous 24h.');
+    document.querySelectorAll('#support-page input, #support-page textarea').forEach(el => el.value = '');
+}
+
+/* ===== DASHBOARD ===== */
+function loadDashboard() {
+    var container = document.getElementById('dashboard-stats');
+    if(container) {
+        container.innerHTML = `
+            <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                <h3 style="font-size:28px;color:#451d18;">0</h3><p>Revenus (DA)</p>
+            </div>
+            <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                <h3 style="font-size:28px;color:#451d18;">0</h3><p>Commandes</p>
+            </div>
+            <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                <h3 style="font-size:28px;color:#451d18;">0</h3><p>Produits</p>
+            </div>
+        `;
+    }
+}
+
+/* ===== LOAD BOUTIQUES ===== */
+async function loadBoutiques() {
+    try {
+        const res = await fetch(API_URL + 'boutique.php?action=liste');
+        const data = await res.json();
+        const boutiques = data.boutiques || [];
+        const container = document.getElementById('boutiques-list');
+        
+        if(container) {
+            if(boutiques.length === 0) {
+                container.innerHTML = '<div class="loading">Aucune boutique pour le moment</div>';
+            } else {
+                container.innerHTML = boutiques.map(b => `
+                    <div class="product-card" style="cursor:pointer;text-align:center;" onclick="window.location.href='boutique.html?id=${b.id}'">
+                        <div style="background:#451d18;color:white;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:20px auto;font-size:2rem;font-weight:bold;">
+                            ${(b.nom_magasin?.charAt(0) || '?').toUpperCase()}
+                        </div>
+                        <div class="product-info">
+                            <h3>${b.nom_magasin || 'Sans nom'}</h3>
+                            <p style="color:#888;font-size:0.8rem;">${b.wilaya || 'Algérie'}</p>
+                            <div class="product-price" style="font-size:0.9rem;">${b.nb_produits || 0} produits</div>
+                            <div style="color:#f39c12;margin:5px 0;">${'★'.repeat(Math.round(b.note_moyenne || 0))}${'☆'.repeat(5-Math.round(b.note_moyenne || 0))}</div>
+                            <button onclick="event.stopPropagation();window.location.href='boutique.html?id=${b.id}'" style="background:#451d18;color:white;border:none;padding:8px;width:100%;border-radius:8px;cursor:pointer;margin-top:10px;">
+                                Voir la boutique →
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+    } catch(e) {
+        console.error('Erreur chargement boutiques:', e);
+        const container = document.getElementById('boutiques-list');
+        if(container) container.innerHTML = '<div class="loading">❌ Erreur de chargement des boutiques</div>';
+    }
+}
+
+/* ===== LOGIN ===== */
+function doLogin() { const email = document.getElementById('login-email').value; if(email) { localStorage.setItem('user', JSON.stringify({ email })); alert('Connecté'); showPage('home'); } else alert('Entrez votre email'); }
+
+/* ===== INIT ===== */
+document.addEventListener('DOMContentLoaded', function() {
+    showPage('home');
+    updateCartBadge();
+    renderCart();
+});
+
+// Export global functions
+window.showPage = showPage;
+window.filterShop = filterShop;
+window.lancerRecherche = lancerRecherche;
+window.addToCart = addToCart;
+window.changeQty = changeQty;
+window.removeItem = removeItem;
+window.clearCart = clearCart;
+window.applyCoupon = applyCoupon;
+window.goCheckout = goCheckout;
+window.closeCheckout = closeCheckout;
+window.coStep = coStep;
+window.finishOrder = finishOrder;
+window.sendSupportMessage = sendSupportMessage;
+window.openPartnerForm = openPartnerForm;
+window.toggleFaq = toggleFaq;
+window.redirectToLogin = redirectToLogin;
+window.doLogin = doLogin;
 </script>
-
-<div id="recherche-page" style="display:none;">
-
-    <!-- Hero -->
-    <div style="background:#390505;color:white;padding:40px 20px;text-align:center;">
-        <h2 style="font-size:1.8rem;font-weight:800;letter-spacing:2px;margin-bottom:16px;">🔍 Recherche Avancée</h2>
-
-        <!-- Barre de recherche principale -->
-        <div style="max-width:600px;margin:0 auto;display:flex;gap:0;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
-            <input type="text" id="rch-q" placeholder="Ex: tshirt homme, robe, adidas..."
-                style="flex:1;padding:16px 20px;border:none;outline:none;font-size:1rem;font-family:inherit;"
-                onkeydown="if(event.key==='Enter') lancerRecherche()">
-            <button onclick="lancerRecherche()"
-                style="background:#ffd700;color:#451d18;border:none;padding:16px 28px;font-size:1rem;font-weight:800;cursor:pointer;">
-                <i class="fas fa-search"></i> Chercher
-            </button>
-        </div>
-    </div>
-
-    <div style="max-width:1200px;margin:30px auto;padding:0 20px;display:flex;gap:24px;flex-wrap:wrap;">
-
-        <!-- ═══ FILTRES (colonne gauche) ═══ -->
-        <div style="width:240px;flex-shrink:0;" id="filtres-panel">
-
-            <div style="background:white;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.08);margin-bottom:16px;">
-                <h3 style="font-size:0.95rem;font-weight:800;color:#451d18;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
-                    <i class="fas fa-filter"></i> Filtres
-                    <button onclick="resetFiltres()" style="margin-left:auto;background:none;border:none;color:#aaa;font-size:0.75rem;cursor:pointer;font-weight:600;">Réinitialiser</button>
-                </h3>
-
-                <!-- Wilaya -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">📍 Wilaya</label>
-                    <select id="rch-wilaya" style="width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:0.85rem;outline:none;font-family:inherit;">
-                        <option value="">Toutes les wilayas</option>
-                        <option value="16">Alger</option>
-                        <option value="31">Oran</option>
-                        <option value="25">Constantine</option>
-                        <option value="23">Annaba</option>
-                        <option value="09">Blida</option>
-                        <option value="05">Batna</option>
-                        <option value="19">Sétif</option>
-                        <option value="15">Tizi Ouzou</option>
-                        <option value="06">Béjaïa</option>
-                        <option value="13">Tlemcen</option>
-                        <option value="27">Mostaganem</option>
-                        <option value="22">Sidi Bel Abbès</option>
-                        <option value="29">Mascara</option>
-                        <option value="26">Médéa</option>
-                        <option value="42">Tipaza</option>
-                        <option value="35">Boumerdès</option>
-                    </select>
-                </div>
-
-                <!-- Catégorie -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">📦 Catégorie</label>
-                    <select id="rch-categorie" style="width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:0.85rem;outline:none;font-family:inherit;">
-                        <option value="">Toutes</option>
-                        <option value="1">Mode Homme</option>
-                        <option value="2">Mode Femme</option>
-                        <option value="3">Enfants</option>
-                        <option value="4">Électronique</option>
-                        <option value="5">Maison & Jardin</option>
-                        <option value="6">Sport & Loisirs</option>
-                        <option value="7">Beauté & Santé</option>
-                        <option value="9">T-shirts Homme</option>
-                        <option value="10">Pantalons Homme</option>
-                        <option value="13">Robes</option>
-                    </select>
-                </div>
-
-                <!-- Genre -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">👤 Genre</label>
-                    <div style="display:flex;flex-wrap:wrap;gap:6px;">
-                        <button class="genre-btn active" onclick="setGenre('',this)">Tous</button>
-                        <button class="genre-btn" onclick="setGenre('homme',this)">Homme</button>
-                        <button class="genre-btn" onclick="setGenre('femme',this)">Femme</button>
-                        <button class="genre-btn" onclick="setGenre('enfant',this)">Enfant</button>
-                    </div>
-                </div>
-
-                <!-- Prix -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:6px;text-transform:uppercase;">💰 Prix (DA)</label>
-                    <div style="display:flex;gap:8px;align-items:center;">
-                        <input type="number" id="rch-prix-min" placeholder="Min" min="0"
-                            style="width:50%;padding:8px 10px;border:1.5px solid #ddd;border-radius:8px;font-size:0.82rem;outline:none;">
-                        <span style="color:#aaa;font-size:0.8rem;">–</span>
-                        <input type="number" id="rch-prix-max" placeholder="Max" min="0"
-                            style="width:50%;padding:8px 10px;border:1.5px solid #ddd;border-radius:8px;font-size:0.82rem;outline:none;">
-                    </div>
-                    <!-- Suggestions prix rapides -->
-                    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">
-                        <button onclick="setPrix(0,2000)" class="prix-quick">-2000</button>
-                        <button onclick="setPrix(2000,5000)" class="prix-quick">2k-5k</button>
-                        <button onclick="setPrix(5000,15000)" class="prix-quick">5k-15k</button>
-                        <button onclick="setPrix(15000,0)" class="prix-quick">+15k</button>
-                    </div>
-                </div>
-
-                <!-- Couleur -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">🎨 Couleur</label>
-                    <div style="display:flex;flex-wrap:wrap;gap:8px;" id="couleur-btns">
-                        <button class="clr-btn" onclick="setCouleur('',this)" data-clr="" style="background:#f0f0f0;color:#333;">Toutes</button>
-                        <button class="clr-btn" onclick="setCouleur('noir',this)" data-clr="noir" style="background:#222;color:white;">Noir</button>
-                        <button class="clr-btn" onclick="setCouleur('blanc',this)" data-clr="blanc" style="background:#fff;color:#333;border:2px solid #ddd;">Blanc</button>
-                        <button class="clr-btn" onclick="setCouleur('rouge',this)" data-clr="rouge" style="background:#e74c3c;color:white;">Rouge</button>
-                        <button class="clr-btn" onclick="setCouleur('bleu',this)" data-clr="bleu" style="background:#3498db;color:white;">Bleu</button>
-                        <button class="clr-btn" onclick="setCouleur('vert',this)" data-clr="vert" style="background:#27ae60;color:white;">Vert</button>
-                        <button class="clr-btn" onclick="setCouleur('gris',this)" data-clr="gris" style="background:#95a5a6;color:white;">Gris</button>
-                        <button class="clr-btn" onclick="setCouleur('rose',this)" data-clr="rose" style="background:#e91e8c;color:white;">Rose</button>
-                        <button class="clr-btn" onclick="setCouleur('jaune',this)" data-clr="jaune" style="background:#f1c40f;color:#333;">Jaune</button>
-                    </div>
-                </div>
-
-                <!-- Taille -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">📐 Taille</label>
-                    <div style="display:flex;flex-wrap:wrap;gap:6px;">
-                        <button class="taille-btn active" onclick="setTaille('',this)">Toutes</button>
-                        <button class="taille-btn" onclick="setTaille('XS',this)">XS</button>
-                        <button class="taille-btn" onclick="setTaille('S',this)">S</button>
-                        <button class="taille-btn" onclick="setTaille('M',this)">M</button>
-                        <button class="taille-btn" onclick="setTaille('L',this)">L</button>
-                        <button class="taille-btn" onclick="setTaille('XL',this)">XL</button>
-                        <button class="taille-btn" onclick="setTaille('XXL',this)">XXL</button>
-                        <button class="taille-btn" onclick="setTaille('38',this)">38</button>
-                        <button class="taille-btn" onclick="setTaille('40',this)">40</button>
-                        <button class="taille-btn" onclick="setTaille('42',this)">42</button>
-                        <button class="taille-btn" onclick="setTaille('44',this)">44</button>
-                    </div>
-                </div>
-
-                <!-- Options -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">⚡ Options</label>
-                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:8px;font-size:0.85rem;">
-                        <input type="checkbox" id="rch-promo"> Promotions seulement
-                    </label>
-                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;">
-                        <input type="checkbox" id="rch-stock"> En stock seulement
-                    </label>
-                </div>
-
-                <!-- Note minimum -->
-                <div style="margin-bottom:18px;">
-                    <label style="display:block;font-size:0.78rem;font-weight:800;color:#555;margin-bottom:8px;text-transform:uppercase;">⭐ Note minimum</label>
-                    <div style="display:flex;gap:6px;">
-                        <button class="note-btn active" onclick="setNote(0,this)">Toutes</button>
-                        <button class="note-btn" onclick="setNote(3,this)">3+</button>
-                        <button class="note-btn" onclick="setNote(4,this)">4+</button>
-                        <button class="note-btn" onclick="setNote(5,this)">5★</button>
-                    </div>
-                </div>
-
-                <button onclick="lancerRecherche()" style="width:100%;background:#451d18;color:white;border:none;padding:13px;border-radius:8px;font-size:0.9rem;font-weight:800;cursor:pointer;letter-spacing:0.5px;">
-                    <i class="fas fa-search"></i> Appliquer les filtres
-                </button>
-            </div>
-        </div>
-
-        <!-- ═══ RÉSULTATS (colonne droite) ═══ -->
-        <div style="flex:1;min-width:0;">
-
-            <!-- Barre résultats + tri -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-                <div>
-                    <span id="rch-count" style="font-size:0.9rem;color:#555;font-weight:600;"></span>
-                    <div id="rch-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"></div>
-                </div>
-                <select id="rch-tri" onchange="lancerRecherche()" style="padding:8px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:0.85rem;outline:none;font-family:inherit;">
-                    <option value="pertinence">Pertinence</option>
-                    <option value="prix_asc">Prix croissant</option>
-                    <option value="prix_desc">Prix décroissant</option>
-                    <option value="note">Mieux notés</option>
-                    <option value="nouveau">Plus récents</option>
-                    <option value="ventes">Plus vendus</option>
-                </select>
-            </div>
-
-            <!-- Loading -->
-            <div id="rch-loading" style="display:none;text-align:center;padding:60px 20px;">
-                <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#451d18;"></i>
-                <p style="margin-top:12px;color:#888;">Recherche en cours...</p>
-            </div>
-
-            <!-- Vide -->
-            <div id="rch-vide" style="display:none;text-align:center;padding:60px 20px;background:white;border-radius:12px;">
-                <i class="fas fa-search" style="font-size:3rem;color:#ddd;"></i>
-                <h3 style="color:#888;margin-top:16px;font-size:1.1rem;">Aucun résultat trouvé</h3>
-                <p style="color:#aaa;margin-top:8px;font-size:0.85rem;">Essayez d'autres mots-clés ou élargissez vos filtres</p>
-                <button onclick="resetFiltres()" style="margin-top:16px;background:#451d18;color:white;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:700;">
-                    Réinitialiser les filtres
-                </button>
-            </div>
-
-            <!-- Grille produits -->
-            <div id="rch-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;"></div>
-
-            <!-- Pagination -->
-            <div id="rch-pagination" style="display:flex;justify-content:center;gap:8px;margin-top:30px;flex-wrap:wrap;"></div>
-        </div>
-    </div>
-</div>
-
-
-
 </body>
 </html>

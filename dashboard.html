@@ -1,421 +1,462 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IKYO — Tableau de Bord Vendeur</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="luxury-animations.css">
-  <link rel="stylesheet" href="dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKYO – Dashboard Vendeur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        body { background:#f5f5f5; }
+        .header { background:#451d18; color:white; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+        .main { padding:20px; }
+        .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:30px; }
+        .stat-card { background:white; padding:20px; border-radius:12px; text-align:center; }
+        .stat-card .value { font-size:28px; font-weight:bold; color:#451d18; margin-top:10px; }
+        .card { background:white; border-radius:12px; padding:20px; margin-bottom:25px; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { padding:12px; text-align:left; border-bottom:1px solid #eee; }
+        th { background:#f8f9fa; }
+        button { background:#451d18; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; }
+        input, select, textarea { width:100%; padding:10px; margin:8px 0; border:1px solid #ddd; border-radius:6px; }
+        .status { padding:4px 12px; border-radius:20px; font-size:12px; display:inline-block; }
+        .status.livree { background:#27ae60; color:white; }
+        .status.en_attente { background:#f39c12; color:white; }
+        .status.confirmee { background:#3498db; color:white; }
+        .logout-btn { background:#e74c3c; padding:10px 20px; border-radius:6px; cursor:pointer; display:inline-block; }
+        .nav { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+        .nav a { background:#ddd; color:#333; padding:10px 20px; border-radius:6px; text-decoration:none; cursor:pointer; }
+        .nav a.active { background:#451d18; color:white; }
+        .page { display:none; }
+        .page.active { display:block; }
+        .btn-gps { background:#27ae60; margin-right:5px; padding:5px 10px; font-size:12px; }
+        .btn-gps:hover { background:#219a52; }
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000; }
+        .modal-content { background:white; padding:20px; border-radius:10px; width:500px; max-width:90%; }
+        .modal-buttons { display:flex; gap:10px; margin-top:15px; }
+        @media (max-width:768px) { .stats { grid-template-columns:repeat(2,1fr); } table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <span class="logo-text">IKYO</span>
-    <span class="logo-sub">Vendeur</span>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-label">Principal</div>
-    <a href="#" class="nav-item active" data-page="overview" onclick="dashPage('overview',this)">
-      <i class="fas fa-chart-pie"></i><span>Vue d'ensemble</span><div class="nav-dot"></div>
-    </a>
-    <a href="#" class="nav-item" data-page="orders" onclick="dashPage('orders',this)">
-      <i class="fas fa-bag-shopping"></i><span>Commandes</span>
-      <span class="nav-badge" id="nb-orders">0</span>
-    </a>
-    <a href="#" class="nav-item" data-page="products" onclick="dashPage('products',this)">
-      <i class="fas fa-box-open"></i><span>Produits</span>
-    </a>
-    <a href="#" class="nav-item" data-page="analytics" onclick="dashPage('analytics',this)">
-      <i class="fas fa-chart-line"></i><span>Analytiques</span>
-    </a>
-    <div class="nav-section-label" style="margin-top:18px">Gestion</div>
-    <a href="#" class="nav-item" data-page="customers" onclick="dashPage('customers',this)">
-      <i class="fas fa-users"></i><span>Clients</span>
-    </a>
-    <a href="#" class="nav-item" data-page="reviews" onclick="dashPage('reviews',this)">
-      <i class="fas fa-star-half-stroke"></i><span>Avis</span>
-    </a>
-    <a href="#" class="nav-item" data-page="settings" onclick="dashPage('settings',this)">
-      <i class="fas fa-gear"></i><span>Paramètres</span>
-    </a>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="sidebar-profile">
-      <div class="sp-avatar">--</div>
-      <div class="sp-info">
-        <strong>Chargement...</strong>
-        <span>Algérie</span>
-      </div>
+<div class="header">
+    <h2><i class="fas fa-store"></i> IKYO Dashboard</h2>
+    <div>
+        <span id="userName" style="margin-right:15px;"></span>
+        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
     </div>
-    <a href="#" class="btn-logout" onclick="vendeurLogout()" title="Déconnexion"><i class="fas fa-arrow-right-from-bracket"></i></a>
-  </div>
-</aside>
+</div>
 
-<button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
-  <i class="fas fa-bars"></i>
-</button>
-
-<!-- MAIN -->
-<main class="dash-main" id="dash-main">
-
-  <!-- TOP BAR -->
-  <header class="dash-topbar">
-    <div class="topbar-left">
-      <h1 class="page-title" id="page-title">Vue d'ensemble</h1>
-      <p class="page-date" id="page-date"></p>
-    </div>
-    <div class="topbar-right">
-      <div class="topbar-search">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Rechercher...">
-      </div>
-      <button class="topbar-notif" onclick="toggleNotif()">
-        <i class="fas fa-bell"></i>
-        <span class="notif-dot" style="display:none"></span>
-      </button>
-      <div class="topbar-avatar">--</div>
-    </div>
-  </header>
-
-  <!-- NOTIFICATION PANEL -->
-  <div class="notif-panel" id="notif-panel">
-    <div class="notif-header">
-      <strong>Notifications</strong>
-      <button onclick="markAllRead()">Tout lire</button>
-    </div>
-    <!-- Rempli par JS -->
-  </div>
-
-  <!-- ══ PAGE OVERVIEW ══ -->
-  <div class="dash-page active" id="page-overview">
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-icon revenue"><i class="fas fa-coins"></i></div>
-        <div class="kpi-body">
-          <span class="kpi-label">Revenus ce mois</span>
-          <div class="kpi-value" id="kpi-revenus">--</div>
-          <div class="kpi-trend" id="kpi-revenus-trend">--</div>
-        </div>
-        <div class="kpi-sparkline">
-          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
-            <polyline points="0,28 10,22 20,25 30,14 40,18 50,8 60,12 70,5 80,2" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
-          </svg>
-        </div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-icon orders"><i class="fas fa-bag-shopping"></i></div>
-        <div class="kpi-body">
-          <span class="kpi-label">Commandes ce mois</span>
-          <div class="kpi-value" id="kpi-commandes">--</div>
-          <div class="kpi-trend neutral"><i class="fas fa-minus"></i> Ce mois</div>
-        </div>
-        <div class="kpi-sparkline">
-          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
-            <polyline points="0,26 10,20 20,22 30,16 40,18 50,10 60,14 70,8 80,6" fill="none" stroke="#6c63ff" stroke-width="1.5"/>
-          </svg>
-        </div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-icon products"><i class="fas fa-box-open"></i></div>
-        <div class="kpi-body">
-          <span class="kpi-label">Produits actifs</span>
-          <div class="kpi-value" id="kpi-produits">--</div>
-          <div class="kpi-trend neutral"><i class="fas fa-minus"></i> Total</div>
-        </div>
-        <div class="kpi-sparkline">
-          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
-            <polyline points="0,20 10,18 20,20 30,19 40,21 50,18 60,20 70,19 80,18" fill="none" stroke="#27ae60" stroke-width="1.5"/>
-          </svg>
-        </div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-icon rating"><i class="fas fa-star"></i></div>
-        <div class="kpi-body">
-          <span class="kpi-label">Note moyenne</span>
-          <div class="kpi-value" id="kpi-note">--</div>
-          <div class="kpi-trend neutral"><i class="fas fa-star"></i> /5</div>
-        </div>
-        <div class="kpi-sparkline">
-          <svg viewBox="0 0 80 30" preserveAspectRatio="none">
-            <polyline points="0,20 10,18 20,16 30,14 40,12 50,11 60,10 70,8 80,7" fill="none" stroke="#f39c12" stroke-width="1.5"/>
-          </svg>
-        </div>
-      </div>
+<div class="main">
+    <div class="nav">
+        <a class="active" onclick="showPage('stats')"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a onclick="showPage('products')"><i class="fas fa-box"></i> Produits</a>
+        <a onclick="showPage('orders')"><i class="fas fa-shopping-cart"></i> Commandes</a>
+        <a onclick="showPage('settings')"><i class="fas fa-cog"></i> Paramètres</a>
     </div>
 
-    <div class="charts-row">
-      <div class="chart-card">
-        <div class="chart-header">
-          <div><h3>Revenus mensuels</h3><p>12 derniers mois</p></div>
-          <div class="chart-period">
-            <button class="period-btn active">Mensuel</button>
-          </div>
+    <!-- Dashboard -->
+    <div id="stats-page" class="page active">
+        <div class="stats">
+            <div class="stat-card"><h3>💰 Revenus</h3><div class="value" id="revenus">0 DA</div></div>
+            <div class="stat-card"><h3>📦 Commandes</h3><div class="value" id="commandes">0</div></div>
+            <div class="stat-card"><h3>🏷️ Produits</h3><div class="value" id="produits">0</div></div>
+            <div class="stat-card"><h3>⭐ Note</h3><div class="value" id="note">0.0</div></div>
         </div>
-        <div class="bar-chart-wrap">
-          <div class="bar-chart" id="revenue-chart"></div>
-          <div class="bar-chart-labels" id="revenue-labels"></div>
+        <div class="card">
+            <h3>📋 Dernières commandes</h3>
+            <table><thead>乳<th>N°</th><th>Client</th><th>Total</th><th>Statut</th></tr></thead><tbody id="recent-orders"></tbody></table>
         </div>
-      </div>
-      <div class="chart-card small">
-        <div class="chart-header"><div><h3>Statut commandes</h3><p>Ce mois</p></div></div>
-        <div class="donut-wrap">
-          <svg class="donut-svg" viewBox="0 0 120 120">
-            <circle class="donut-track" cx="60" cy="60" r="46" fill="none" stroke="#f0ebe8" stroke-width="14"/>
-            <circle class="donut-seg delivered" cx="60" cy="60" r="46" fill="none" stroke="#27ae60" stroke-width="14"
-              stroke-dasharray="0 289" stroke-dashoffset="0" stroke-linecap="round"/>
-            <circle class="donut-seg transit" cx="60" cy="60" r="46" fill="none" stroke="var(--gold)" stroke-width="14"
-              stroke-dasharray="0 289" stroke-dashoffset="0" stroke-linecap="round"/>
-            <circle class="donut-seg pending" cx="60" cy="60" r="46" fill="none" stroke="#e74c3c" stroke-width="14"
-              stroke-dasharray="0 289" stroke-dashoffset="0" stroke-linecap="round"/>
-            <text x="60" y="56" text-anchor="middle" font-size="14" font-weight="700" fill="#333">0</text>
-            <text x="60" y="70" text-anchor="middle" font-size="7" fill="#999">Commandes</text>
-          </svg>
-          <div class="donut-legend"></div>
-        </div>
-      </div>
     </div>
 
-    <div class="tables-row">
-      <div class="table-card">
-        <div class="table-header">
-          <h3><i class="fas fa-clock-rotate-left"></i> Dernières commandes</h3>
-          <button class="btn-see-all" onclick="dashPage('orders', document.querySelector('[data-page=orders]'))">Voir tout</button>
+    <!-- Produits -->
+    <div id="products-page" class="page">
+        <div class="card">
+            <h3>🛍️ Mes produits <button onclick="openProductModal()" style="float:right"><i class="fas fa-plus"></i> Ajouter</button></h3>
+            <table><thead>乳<th>Nom</th><th>Prix</th><th>Stock</th><th>Action</th></tr></thead><tbody id="products-list"></tbody></table>
         </div>
-        <table class="dash-table">
-          <thead><tr><th>ID</th><th>Client</th><th>Articles</th><th>Montant</th><th>Statut</th></tr></thead>
-          <tbody id="recent-orders-tbody">
-            <tr><td colspan="5" style="text-align:center;padding:20px;color:#999">Chargement...</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="table-card small">
-        <div class="table-header"><h3><i class="fas fa-fire"></i> Top Produits</h3></div>
-        <div class="top-products" id="top-products-list">
-          <p style="padding:20px;color:#999;text-align:center;font-size:0.8rem">Chargement...</p>
+    </div>
+
+    <!-- Commandes avec GPS -->
+    <div id="orders-page" class="page">
+        <div class="card">
+            <h3>🚚 Toutes les commandes <button class="btn-gps" onclick="refreshOrders()" style="float:right"><i class="fas fa-refresh"></i> Rafraîchir</button></h3>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Client</th>
+                            <th>Total</th>
+                            <th>Statut</th>
+                            <th>GPS</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-list"></tbody>
+                </table>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- ══ PAGE COMMANDES ══ -->
-  <div class="dash-page" id="page-orders">
-    <div class="page-actions">
-      <div class="search-filter">
-        <div class="sf-search">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="N° commande ou client..." oninput="filterOrders(this.value)">
+    <!-- Paramètres -->
+    <div id="settings-page" class="page">
+        <div class="card">
+            <h3>⚙️ Paramètres</h3>
+            <label>Nom du magasin</label><input type="text" id="shop-name">
+            <label>Téléphone</label><input type="text" id="shop-phone">
+            <label>Description</label><textarea id="shop-desc" rows="3"></textarea>
+            <label>📍 Position GPS du magasin</label>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="shop-lat" placeholder="Latitude">
+                <input type="text" id="shop-lng" placeholder="Longitude">
+                <button onclick="getCurrentLocation()" style="width:auto;">📍 Ma position</button>
+            </div>
+            <button onclick="saveSettings()" style="margin-top:15px;">Sauvegarder</button>
         </div>
-        <select class="sf-select" onchange="filterOrderStatus(this.value)">
-          <option value="">Tous les statuts</option>
-          <option value="en_attente">En attente</option>
-          <option value="confirmee">Confirmée</option>
-          <option value="en_preparation">En préparation</option>
-          <option value="expediee">Expédiée</option>
-          <option value="en_livraison">En livraison</option>
-          <option value="livree">Livrée</option>
-          <option value="annulee">Annulée</option>
-        </select>
-      </div>
-      <button class="btn-export" onclick="exportOrders()"><i class="fas fa-download"></i> Exporter CSV</button>
     </div>
-    <div class="table-card full-width">
-      <table class="dash-table full">
-        <thead>
-          <tr>
-            <th>ID Commande</th><th>Client</th><th>Articles</th>
-            <th>Wilaya</th><th>Montant</th><th>Date</th><th>Statut</th><th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="orders-tbody">
-          <tr><td colspan="8" style="text-align:center;padding:30px;color:#999">Chargement...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+</div>
 
-  <!-- ══ PAGE PRODUITS ══ -->
-  <div class="dash-page" id="page-products">
-    <div class="page-actions">
-      <div class="search-filter">
-        <div class="sf-search">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Chercher un produit..." oninput="filterProducts(this.value)">
-        </div>
-      </div>
-      <button class="btn-add-product" onclick="openAddProduct()"><i class="fas fa-plus"></i> Ajouter un produit</button>
-    </div>
-    <div class="products-grid" id="products-grid">
-      <div style="text-align:center;padding:60px;color:#999;grid-column:1/-1">Chargement...</div>
-    </div>
-  </div>
-
-  <!-- ══ PAGE ANALYTICS ══ -->
-  <div class="dash-page" id="page-analytics">
-    <div class="chart-card" style="margin-bottom:20px">
-      <div class="chart-header"><div><h3>Ventes par Wilaya</h3><p>Toutes les wilayas</p></div></div>
-      <div class="wilaya-bars" id="wilaya-bars">
-        <p style="padding:20px;color:#999;text-align:center">Chargement...</p>
-      </div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-header"><div><h3>Évolution des ventes</h3><p>12 derniers mois</p></div></div>
-      <div class="line-chart-wrap">
-        <svg class="line-chart-svg" viewBox="0 0 600 180" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.3"/>
-              <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <line x1="40" y1="20" x2="40" y2="155" stroke="#f0e9e7" stroke-width="1"/>
-          <line x1="40" y1="155" x2="590" y2="155" stroke="#f0e9e7" stroke-width="1"/>
-          <path id="area-path" fill="url(#lineGrad)"/>
-          <path id="line-path" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <g id="line-points"></g>
-          <g id="line-labels" font-size="8" fill="#aaa" text-anchor="middle"></g>
-        </svg>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ PAGE CLIENTS ══ -->
-  <div class="dash-page" id="page-customers">
-    <div class="table-card full-width">
-      <div class="table-header">
-        <h3><i class="fas fa-users"></i> Mes Clients</h3>
-      </div>
-      <table class="dash-table full">
-        <thead>
-          <tr><th>Client</th><th>Email</th><th>Wilaya</th><th>Commandes</th><th>Total dépensé</th><th>Dernier achat</th><th>Statut</th></tr>
-        </thead>
-        <tbody id="customers-tbody">
-          <tr><td colspan="7" style="text-align:center;padding:30px;color:#999">Chargement...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══ PAGE AVIS ══ -->
-  <div class="dash-page" id="page-reviews">
-    <div class="reviews-summary">
-      <div class="rs-score">
-        <div class="rs-big">--</div>
-        <div class="rs-stars" style="color:#f39c12">★★★★★</div>
-        <p>Sur 0 avis</p>
-      </div>
-      <div class="rs-bars">
-        <div class="rb-row"><span>5★</span><div class="rb-bar"><div class="rb-fill" style="width:0%"></div></div><span>0%</span></div>
-        <div class="rb-row"><span>4★</span><div class="rb-bar"><div class="rb-fill" style="width:0%"></div></div><span>0%</span></div>
-        <div class="rb-row"><span>3★</span><div class="rb-bar"><div class="rb-fill" style="width:0%"></div></div><span>0%</span></div>
-        <div class="rb-row"><span>2★</span><div class="rb-bar"><div class="rb-fill" style="width:0%"></div></div><span>0%</span></div>
-        <div class="rb-row"><span>1★</span><div class="rb-bar"><div class="rb-fill" style="width:0%;background:#e74c3c"></div></div><span>0%</span></div>
-      </div>
-    </div>
-    <div class="reviews-list" id="reviews-list">
-      <div style="text-align:center;padding:40px;color:#999">Chargement...</div>
-    </div>
-  </div>
-
-  <!-- ══ PAGE SETTINGS ══ -->
-  <div class="dash-page" id="page-settings">
-    <div class="settings-grid">
-      <div class="settings-card">
-        <h3><i class="fas fa-store"></i> Mon Magasin</h3>
-        <div class="set-group"><label>Nom du magasin</label><input type="text" id="set-nom-magasin" placeholder="Nom du magasin"></div>
-        <div class="set-group"><label>Téléphone</label><input type="tel" id="set-telephone" placeholder="+213 0XX XX XX XX"></div>
-        <div class="set-group"><label>Description</label><textarea id="set-description" placeholder="Description de votre magasin..."></textarea></div>
-        <button class="btn-save" onclick="saveSettings()"><i class="fas fa-check"></i> Sauvegarder</button>
-      </div>
-      <div class="settings-card">
-        <h3><i class="fas fa-bell"></i> Notifications</h3>
-        <div class="toggle-row">
-          <div class="tr-info"><strong>Nouvelles commandes</strong><p>Email pour chaque commande</p></div>
-          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <div class="tr-info"><strong>Avis clients</strong><p>Notification des nouveaux avis</p></div>
-          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <div class="tr-info"><strong>Stock faible</strong><p>Alerte quand moins de 5 unités</p></div>
-          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-        </div>
-      </div>
-      <div class="settings-card">
-        <h3><i class="fas fa-lock"></i> Sécurité</h3>
-        <div class="set-group"><label>Email</label><input type="email" id="set-email" placeholder="votre@email.com"></div>
-        <div class="set-group"><label>Mot de passe actuel</label><input type="password" placeholder="••••••••"></div>
-        <div class="set-group"><label>Nouveau mot de passe</label><input type="password" placeholder="Minimum 8 caractères"></div>
-        <button class="btn-save" onclick="saveSettings()"><i class="fas fa-check"></i> Mettre à jour</button>
-      </div>
-      <div class="settings-card">
-        <h3><i class="fas fa-credit-card"></i> Paiements</h3>
-        <div class="bank-info">
-          <div class="bi-row"><span>Mode accepté</span><strong>Espèces à la livraison</strong></div>
-          <div class="bi-row"><span>Virement</span><strong>Disponible bientôt</strong></div>
-          <div class="bi-row"><span>CIB / Dahabia</strong></strong><strong>Disponible bientôt</strong></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-<!-- ADD PRODUCT MODAL -->
-<div class="modal-overlay" id="add-product-overlay">
-  <div class="modal-box large">
-    <button class="modal-close-btn" onclick="closeAddProduct()">✕</button>
-    <h2 class="modal-title"><i class="fas fa-box-open"></i> Ajouter un Produit</h2>
-    <div class="modal-form-grid">
-      <div class="mfg-col">
-        <div class="mf-group"><label>Nom du produit *</label><input type="text" id="np-name" placeholder="Ex: Robe d'été fleurie"></div>
-        <div class="mf-group"><label>Catégorie *</label>
-          <select id="np-cat">
+<!-- Modal Ajout Produit -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <h3>➕ Ajouter un produit</h3>
+        <input type="text" id="p-name" placeholder="Nom">
+        <textarea id="p-desc" placeholder="Description"></textarea>
+        <input type="number" id="p-price" placeholder="Prix (DA)">
+        <input type="number" id="p-stock" placeholder="Stock">
+        <select id="p-category">
             <option value="1">Mode Homme</option>
             <option value="2">Mode Femme</option>
             <option value="3">Enfants</option>
-            <option value="4">Électronique</option>
-            <option value="5">Maison & Jardin</option>
-            <option value="6">Sport & Loisirs</option>
-            <option value="7">Beauté & Santé</option>
-          </select>
+        </select>
+        <div class="modal-buttons">
+            <button onclick="saveProduct()">Enregistrer</button>
+            <button onclick="closeProductModal()">Annuler</button>
         </div>
-        <div class="mf-row2">
-          <div class="mf-group"><label>Prix (DA) *</label><input type="number" id="np-price" placeholder="0" min="0"></div>
-          <div class="mf-group"><label>Stock *</label><input type="number" id="np-stock" placeholder="0" min="0"></div>
-        </div>
-        <div class="mf-group"><label>Description</label><textarea id="np-desc" placeholder="Décrivez votre produit..."></textarea></div>
-      </div>
-      <div class="mfg-col">
-        <div class="mf-group"><label>Photos du produit</label>
-          <div class="upload-zone" onclick="document.getElementById('np-imgs').click()">
-            <i class="fas fa-cloud-arrow-up"></i>
-            <p>Cliquer pour ajouter des photos</p>
-            <small>JPG, PNG — max 5 photos</small>
-          </div>
-          <input type="file" id="np-imgs" multiple accept="image/*" style="display:none" onchange="previewImgs(this)">
-          <div class="img-previews" id="img-previews"></div>
-        </div>
-        <div class="mf-row2">
-          <div class="mf-group"><label>Tailles</label><input type="text" id="np-tailles" placeholder="S, M, L, XL"></div>
-          <div class="mf-group"><label>Couleurs</label><input type="text" id="np-couleurs" placeholder="Rouge, Bleu..."></div>
-        </div>
-      </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeAddProduct()">Annuler</button>
-      <button class="btn-save-product" onclick="saveProduct()"><i class="fas fa-check"></i> Publier le produit</button>
-    </div>
-  </div>
 </div>
 
-<div id="dash-toast"></div>
+<!-- Modal GPS -->
+<div id="gpsModal" class="modal">
+    <div class="modal-content">
+        <h3>📍 Suivi GPS de la commande</h3>
+        <div id="gpsInfo">Chargement...</div>
+        <div id="gpsMap" style="height:200px; background:#f0f0f0; margin:10px 0; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+            <i class="fas fa-map-marker-alt" style="font-size:40px; color:#451d18;"></i>
+        </div>
+        <button onclick="updateLivePosition()" style="width:100%; margin-top:10px;">
+            <i class="fas fa-location-dot"></i> Envoyer ma position actuelle
+        </button>
+        <div class="modal-buttons">
+            <button onclick="closeGpsModal()">Fermer</button>
+        </div>
+    </div>
+</div>
 
-<script src="dashboard.js"></script>
-<script src="luxury.js"></script>
+<script>
+const API_URL = 'http://localhost/ikyo/api/';
+let vendeur = null;
+let allOrders = [];
+let currentOrderId = null;
+
+// Vérification connexion
+try {
+    const v = localStorage.getItem('vendeur');
+    if(v) {
+        vendeur = JSON.parse(v);
+        document.getElementById('userName').innerHTML = vendeur.nom_magasin || 'Vendeur';
+    } else {
+        window.location.href = 'login.html';
+    }
+} catch(e) {
+    window.location.href = 'login.html';
+}
+
+function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(page + '-page').classList.add('active');
+    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+    if(event && event.target) event.target.classList.add('active');
+    
+    if(page === 'stats') { loadStats(); loadRecentOrders(); }
+    if(page === 'products') loadProducts();
+    if(page === 'orders') loadOrders();
+    if(page === 'settings') loadSettings();
+}
+
+// STATS
+async function loadStats() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=stats');
+        const data = await res.json();
+        if(data.success) {
+            document.getElementById('revenus').innerHTML = (data.revenus || 0).toLocaleString() + ' DA';
+            document.getElementById('commandes').innerHTML = data.nb_commandes || 0;
+            document.getElementById('produits').innerHTML = data.nb_produits || 0;
+            document.getElementById('note').innerHTML = (data.note_moyenne || 0).toFixed(1);
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function loadRecentOrders() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=commandes&limite=5');
+        const data = await res.json();
+        if(data.success && data.commandes) {
+            document.getElementById('recent-orders').innerHTML = data.commandes.map(c => `
+                <tr>
+                    <td>${c.numero_commande || '-'}</td>
+                    <td>${c.client_nom || '-'}</td>
+                    <td>${(c.total_final || 0).toLocaleString()} DA</td>
+                    <td><span class="status ${c.statut}">${c.statut}</span></td>
+                </tr>
+            `).join('');
+        }
+    } catch(e) { console.error(e); }
+}
+
+// PRODUITS
+async function loadProducts() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=produits');
+        const data = await res.json();
+        if(data.success && data.produits) {
+            document.getElementById('products-list').innerHTML = data.produits.map(p => `
+                <tr>
+                    <td>${p.nom}</td>
+                    <td>${(p.prix || 0).toLocaleString()} DA</td>
+                    <td>${p.stock || 0}</td>
+                    <td><button onclick="deleteProduct(${p.id})" style="background:#e74c3c">Supprimer</button></td>
+                </tr>
+            `).join('');
+        }
+    } catch(e) { console.error(e); }
+}
+
+function openProductModal() { document.getElementById('productModal').style.display = 'flex'; }
+function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
+
+async function saveProduct() {
+    const data = {
+        nom: document.getElementById('p-name').value,
+        description: document.getElementById('p-desc').value,
+        prix: parseFloat(document.getElementById('p-price').value),
+        stock: parseInt(document.getElementById('p-stock').value),
+        categorie_id: parseInt(document.getElementById('p-category').value)
+    };
+    if(!data.nom || !data.prix) { alert('Nom et prix requis'); return; }
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=ajouter_produit', {
+            method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if(result.success) {
+            closeProductModal();
+            loadProducts();
+            loadStats();
+            alert('Produit ajouté');
+        }
+    } catch(e) { alert('Erreur serveur'); }
+}
+
+async function deleteProduct(id) {
+    if(!confirm('Supprimer ?')) return;
+    try {
+        await fetch(API_URL + 'dashboard.php?action=supprimer_produit', {
+            method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ produit_id: id })
+        });
+        loadProducts();
+        loadStats();
+    } catch(e) { console.error(e); }
+}
+
+// COMMANDES avec GPS
+async function loadOrders() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=commandes');
+        const data = await res.json();
+        if(data.success && data.commandes) {
+            allOrders = data.commandes;
+            document.getElementById('orders-list').innerHTML = allOrders.map(c => `
+                <tr>
+                    <td>${c.numero_commande || '-'}</td>
+                    <td>${c.client_nom || '-'}</td>
+                    <td>${(c.total_final || 0).toLocaleString()} DA</td>
+                    <td><span class="status ${c.statut}">${c.statut}</span></td>
+                    <td><button class="btn-gps" onclick="showGpsModal(${c.id})"><i class="fas fa-map-marker-alt"></i> GPS</button></td>
+                    <td><select onchange="updateOrderStatus(${c.id}, this.value)"><option value="en_attente" ${c.statut=='en_attente'?'selected':''}>En attente</option><option value="confirmee" ${c.statut=='confirmee'?'selected':''}>Confirmée</option><option value="en_preparation" ${c.statut=='en_preparation'?'selected':''}>En préparation</option><option value="expediee" ${c.statut=='expediee'?'selected':''}>Expédiée</option><option value="en_livraison" ${c.statut=='en_livraison'?'selected':''}>En livraison</option><option value="livree" ${c.statut=='livree'?'selected':''}>Livrée</option><option value="annulee" ${c.statut=='annulee'?'selected':''}>Annulée</option></select></td>
+                </tr>
+            `).join('');
+        }
+    } catch(e) { console.error(e); }
+}
+
+function refreshOrders() {
+    loadOrders();
+    alert('Commandes actualisées');
+}
+
+async function updateOrderStatus(orderId, status) {
+    try {
+        await fetch(API_URL + 'dashboard.php?action=changer_statut', {
+            method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ commande_id: orderId, statut: status })
+        });
+        loadOrders();
+    } catch(e) { console.error(e); }
+}
+
+// ========== FONCTIONS GPS ==========
+async function showGpsModal(orderId) {
+    currentOrderId = orderId;
+    document.getElementById('gpsModal').style.display = 'flex';
+    await loadGpsData(orderId);
+}
+
+function closeGpsModal() {
+    document.getElementById('gpsModal').style.display = 'none';
+    currentOrderId = null;
+}
+
+async function loadGpsData(orderId) {
+    try {
+        const res = await fetch(`api/commandes.php?action=gps_positions&id=${orderId}`);
+        const data = await res.json();
+        
+        if(data.success) {
+            let html = '';
+            if(data.positions && data.positions.length > 0) {
+                const lastPos = data.positions[data.positions.length - 1];
+                html = `
+                    <p><strong>📍 Dernière position :</strong></p>
+                    <p>Latitude: ${lastPos.latitude}</p>
+                    <p>Longitude: ${lastPos.longitude}</p>
+                    <p>Message: ${lastPos.statut_msg}</p>
+                    <p>Date: ${new Date(lastPos.enregistre_le).toLocaleString()}</p>
+                    <button onclick="openGoogleMaps(${lastPos.latitude}, ${lastPos.longitude})" style="width:100%; margin-top:10px;">
+                        <i class="fas fa-external-link-alt"></i> Ouvrir dans Google Maps
+                    </button>
+                `;
+                document.getElementById('gpsMap').innerHTML = `<iframe width="100%" height="200" frameborder="0" style="border:0; border-radius:8px;" 
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=${lastPos.longitude-0.01},${lastPos.latitude-0.01},${lastPos.longitude+0.01},${lastPos.latitude+0.01}&layer=mapnik&marker=${lastPos.latitude},${lastPos.longitude}"></iframe>`;
+            } else {
+                html = '<p>Aucune position GPS enregistrée pour cette commande.</p>';
+                document.getElementById('gpsMap').innerHTML = '<div style="height:200px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-map-marker-alt" style="font-size:40px; color:#999;"></i><br>Aucune position</div>';
+            }
+            document.getElementById('gpsInfo').innerHTML = html;
+        } else {
+            document.getElementById('gpsInfo').innerHTML = '<p>Erreur chargement GPS</p>';
+        }
+    } catch(e) {
+        console.error(e);
+        document.getElementById('gpsInfo').innerHTML = '<p>Erreur: ' + e.message + '</p>';
+    }
+}
+
+function openGoogleMaps(lat, lng) {
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`);
+}
+
+function updateLivePosition() {
+    if(!currentOrderId) return;
+    
+    if(!navigator.geolocation) {
+        alert('Votre navigateur ne supporte pas la géolocalisation');
+        return;
+    }
+    
+    navigator.geolocation.getCurrentPosition(async function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        
+        try {
+            const res = await fetch('api/commandes.php?action=gps_update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    commande_id: currentOrderId,
+                    latitude: lat,
+                    longitude: lng,
+                    message: 'En cours de livraison'
+                })
+            });
+            const data = await res.json();
+            if(data.success) {
+                alert('✅ Position mise à jour !');
+                await loadGpsData(currentOrderId);
+            } else {
+                alert('Erreur: ' + data.message);
+            }
+        } catch(e) {
+            alert('Erreur: ' + e.message);
+        }
+    }, function(error) {
+        alert('Erreur géolocalisation: ' + error.message);
+    });
+}
+
+function getCurrentLocation() {
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('shop-lat').value = position.coords.latitude;
+            document.getElementById('shop-lng').value = position.coords.longitude;
+            alert('Position GPS récupérée !');
+        }, function(error) {
+            alert('Erreur: ' + error.message);
+        });
+    } else {
+        alert('Géolocalisation non supportée');
+    }
+}
+
+// PARAMÈTRES
+async function loadSettings() {
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=mon_profil');
+        const data = await res.json();
+        if(data.success && data.vendeur) {
+            document.getElementById('shop-name').value = data.vendeur.nom_magasin || '';
+            document.getElementById('shop-phone').value = data.vendeur.telephone || '';
+            document.getElementById('shop-desc').value = data.vendeur.description || '';
+            document.getElementById('shop-lat').value = data.vendeur.latitude_vendeur || '';
+            document.getElementById('shop-lng').value = data.vendeur.longitude_vendeur || '';
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function saveSettings() {
+    try {
+        await fetch(API_URL + 'dashboard.php?action=modifier_profil', {
+            method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({
+                nom_magasin: document.getElementById('shop-name').value,
+                telephone: document.getElementById('shop-phone').value,
+                description: document.getElementById('shop-desc').value,
+                latitude_vendeur: document.getElementById('shop-lat').value,
+                longitude_vendeur: document.getElementById('shop-lng').value
+            })
+        });
+        alert('Paramètres sauvegardés');
+    } catch(e) { console.error(e); }
+}
+
+// DÉCONNEXION
+function logout() {
+    localStorage.removeItem('vendeur');
+    window.location.href = 'login.html';
+}
+
+// Initialisation
+loadStats();
+loadRecentOrders();
+loadProducts();
+loadOrders();
+loadSettings();
+
+// Fermer modals en cliquant à l'extérieur
+window.onclick = function(e) {
+    if(e.target === document.getElementById('productModal')) closeProductModal();
+    if(e.target === document.getElementById('gpsModal')) closeGpsModal();
+};
+</script>
 </body>
 </html>

@@ -1,417 +1,577 @@
+// ========== REDIRECTION VERS LOGIN ==========
+function redirectToLogin() {
+    window.location.href = 'login.html';
+}
 
-/* ===== PAGE NAVIGATION ===== */
+
+// ========== NAVIGATION ==========
 function showPage(page, e) {
-    if (e) e.preventDefault();
-    ['home', 'categories', 'shop', 'support', 'recherche'].forEach(function (p) {
-        document.getElementById(p + '-page').style.display = 'none';
-    });
-    document.getElementById(page + '-page').style.display = 'block';
+    if(e) e.preventDefault();
+    var pages = ['home', 'categories', 'shop', 'support', 'recherche', 'cart', 'dashboard', 'boutiques', 'login'];
+    for(var i = 0; i < pages.length; i++) {
+        var el = document.getElementById(pages[i] + '-page');
+        if(el) el.style.display = 'none';
+    }
+    var target = document.getElementById(page + '-page');
+    if(target) target.style.display = 'block';
     window.scrollTo(0, 0);
+    if(page === 'home') loadHomeProducts();
+    if(page === 'shop') loadShopProducts();
+    if(page === 'recherche') lancerRecherche();
+    if(page === 'cart') renderCart();
+    if(page === 'boutiques') loadBoutiques();
+    if(page === 'dashboard') loadDashboardAPI();
+    if(page === 'categories') loadCategoriesFromAPI();
 }
-
-/* ===== SHOP FILTER ===== */
+// ========== SHOP FILTER ==========
 function filterShop(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(function (b) {
-        b.classList.remove('active');
-    });
-    btn.classList.add('active');
-    document.querySelectorAll('.prod-card').forEach(function (card) {
-        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    if(btn) btn.classList.add('active');
+    document.querySelectorAll('.prod-card').forEach(function(card) {
+        var cardCat = card.dataset.cat;
+        card.style.display = (cat === 'all' || cardCat === cat) ? 'block' : 'none';
     });
 }
 
-/* ===== FAQ ACCORDION ===== */
+// ========== FAQ ACCORDION ==========
 function toggleFaq(el) {
     el.classList.toggle('open');
-    el.nextElementSibling.classList.toggle('open');
+    if(el.nextElementSibling) el.nextElementSibling.classList.toggle('open');
 }
 
-/* =====================================================
-   PARTNER FORM MODAL
-===================================================== */
-var pCurrentStep = 1;
+// ========== PARTNER FORM MODAL ==========
+function openPartnerForm() { alert('Formulaire partenaire - Fonctionnalité à venir'); }
+function closePartnerForm() {}
 
-function openPartnerForm() {
-    document.getElementById('partner-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-}
+// ========== API CONFIGURATION ==========
+const API_URL = 'http://localhost/ikyo/api/';
+let cart = JSON.parse(localStorage.getItem('ikyo_cart')) || [];
 
-function closePartnerForm() {
-    document.getElementById('partner-overlay').classList.remove('open');
-    document.body.style.overflow = '';
-    setTimeout(pResetForm, 300);
-}
-
-function pResetForm() {
-    pCurrentStep = 1;
-    pGoStep(1, true);
-    document.getElementById('p-success-screen').classList.remove('show');
-    document.getElementById('p-form-body').style.display = 'block';
-    document.getElementById('p-steps-bar').style.display = 'flex';
-    document.querySelectorAll('#p-main-modal input:not([type=file]), #p-main-modal select, #p-main-modal textarea')
-        .forEach(function (el) {
-            el.value = el.tagName === 'SELECT' ? (el.options[0] ? el.options[0].value : '') : '';
-        });
-    document.getElementById('pf-count').textContent = '';
-    document.querySelectorAll('.p-err').forEach(function (e) { e.style.display = 'none'; });
-    var btn = document.getElementById('p-submit-btn');
-    btn.disabled = false;
-    btn.innerHTML = 'Envoyer la demande &nbsp;<i class="fas fa-paper-plane"></i>';
-}
-
-function pGoStep(n, silent) {
-    if (!silent && !pValidateStep(pCurrentStep)) return;
-    pCurrentStep = n;
-    document.querySelectorAll('.p-step-page').forEach(function (p, i) {
-        p.classList.toggle('active', i + 1 === n);
-    });
-    [1, 2, 3].forEach(function (i) {
-        var dot = document.getElementById('pdot' + i);
-        dot.className = 'p-dot';
-        if (i < n) dot.classList.add('done');
-        else if (i === n) dot.classList.add('active');
-    });
-    [1, 2].forEach(function (i) {
-        var line = document.getElementById('pline' + i);
-        line.className = 'p-line';
-        if (i < n) line.classList.add('done');
-    });
-    document.getElementById('p-main-modal').scrollTop = 0;
-}
-
-function pValidateStep(step) {
-    var ok = true;
-    function pReq(id, errId) {
-        var val = document.getElementById(id).value.trim();
-        var err = document.getElementById(errId);
-        if (!val) { err.style.display = 'block'; ok = false; }
-        else       { err.style.display = 'none'; }
-    }
-    if (step === 1) {
-        pReq('p-prenom', 'perr-prenom');
-        pReq('p-nom', 'perr-nom');
-        pReq('p-tel', 'perr-tel');
-        pReq('p-wilaya', 'perr-wilaya');
-        var email = document.getElementById('p-email').value.trim();
-        var errEmail = document.getElementById('perr-email');
-        if (!email || !email.includes('@') || !email.includes('.')) {
-            errEmail.style.display = 'block'; ok = false;
-        } else {
-            errEmail.style.display = 'none';
-        }
-    }
-    if (step === 2) {
-        pReq('p-magasin', 'perr-magasin');
-        pReq('p-categorie', 'perr-categorie');
-        pReq('p-adresse', 'perr-adresse');
-    }
-    return ok;
-}
-
-function pCountFiles(input) {
-    var n = input.files.length;
-    var el = document.getElementById('pf-count');
-    if (n > 10) {
-        el.textContent = '⚠ Maximum 10 photos autorisées.';
-        el.style.color = '#c0392b';
-    } else {
-        el.textContent = n + ' photo(s) sélectionnée(s) ✔';
-        el.style.color = '#451d18';
-    }
-}
-
-function pSubmitForm() {
-    if (!pValidateStep(3)) return;
-    var btn = document.getElementById('p-submit-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> &nbsp;Envoi en cours...';
-    setTimeout(function () {
-        document.getElementById('p-form-body').style.display = 'none';
-        document.getElementById('p-steps-bar').style.display = 'none';
-        document.getElementById('p-success-screen').classList.add('show');
-    }, 1500);
-}
-
-/* ===== INIT ===== */
-document.addEventListener('DOMContentLoaded', function () {
-    /* Close partner modal on overlay click */
-    document.getElementById('partner-overlay').addEventListener('click', function (e) {
-        if (e.target === this) closePartnerForm();
-    });
-    
-});
-// Scroll vers promos
-function scrollToPromos(e) {
-    if (e) e.preventDefault();
-    showPage('home', e);
-    setTimeout(function() {
-        document.getElementById('promos-section').scrollIntoView({behavior:'smooth'});
-    }, 100);
-}
-
-
-/* ── Variables globales recherche ── */
-var rchGenre   = '';
-var rchCouleur = '';
-var rchTaille  = '';
-var rchNote    = 0;
-var rchPage    = 1;
-
-/* ── Setters filtres ── */
-function setGenre(v, btn) {
-    rchGenre = v;
-    document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-}
-function setCouleur(v, btn) {
-    rchCouleur = v;
-    document.querySelectorAll('.clr-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-}
-function setTaille(v, btn) {
-    rchTaille = v;
-    document.querySelectorAll('.taille-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-}
-function setNote(v, btn) {
-    rchNote = v;
-    document.querySelectorAll('.note-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-}
-function setPrix(min, max) {
-    document.getElementById('rch-prix-min').value = min || '';
-    document.getElementById('rch-prix-max').value = max || '';
-}
-
-/* ── Reset tous les filtres ── */
-function resetFiltres() {
-    document.getElementById('rch-q').value = '';
-    document.getElementById('rch-wilaya').value = '';
-    document.getElementById('rch-categorie').value = '';
-    document.getElementById('rch-prix-min').value = '';
-    document.getElementById('rch-prix-max').value = '';
-    document.getElementById('rch-promo').checked = false;
-    document.getElementById('rch-stock').checked = false;
-    document.getElementById('rch-tri').value = 'pertinence';
-    rchGenre = ''; rchCouleur = ''; rchTaille = ''; rchNote = 0; rchPage = 1;
-    document.querySelectorAll('.genre-btn, .taille-btn, .note-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.genre-btn, .taille-btn, .note-btn').forEach((b,i) => { if(i===0||b.textContent==='Tous'||b.textContent==='Toutes') b.classList.add('active'); });
-    document.querySelectorAll('.clr-btn')[0].classList.add('active');
-    document.getElementById('rch-grid').innerHTML = '';
-    document.getElementById('rch-count').textContent = '';
-    document.getElementById('rch-tags').innerHTML = '';
-    document.getElementById('rch-vide').style.display = 'none';
-    document.getElementById('rch-pagination').innerHTML = '';
-}
-  
-async function lancerRecherche(page) {
-    if (page) rchPage = page;
-    else rchPage = 1;
-
-    const q         = document.getElementById('rch-q').value.trim();
-    const wilaya    = document.getElementById('rch-wilaya').value;
-    const categorie = document.getElementById('rch-categorie').value;
-    const prixMin   = document.getElementById('rch-prix-min').value;
-    const prixMax   = document.getElementById('rch-prix-max').value;
-    const promo     = document.getElementById('rch-promo').checked;
-    const stock     = document.getElementById('rch-stock').checked;
-    const tri       = document.getElementById('rch-tri').value;
-
-    let url = 'api/recherche.php?page=' + rchPage;
-
-    if (q)         url += '&q=' + encodeURIComponent(q);
-    if (wilaya)    url += '&wilaya=' + wilaya;
-    if (categorie) url += '&categorie=' + categorie;
-    if (prixMin)   url += '&prix_min=' + prixMin;
-    if (prixMax)   url += '&prix_max=' + prixMax;
-    if (rchGenre)  url += '&genre=' + rchGenre;
-    if (rchCouleur)url += '&couleur=' + encodeURIComponent(rchCouleur);
-    if (rchTaille) url += '&taille=' + rchTaille;
-    if (rchNote)   url += '&note_min=' + rchNote;
-    if (promo)     url += '&promo=1';
-    if (stock)     url += '&stock=1';
-
-    url += '&tri=' + tri;
-
-    document.getElementById('rch-loading').style.display = 'block';
-    document.getElementById('rch-grid').innerHTML = '';
-
+// ========== LOAD HOME PRODUCTS ==========
+async function loadHomeProducts() {
     try {
-        const res  = await fetch(url);
+        const res = await fetch(API_URL + 'products.php');
         const data = await res.json();
-
-        document.getElementById('rch-loading').style.display = 'none';
-
-       
-        if (!data.success || data.data.produits.length === 0) {
-            document.getElementById('rch-vide').style.display = 'block';
-            document.getElementById('rch-count').textContent = '0 résultat';
-            return;
-        }
-
-        document.getElementById('rch-count').textContent =
-            data.data.pagination.total + ' résultat(s)';
-
-        afficherProduits(data.data.produits);
-        afficherPagination(data.data.pagination);
-
-    } catch (e) {
-        console.error(e);
-        document.getElementById('rch-loading').style.display = 'none';
-        alert("Erreur serveur ❌");
-    }
-}
-    /* Construire URL */
-    let url = 'api/recherche.php?page=' + rchPage;
-    if (q)         url += '&q='         + encodeURIComponent(q);
-    if (wilaya)    url += '&wilaya='    + wilaya;
-    if (categorie) url += '&categorie=' + categorie;
-    if (prixMin)   url += '&prix_min='  + prixMin;
-    if (prixMax)   url += '&prix_max='  + prixMax;
-    if (rchGenre)  url += '&genre='     + rchGenre;
-    if (rchCouleur)url += '&couleur='   + encodeURIComponent(rchCouleur);
-    if (rchTaille) url += '&taille='    + rchTaille;
-    if (rchNote)   url += '&note_min='  + rchNote;
-    if (promo)     url += '&promo=1';
-    if (stock)     url += '&stock=1';
-    url += '&tri=' + tri;
-
-    /* Afficher loading */
-    document.getElementById('rch-loading').style.display = 'block';
-    document.getElementById('rch-grid').innerHTML = '';
-    document.getElementById('rch-vide').style.display = 'none';
-    document.getElementById('rch-pagination').innerHTML = '';
-
-    try {
-        const res  = await fetch(url);
-        const data = await res.json();
-
-        document.getElementById('rch-loading').style.display = 'none';
-
-        if (!data.success || data.produits.length === 0) {
-            document.getElementById('rch-vide').style.display = 'block';
-            document.getElementById('rch-count').textContent = '0 résultat trouvé';
-            afficherTags(q, wilaya, categorie, prixMin, prixMax);
-            return;
-        }
-
-        /* Résultats */
-        document.getElementById('rch-count').textContent =
-            data.pagination.total + ' résultat(s) trouvé(s)';
-
-        afficherTags(q, wilaya, categorie, prixMin, prixMax);
-        afficherProduits(data.produits);
-        afficherPagination(data.pagination);
-
-    } catch (e) {
-        document.getElementById('rch-loading').style.display = 'none';
-        document.getElementById('rch-count').textContent = '⚠ Erreur serveur — vérifiez XAMPP';
-    }
-
-
-/* ── Afficher les produits ── */
-function afficherProduits(produits) {
-    const grid = document.getElementById('rch-grid');
-    grid.innerHTML = produits.map(p => {
-        const etoiles = '★'.repeat(Math.round(p.note_moyenne || 0)) + '☆'.repeat(5 - Math.round(p.note_moyenne || 0));
-        const prixAff = p.prix_promo
-            ? `<span class="prix-new">${Number(p.prix_promo).toLocaleString()} DA</span>
-               <span class="prix-old">${Number(p.prix).toLocaleString()} DA</span>
-               <span class="remise">-${p.remise_pct}%</span>`
-            : `<span class="prix-new">${Number(p.prix).toLocaleString()} DA</span>`;
-
-        const img = p.image_url || 'section4.jpg';
-
-        return `
-        <div class="rch-card">
-            <div style="position:relative;overflow:hidden;">
-                <img src="${img}" alt="${p.nom}" onerror="this.src='section4.jpg'">
-                ${p.prix_promo ? `<span style="position:absolute;top:10px;left:10px;background:#c0392b;color:white;font-size:0.68rem;font-weight:800;padding:3px 8px;border-radius:10px;">-${p.remise_pct}%</span>` : ''}
-                ${p.stock === 0 ? `<div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;"><span style="background:white;color:#333;padding:6px 14px;border-radius:20px;font-weight:800;font-size:0.8rem;">Rupture de stock</span></div>` : ''}
-            </div>
-            <div class="rch-card-info">
-                <span class="store-nm">${p.nom_magasin || ''}</span>
-                <h4>${p.nom}</h4>
-                <div class="stars">${etoiles} <span style="color:#999;">(${p.nb_avis || 0})</span></div>
-                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${prixAff}</div>
-                ${p.wilaya_nom ? `<div style="font-size:0.72rem;color:#888;margin-top:4px;"><i class="fas fa-location-dot"></i> ${p.wilaya_nom}</div>` : ''}
-                <div style="display:flex;gap:6px;margin-top:10px;">
-                    <button onclick="ajouterPanierRch(${p.id},'${p.nom}')"
-                        style="flex:1;background:#451d18;color:white;border:none;padding:8px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;">
-                        <i class="fas fa-cart-plus"></i> Panier
-                    </button>
-                    <button onclick="toggleFavoriRch(${p.id})"
-                        style="background:#f5ede9;color:#451d18;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;">
-                        <i class="fas fa-heart"></i>
-                    </button>
+        const products = data.data || [];
+        const container = document.getElementById('home-products');
+        if(container) {
+            container.innerHTML = products.slice(0,4).map(p => `
+                <div class="pro">
+                    <img src="${p.image_url || 'section4.jpg'}" alt="${p.nom}" style="width:100%;height:220px;object-fit:cover;">
+                    <div class="des">
+                        <span>${p.vendeur_nom || 'IKYO'}</span>
+                        <h3>${p.nom.substring(0,30)}</h3>
+                        <div class="star"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <h4>${parseInt(p.prix).toLocaleString()} DA</h4>
+                    </div>
+                    <a href="#" onclick="event.preventDefault(); addToCart(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix})">
+                        <i class="fas fa-bag-shopping cart"></i>
+                    </a>
                 </div>
-            </div>
-        </div>`;
-    }).join('');
+            `).join('');
+        }
+    } catch(e) { console.error('Erreur home:', e); }
 }
 
-/* ── Tags filtres actifs ── */
-function afficherTags(q, wilaya, categorie, prixMin, prixMax) {
-    const tags = document.getElementById('rch-tags');
-    let html = '';
-    if (q)         html += `<span class="rch-tag">"${q}" <button onclick="document.getElementById('rch-q').value='';lancerRecherche()">✕</button></span>`;
-    if (wilaya)    html += `<span class="rch-tag">Wilaya <button onclick="document.getElementById('rch-wilaya').value='';lancerRecherche()">✕</button></span>`;
-    if (categorie) html += `<span class="rch-tag">Catégorie <button onclick="document.getElementById('rch-categorie').value='';lancerRecherche()">✕</button></span>`;
-    if (prixMin)   html += `<span class="rch-tag">Min: ${prixMin} DA <button onclick="document.getElementById('rch-prix-min').value='';lancerRecherche()">✕</button></span>`;
-    if (prixMax)   html += `<span class="rch-tag">Max: ${prixMax} DA <button onclick="document.getElementById('rch-prix-max').value='';lancerRecherche()">✕</button></span>`;
-    if (rchGenre)  html += `<span class="rch-tag">${rchGenre} <button onclick="setGenre('',document.querySelector('.genre-btn'));lancerRecherche()">✕</button></span>`;
-    if (rchCouleur)html += `<span class="rch-tag">${rchCouleur} <button onclick="setCouleur('',document.querySelector('.clr-btn'));lancerRecherche()">✕</button></span>`;
-    if (rchTaille) html += `<span class="rch-tag">Taille ${rchTaille} <button onclick="setTaille('',document.querySelector('.taille-btn'));lancerRecherche()">✕</button></span>`;
-    tags.innerHTML = html;
-}
-
-/* ── Pagination ── */
-function afficherPagination(pag) {
-    if (pag.nb_pages <= 1) return;
-    const div = document.getElementById('rch-pagination');
-    let html = '';
-    for (let i = 1; i <= pag.nb_pages; i++) {
-        html += `<button class="pag-btn ${i === pag.page ? 'active' : ''}" onclick="lancerRecherche(${i})">${i}</button>`;
-    }
-    div.innerHTML = html;
-}
-
-/* ── Ajouter au panier depuis recherche ── */
-async function ajouterPanierRch(produitId, nom) {
+// ========== LOAD SHOP PRODUCTS ==========
+async function loadShopProducts() {
     try {
-        const res  = await fetch('api/panier.php?action=ajouter', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ produit_id: produitId, quantite: 1 })
-        });
+        const res = await fetch(API_URL + 'products.php');
         const data = await res.json();
-        if (data.success) {
-            alert('"' + nom + '" ajouté au panier !');
-        } else {
-            alert(data.message);
+        const products = data.data || [];
+        const container = document.getElementById('shop-products');
+        if(container) {
+            container.innerHTML = products.map(p => `
+                <div class="prod-card" data-cat="${p.categorie_nom ? p.categorie_nom.toLowerCase() : 'all'}">
+                    <img src="${p.image_url || 'section4.jpg'}" alt="${p.nom}" style="width:100%;height:200px;object-fit:cover;">
+                    <div class="prod-info">
+                        <span class="store-nm">${p.vendeur_nom || 'IKYO'}</span>
+                        <h4>${p.nom.substring(0,35)}</h4>
+                        <div class="stars">★★★★★ <span>(${Math.floor(Math.random()*200)})</span></div>
+                        <div class="price-row">
+                            <div><span class="price">${parseInt(p.prix).toLocaleString()} DA</span></div>
+                            <button class="add-btn" onclick="addToCart(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix})">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch(e) { console.error('Erreur shop:', e); }
+}
+
+// ========== SEARCH ==========
+async function lancerRecherche() {
+    const q = document.getElementById('rch-q') ? document.getElementById('rch-q').value.trim() : '';
+    if(!q) {
+        document.getElementById('search-results').innerHTML = '<div class="loading">Entrez un terme de recherche</div>';
+        return;
+    }
+    document.getElementById('search-results').innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Recherche...</div>';
+    try {
+        const res = await fetch(API_URL + 'recherche.php?q=' + encodeURIComponent(q));
+        const data = await res.json();
+        const products = data.data || [];
+        const container = document.getElementById('search-results');
+        if(products.length === 0) container.innerHTML = '<div class="loading">🔍 Aucun résultat trouvé</div>';
+        else {
+            container.innerHTML = products.map(p => `
+                <div class="product-card" style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+                    <img src="${p.image_url || 'section4.jpg'}" style="width:100%;height:180px;object-fit:cover;">
+                    <div style="padding:15px;">
+                        <h3>${p.nom}</h3>
+                        <div class="product-price" style="font-size:1.2rem;font-weight:bold;color:#451d18;">${parseInt(p.prix).toLocaleString()} DA</div>
+                        <button onclick="addToCart(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix})" style="background:#451d18;color:white;border:none;padding:10px;width:100%;border-radius:8px;">🛒 Ajouter</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch(e) { container.innerHTML = '<div class="loading">❌ Erreur serveur</div>'; }
+}
+
+// ========== CART FUNCTIONS ==========
+const CART_KEY = 'ikyo_cart';
+const SHIPPING = 500;
+const COUPONS = { 'IKYO10': 10, 'PROMO20': 20, 'SOLDES15': 15 };
+let appliedDiscount = 0;
+let appliedCode = '';
+
+function getCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch { return []; }
+}
+function saveCart(c) { localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+
+function updateCartBadge() {
+    const total = getCart().reduce((s, i) => s + i.qty, 0);
+    var badge = document.getElementById('cart-count-badge');
+    if(badge) {
+        if(total > 0) { badge.textContent = total; badge.style.display = 'inline-block'; }
+        else { badge.style.display = 'none'; }
+    }
+}
+
+function addToCart(id, name, price) {
+    let existing = getCart().find(i => i.id === id);
+    if(existing) existing.qty++;
+    else getCart().push({ id, name, price, qty: 1, store: 'IKYO', img: 'section4.jpg' });
+    saveCart(getCart());
+    updateCartBadge();
+    alert(name + ' ajouté au panier !');
+}
+
+function renderCart() {
+    const cart = getCart();
+    const list = document.getElementById('cart-items-list');
+    const empty = document.getElementById('cart-empty');
+    const right = document.getElementById('cart-right');
+    const thead = document.getElementById('cart-table-head');
+    const tfooter = document.getElementById('cart-footer-row');
+    const btnClear = document.getElementById('btn-clear');
+    const headerCount = document.getElementById('header-count');
+    
+    if(!list) return;
+    const hasItems = cart.length > 0;
+    
+    if(empty) empty.classList.toggle('visible', !hasItems);
+    if(right) right.style.display = hasItems ? 'block' : 'none';
+    if(thead) thead.style.display = hasItems ? 'grid' : 'none';
+    if(tfooter) tfooter.style.display = hasItems ? 'flex' : 'none';
+    if(btnClear) btnClear.style.display = hasItems ? 'flex' : 'none';
+    if(headerCount) headerCount.textContent = cart.reduce((s,i) => s + i.qty, 0) + (cart.length > 1 ? ' articles' : ' article');
+    
+    if(!hasItems) { list.innerHTML = ''; renderSummary(); return; }
+    
+    list.innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+            <div class="ci-product">
+                <img src="${item.img || 'section4.jpg'}" onerror="this.src='section4.jpg'">
+                <div class="ci-info"><div class="ci-store">${item.store || 'IKYO'}</div><div class="ci-name">${item.name}</div></div>
+            </div>
+            <div class="ci-price">${fmtDA(item.price)}</div>
+            <div class="qty-box">
+                <button onclick="changeQty(${i},-1)">−</button>
+                <span>${item.qty}</span>
+                <button onclick="changeQty(${i},+1)">+</button>
+            </div>
+            <div class="ci-total">${fmtDA(item.price * item.qty)}</div>
+            <button class="ci-remove" onclick="removeItem(${i})"><i class="fas fa-xmark"></i></button>
+        </div>
+    `).join('');
+    renderSummary();
+}
+
+function changeQty(idx, delta) {
+    const cart = getCart();
+    cart[idx].qty = Math.max(0, cart[idx].qty + delta);
+    if(cart[idx].qty === 0) cart.splice(idx, 1);
+    saveCart(cart);
+    renderCart();
+    updateCartBadge();
+}
+
+function removeItem(idx) {
+    const cart = getCart();
+    cart.splice(idx, 1);
+    saveCart(cart);
+    renderCart();
+    updateCartBadge();
+    showToast('Article retiré', 'err');
+}
+
+function clearCart() {
+    if(!confirm('Vider tout le panier ?')) return;
+    saveCart([]);
+    appliedDiscount = 0; appliedCode = '';
+    renderCart();
+    updateCartBadge();
+    showToast('Panier vidé', 'err');
+}
+
+function applyCoupon() {
+    const code = document.getElementById('coupon-input')?.value.trim().toUpperCase();
+    const msg = document.getElementById('coupon-msg');
+    if(COUPONS[code]) {
+        appliedDiscount = COUPONS[code];
+        appliedCode = code;
+        msg.textContent = `✔ Code "${code}" — -${appliedDiscount}% appliqué !`;
+        msg.className = 'coupon-msg ok';
+        showToast(`Réduction -${appliedDiscount}%`, 'success');
+    } else {
+        appliedDiscount = 0; appliedCode = '';
+        msg.textContent = '✘ Code promo invalide';
+        msg.className = 'coupon-msg err';
+    }
+    renderSummary();
+}
+
+function fmtDA(n) { return Number(n).toLocaleString('fr-DZ') + ' DA'; }
+
+function renderSummary() {
+    const cart = getCart();
+    const count = cart.reduce((s,i) => s + i.qty, 0);
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    const discount = Math.round(subtotal * appliedDiscount / 100);
+    const hasItems = subtotal > 0;
+    const total = Math.max(0, subtotal - discount + (hasItems ? SHIPPING : 0));
+    
+    const sCount = document.getElementById('s-count');
+    const sSubtotal = document.getElementById('s-subtotal');
+    const sShipping = document.getElementById('s-shipping');
+    const sTotal = document.getElementById('s-total');
+    const sDiscountRow = document.getElementById('s-discount-row');
+    const sDiscount = document.getElementById('s-discount');
+    
+    if(sCount) sCount.textContent = count;
+    if(sSubtotal) sSubtotal.textContent = fmtDA(subtotal);
+    if(sShipping) sShipping.textContent = hasItems ? fmtDA(SHIPPING) : '0 DA';
+    if(sTotal) sTotal.textContent = fmtDA(total);
+    if(sDiscountRow && sDiscount) {
+        if(discount > 0) { sDiscount.textContent = '-' + fmtDA(discount); sDiscountRow.style.display = 'flex'; }
+        else { sDiscountRow.style.display = 'none'; }
+    }
+}
+
+function goCheckout() {
+    if(getCart().length === 0) return;
+    document.getElementById('co-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderRecap();
+    showCoStep(1);
+}
+
+function closeCheckout() {
+    document.getElementById('co-overlay')?.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function showCoStep(n) {
+    for(let i=1; i<=3; i++) { const s = document.getElementById('co-step' + i); if(s) s.style.display = i === n ? 'block' : 'none'; }
+}
+
+function coStep(n) {
+    if(n === 2) {
+        const fields = ['co-prenom', 'co-nom', 'co-tel', 'co-wilaya', 'co-adresse'];
+        let ok = true;
+        fields.forEach(f => {
+            const val = document.getElementById(f)?.value.trim();
+            const err = document.getElementById('coerr-' + f.replace('co-',''));
+            if(!val) { if(err) err.classList.add('show'); ok = false; }
+            else { if(err) err.classList.remove('show'); }
+        });
+        if(!ok) return;
+        renderRecap();
+    }
+    if(n === 3) {
+        document.getElementById('co-name-confirm').textContent = document.getElementById('co-prenom')?.value.trim() || '';
+        document.getElementById('co-tel-confirm').textContent = document.getElementById('co-tel')?.value.trim() || '';
+        document.getElementById('co-order-id').textContent = 'IKYO-' + Date.now().toString(36).toUpperCase().slice(-6);
+        saveCart([]);
+        appliedDiscount = 0; appliedCode = '';
+        updateCartBadge();
+    }
+    showCoStep(n);
+}
+
+function renderRecap() {
+    const cart = getCart();
+    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+    const discount = Math.round(subtotal * appliedDiscount / 100);
+    const total = subtotal - discount + SHIPPING;
+    const el = document.getElementById('co-recap');
+    if(el) {
+        el.innerHTML = `<div class="co-recap-row"><span>Sous-total</span><span>${fmtDA(subtotal)}</span></div>
+            ${discount > 0 ? `<div class="co-recap-row"><span>Réduction (${appliedCode})</span><span style="color:#27ae60">-${fmtDA(discount)}</span></div>` : ''}
+            <div class="co-recap-row"><span>Livraison</span><span>${fmtDA(SHIPPING)}</span></div>
+            <div class="co-recap-row"><span>Total</span><span>${fmtDA(total)}</span></div>`;
+    }
+}
+
+function finishOrder() { closeCheckout(); renderCart(); showPage('home'); }
+
+let _toastTimer;
+function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    if(!t) return;
+    t.innerHTML = msg;
+    t.className = 'show' + (type === 'success' ? ' toast-success' : (type === 'err' ? ' toast-err' : ''));
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => t.className = '', 2800);
+}
+
+// ========== SUPPORT ==========
+function sendSupportMessage() {
+    const prenom = document.getElementById('support-prenom')?.value.trim() || '';
+    const nom = document.getElementById('support-nom')?.value.trim() || '';
+    const email = document.getElementById('support-email')?.value.trim() || '';
+    const message = document.getElementById('support-message')?.value.trim() || '';
+    if(!prenom || !nom || !email || !message) { alert('Veuillez remplir tous les champs'); return; }
+    alert('✅ Message envoyé ! Nous vous répondrons sous 24h.');
+    document.querySelectorAll('#support-page input, #support-page textarea').forEach(el => el.value = '');
+}
+
+// ========== LOAD BOUTIQUES ==========
+async function loadBoutiques() {
+    try {
+        const res = await fetch(API_URL + 'boutique.php?action=liste');
+        const data = await res.json();
+        const boutiques = data.boutiques || [];
+        const container = document.getElementById('boutiques-list');
+        
+        if(container) {
+            if(boutiques.length === 0) {
+                container.innerHTML = '<div class="loading">Aucune boutique pour le moment</div>';
+            } else {
+                container.innerHTML = boutiques.map(b => `
+                    <div class="product-card" style="cursor:pointer;text-align:center;" onclick="window.location.href='boutique.html?id=${b.id}'">
+                        <div style="background:#451d18;color:white;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:20px auto;font-size:2rem;font-weight:bold;">
+                            ${(b.nom_magasin?.charAt(0) || '?').toUpperCase()}
+                        </div>
+                        <div class="product-info">
+                            <h3>${b.nom_magasin || 'Sans nom'}</h3>
+                            <p style="color:#888;font-size:0.8rem;">${b.wilaya || 'Algérie'}</p>
+                            <div class="product-price" style="font-size:0.9rem;">${b.nb_produits || 0} produits</div>
+                            <div style="color:#f39c12;margin:5px 0;">${'★'.repeat(Math.round(b.note_moyenne || 0))}${'☆'.repeat(5-Math.round(b.note_moyenne || 0))}</div>
+                            <button onclick="event.stopPropagation();window.location.href='boutique.html?id=${b.id}'" style="background:#451d18;color:white;border:none;padding:8px;width:100%;border-radius:8px;cursor:pointer;margin-top:10px;">
+                                Voir la boutique →
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
         }
     } catch(e) {
-        alert('Connectez-vous pour ajouter au panier');
+        console.error('Erreur chargement boutiques:', e);
+        const container = document.getElementById('boutiques-list');
+        if(container) container.innerHTML = '<div class="loading">❌ Erreur de chargement des boutiques</div>';
     }
 }
 
-/* ── Favoris depuis recherche ── */
-async function toggleFavoriRch(produitId) {
+// ========== CATEGORIES DYNAMIQUES ==========
+async function loadCategoriesFromAPI() {
     try {
-        const res  = await fetch('api/panier.php?action=toggle_favori', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ produit_id: produitId })
-        });
+        const res = await fetch(API_URL + 'categories.php');
         const data = await res.json();
-        alert(data.message);
-    } catch(e) {
-        alert('Connectez-vous pour ajouter aux favoris');
+        const categories = data.data || [];
+        const container = document.getElementById('categories-container');
+        
+        if(container && categories.length) {
+            let html = '';
+            for(let cat of categories) {
+                if(cat.parent_id === null) {
+                    html += `<div class="cat-block">
+                        <h3><i class="fas ${cat.icone || 'fa-tag'}"></i> ${cat.nom}</h3>
+                        <div class="cat-sub-grid">`;
+                    if(cat.children && cat.children.length) {
+                        for(let child of cat.children) {
+                            html += `<a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;">
+                                        <span>${child.nom}</span>
+                                    </a>`;
+                        }
+                    } else {
+                        html += `<a href="#" class="cat-sub-item" onclick="showPage('shop',event); return false;">
+                                    <span>Tous les produits</span>
+                                </a>`;
+                    }
+                    html += `</div></div>`;
+                }
+            }
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = '<div class="loading">Aucune catégorie trouvée</div>';
+        }
+    } catch(e) { 
+        console.error('Erreur catégories:', e);
+        document.getElementById('categories-container').innerHTML = '<div class="loading">❌ Erreur de chargement</div>';
     }
 }
 
-/* ── Lancer recherche automatiquement quand on ouvre la page ── */
+// ========== LOGIN AVEC API ==========
+async function doLoginAPI() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    
+    if(!email || !password) { 
+        alert('Email et mot de passe requis'); 
+        return; 
+    }
+    
+    try {
+        const formData = new URLSearchParams();
+        formData.append('email', email);
+        formData.append('mot_de_passe', password);
+        
+        const res = await fetch(API_URL + 'auth.php?action=client_login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData.toString()
+        });
+        
+        const data = await res.json();
+        
+        if(data.success) {
+            localStorage.setItem('user', JSON.stringify(data.client));
+            alert('Connecté avec succès !');
+            showPage('home');
+        } else { 
+            alert(data.message); 
+        }
+    } catch(e) { 
+        console.error(e);
+        alert('Erreur serveur, vérifiez XAMPP'); 
+    }
+}
 
+// ========== DASHBOARD AVEC API ==========
+async function loadDashboardAPI() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    if(!user || user.role !== 'vendeur') {
+        document.getElementById('dashboard-stats').innerHTML = `
+            <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                <h3 style="font-size:28px;color:#451d18;">🔒</h3>
+                <p>Connectez-vous en tant que vendeur</p>
+                <button onclick="redirectToLogin()" style="background:#451d18;color:white;border:none;padding:8px 20px;border-radius:8px;margin-top:10px;">
+                    Se connecter
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    try {
+        const res = await fetch(API_URL + 'dashboard.php?action=stats');
+        const data = await res.json();
+        
+        if(data.success) {
+            document.getElementById('dashboard-stats').innerHTML = `
+                <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                    <h3 style="font-size:28px;color:#451d18;">${(data.revenus || 0).toLocaleString()}</h3>
+                    <p>Revenus (DA)</p>
+                    <small style="color:${(data.revenus_pct || 0) >= 0 ? '#27ae60' : '#e74c3c'}">
+                        ${(data.revenus_pct || 0) >= 0 ? '+' : ''}${data.revenus_pct || 0}%
+                    </small>
+                </div>
+                <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                    <h3 style="font-size:28px;color:#451d18;">${data.nb_commandes || 0}</h3>
+                    <p>Commandes</p>
+                </div>
+                <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                    <h3 style="font-size:28px;color:#451d18;">${data.nb_produits || 0}</h3>
+                    <p>Produits</p>
+                </div>
+                <div class="stat-card" style="background:white;padding:20px;border-radius:12px;text-align:center;">
+                    <h3 style="font-size:28px;color:#451d18;">${(data.note_moyenne || 0).toFixed(1)}</h3>
+                    <p>Note moyenne</p>
+                </div>
+            `;
+        }
+    } catch(e) { 
+        console.error(e);
+        document.getElementById('dashboard-stats').innerHTML = '<div class="loading">❌ Erreur de chargement</div>';
+    }
+}
+
+// ========== INIT ==========
 document.addEventListener('DOMContentLoaded', function() {
-    lancerRecherche();
+    showPage('home');
+    updateCartBadge();
+    renderCart();
 });
+// ========== LOGIN AVEC API ==========
+async function doLoginAPI() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    
+    if(!email || !password) { 
+        alert('Email et mot de passe requis'); 
+        return; 
+    }
+    
+    try {
+        const formData = new URLSearchParams();
+        formData.append('email', email);
+        formData.append('mot_de_passe', password);
+        
+        const res = await fetch(API_URL + 'auth.php?action=client_login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData.toString()
+        });
+        
+        const data = await res.json();
+        
+        if(data.success) {
+            localStorage.setItem('user', JSON.stringify(data.client));
+            alert('Connecté avec succès !');
+            showPage('home');
+            location.reload();
+        } else { 
+            alert(data.message); 
+        }
+    } catch(e) { 
+        console.error(e);
+        alert('Erreur serveur, vérifiez XAMPP'); 
+    }
+}
+// ========== EXPORT GLOBAL FUNCTIONS ==========
+window.showPage = showPage;
+window.filterShop = filterShop;
+window.lancerRecherche = lancerRecherche;
+window.addToCart = addToCart;
+window.changeQty = changeQty;
+window.removeItem = removeItem;
+window.clearCart = clearCart;
+window.applyCoupon = applyCoupon;
+window.goCheckout = goCheckout;
+window.closeCheckout = closeCheckout;
+window.coStep = coStep;
+window.finishOrder = finishOrder;
+window.sendSupportMessage = sendSupportMessage;
+window.openPartnerForm = openPartnerForm;
+window.toggleFaq = toggleFaq;
+window.redirectToLogin = redirectToLogin;
+window.doLoginAPI = doLoginAPI;
+window.loadCategoriesFromAPI = loadCategoriesFromAPI;
+window.loadDashboardAPI = loadDashboardAPI;

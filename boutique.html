@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boutique — IKYO</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --brown:#451d18;--brown-dk:#2e110d;--brown-lt:#f5ede9;
+  --brown-md:#e0c4bc;--green:#2ecc71;--radius:14px
+}
+body{font-family:'DM Sans',sans-serif;background:#faf8f6;color:#222}
+
+.nav{background:var(--brown-dk);padding:0 32px;display:flex;align-items:center;
+  justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-style:italic;
+  letter-spacing:6px;color:#fff;text-decoration:none}
+.nav-links a{color:rgba(255,255,255,.75);text-decoration:none;margin-left:20px;
+  font-size:.85rem;font-weight:600;transition:color .2s}
+.nav-links a:hover{color:#fff}
+
+.boutique-hero{
+  background:linear-gradient(135deg,var(--brown-dk),var(--brown));
+  padding:48px 0 0;position:relative;overflow:hidden
+}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:flex-end;gap:28px;padding-bottom:0}
+.boutique-logo{width:90px;height:90px;border-radius:18px;
+  background:rgba(255,255,255,.12);display:flex;align-items:center;
+  justify-content:center;font-size:2.2rem;font-weight:700;color:#fff;
+  font-family:'Playfair Display',serif;flex-shrink:0;
+  border:3px solid rgba(255,255,255,.2);margin-bottom:-20px;position:relative;z-index:2}
+.boutique-info{flex:1;padding-bottom:28px}
+.boutique-info h1{font-family:'Playfair Display',serif;font-size:2rem;
+  font-style:italic;color:#fff;margin-bottom:6px}
+.boutique-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.meta-item{color:rgba(255,255,255,.7);font-size:.82rem;
+  display:flex;align-items:center;gap:6px}
+.meta-item i{font-size:.75rem}
+.boutique-stats{display:flex;gap:24px;padding-bottom:28px}
+.b-stat{text-align:center}
+.b-stat strong{display:block;font-size:1.4rem;font-weight:700;color:#fff}
+.b-stat span{font-size:.7rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px}
+.hero-wave{display:block;width:100%;margin-top:0}
+
+.boutique-main{max-width:1100px;margin:0 auto;padding:32px 24px;
+  display:grid;grid-template-columns:240px 1fr;gap:28px}
+
+.sidebar-filtres{position:sticky;top:76px;align-self:start}
+.filtre-card{background:#fff;border-radius:var(--radius);padding:20px;
+  margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.filtre-title{font-size:.7rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.8px;color:#999;margin-bottom:12px}
+.cat-link{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;
+  font-size:.85rem;color:#555;transition:color .2s;text-decoration:none}
+.cat-link:last-child{border-bottom:none}
+.cat-link:hover,.cat-link.active{color:var(--brown);font-weight:700}
+.cat-count{font-size:.72rem;color:#bbb}
+.tri-select{width:100%;padding:9px 12px;border:1.5px solid #e8e0de;
+  border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.84rem;
+  outline:none;color:#333;cursor:pointer}
+.tri-select:focus{border-color:var(--brown)}
+
+.stars-big{color:#f39c12;font-size:1.2rem;letter-spacing:2px}
+.note-num{font-size:2rem;font-weight:700;color:var(--brown);line-height:1}
+.note-sub{font-size:.75rem;color:#999;margin-top:2px}
+.note-bar-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.note-bar-label{font-size:.72rem;color:#999;width:12px}
+.note-bar-track{flex:1;background:#f0ebe8;border-radius:4px;height:6px;overflow:hidden}
+.note-bar-fill{height:100%;background:var(--brown);border-radius:4px;transition:width .5s}
+
+.produits-header{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.produits-header h2{font-family:'Playfair Display',serif;font-size:1.3rem;
+  font-style:italic;color:#1a1a1a}
+.produits-count{font-size:.82rem;color:#999}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+.prod-card{background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;
+  cursor:pointer}
+.prod-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.prod-img{position:relative;padding-top:100%;overflow:hidden;background:#f5f5f5}
+.prod-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .3s}
+.prod-card:hover .prod-img img{transform:scale(1.05)}
+.badge-promo{position:absolute;top:10px;left:10px;background:var(--green);
+  color:#fff;font-size:.65rem;font-weight:900;padding:3px 8px;border-radius:6px}
+.badge-rupture{position:absolute;top:10px;right:10px;background:#e74c3c;
+  color:#fff;font-size:.65rem;font-weight:900;padding:3px 8px;border-radius:6px}
+.prod-info{padding:14px}
+.prod-name{font-size:.88rem;font-weight:700;color:#1a1a1a;margin-bottom:4px}
+.prod-brand{font-size:.72rem;color:#bbb;margin-bottom:6px}
+.prod-prix{display:flex;align-items:baseline;gap:8px}
+.prix-promo{font-size:1rem;font-weight:700;color:var(--brown)}
+.prix-old{font-size:.78rem;color:#bbb;text-decoration:line-through}
+.prix-normal{font-size:1rem;font-weight:700;color:#1a1a1a}
+.prod-note{font-size:.72rem;color:#f39c12;margin-top:4px}
+
+.pagination{display:flex;gap:8px;justify-content:center;margin-top:32px}
+.page-btn{padding:8px 14px;border:1.5px solid #e8e0de;background:#fff;
+  border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.82rem;
+  cursor:pointer;transition:all .2s;color:#555}
+.page-btn.active,.page-btn:hover{background:var(--brown);color:#fff;border-color:var(--brown)}
+.page-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.empty-grid{grid-column:1/-1;text-align:center;padding:48px;color:#ccc}
+.empty-grid i{font-size:2.5rem;margin-bottom:12px;display:block}
+.loading{text-align:center;padding:50px;color:#999;font-size:1rem;}
+
+@media(max-width:860px){
+  .boutique-main{grid-template-columns:1fr}
+  .sidebar-filtres{position:static}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .boutique-hero .boutique-stats{display:none}
+}
+@media(max-width:480px){
+  .products-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">IKYO</a>
+  <div class="nav-links">
+    <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+    <a href="#" onclick="window.location.href='index.html#cart-page'"><i class="fas fa-bag-shopping"></i> Panier</a>
+    <a href="login.html"><i class="fas fa-user"></i> Mon compte</a>
+  </div>
+</nav>
+
+<div class="boutique-hero" id="boutique-hero">
+  <div class="hero-inner">
+    <div class="boutique-logo" id="b-logo">—</div>
+    <div class="boutique-info">
+      <h1 id="b-nom">Chargement...</h1>
+      <div class="boutique-meta">
+        <span class="meta-item" id="b-wilaya"><i class="fas fa-map-marker-alt"></i> —</span>
+        <span class="meta-item" id="b-date"><i class="fas fa-calendar-check"></i> —</span>
+        <span class="meta-item" id="b-tel"><i class="fas fa-phone"></i> —</span>
+      </div>
+    </div>
+    <div class="boutique-stats">
+      <div class="b-stat"><strong id="b-nb-produits">—</strong><span>Produits</span></div>
+      <div class="b-stat"><strong id="b-note">—</strong><span>Note</span></div>
+      <div class="b-stat"><strong id="b-nb-avis">—</strong><span>Avis</span></div>
+    </div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 32" preserveAspectRatio="none" style="display:block;height:32px">
+    <path d="M0,32 C360,0 1080,0 1440,32 L1440,32 L0,32 Z" fill="#faf8f6"/>
+  </svg>
+</div>
+
+<div class="boutique-main">
+
+  <aside class="sidebar-filtres">
+    <div class="filtre-card">
+      <div class="filtre-title"><i class="fas fa-tags"></i> Catégories</div>
+      <div id="cats-list">
+        <a class="cat-link active" onclick="filterCat(0, this)">Tous les produits <span class="cat-count" id="cat-total-count"></span></a>
+      </div>
+    </div>
+
+    <div class="filtre-card">
+      <div class="filtre-title"><i class="fas fa-sort"></i> Trier par</div>
+      <select class="tri-select" id="tri-select" onchange="changeTri(this.value)">
+        <option value="nouveau">Nouveautés</option>
+        <option value="ventes">Meilleures ventes</option>
+        <option value="note">Mieux notés</option>
+        <option value="prix_asc">Prix croissant</option>
+        <option value="prix_desc">Prix décroissant</option>
+      </select>
+    </div>
+
+    <div class="filtre-card" id="avis-sidebar">
+      <div class="filtre-title"><i class="fas fa-star"></i> Avis clients</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div>
+          <div class="note-num" id="s-note-num">—</div>
+          <div class="stars-big" id="s-stars"></div>
+          <div class="note-sub" id="s-nb-avis"></div>
+        </div>
+      </div>
+      <div id="note-bars"></div>
+    </div>
+  </aside>
+
+  <section>
+    <div class="produits-header">
+      <h2 id="section-title">Tous les produits</h2>
+      <span class="produits-count" id="prod-count"></span>
+    </div>
+    <div class="products-grid" id="products-grid">
+      <div class="loading">Chargement des produits...</div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const vendeurId = parseInt(params.get('id') || '0');
+const API_URL = 'http://localhost/ikyo/api/';
+
+let currentPage = 1;
+let currentCat = 0;
+let currentTri = 'nouveau';
+let totalPages = 1;
+
+if (!vendeurId) {
+  document.body.innerHTML = '<div style="text-align:center;padding:80px"><h2>Boutique introuvable</h2><p>Identifiant manquant.</p><a href="index.html">← Retour</a></div>';
+}
+
+async function loadProfil() {
+  try {
+    const res = await fetch(`${API_URL}boutique.php?action=profil&vendeur_id=${vendeurId}`);
+    const data = await res.json();
+    if (!data.success) return;
+
+    const b = data.boutique;
+    document.title = b.nom_magasin + ' — IKYO';
+
+    const initials = b.nom_magasin.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('b-logo').textContent = initials;
+    
+    document.getElementById('b-nom').textContent = b.nom_magasin;
+    document.getElementById('b-wilaya').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${b.wilaya || 'Algérie'}`;
+    document.getElementById('b-date').innerHTML = `<i class="fas fa-calendar-check"></i> Membre depuis ${fmtDateShort(b.approuve_le)}`;
+    document.getElementById('b-nb-produits').textContent = b.nb_produits;
+    document.getElementById('b-note').textContent = parseFloat(b.note_moyenne).toFixed(1);
+    document.getElementById('b-nb-avis').textContent = b.nb_avis;
+    if (b.telephone) document.getElementById('b-tel').innerHTML = `<i class="fas fa-phone"></i> ${b.telephone}`;
+
+    const catsList = document.getElementById('cats-list');
+    document.getElementById('cat-total-count').textContent = b.nb_produits;
+    (b.categories || []).forEach(cat => {
+      const a = document.createElement('a');
+      a.className = 'cat-link';
+      a.innerHTML = `${cat.nom} <span class="cat-count"></span>`;
+      a.onclick = () => filterCat(cat.id, a);
+      catsList.appendChild(a);
+    });
+  } catch(e) { console.error(e); }
+}
+
+async function loadAvisSidebar() {
+  try {
+    const res = await fetch(`${API_URL}boutique.php?action=avis&vendeur_id=${vendeurId}&limite=0`);
+    const data = await res.json();
+    if (!data.success) return;
+    
+    const dist = data.distribution || [];
+    const total = dist.reduce((s, d) => s + parseInt(d.nb), 0);
+    const moy = total > 0 ? dist.reduce((s,d)=>s+d.note*d.nb,0)/total : 0;
+
+    document.getElementById('s-note-num').textContent = moy.toFixed(1);
+    document.getElementById('s-stars').textContent = '★'.repeat(Math.round(moy)) + '☆'.repeat(5-Math.round(moy));
+    document.getElementById('s-nb-avis').textContent = total + ' avis';
+
+    const bars = document.getElementById('note-bars');
+    bars.innerHTML = [5,4,3,2,1].map(n => {
+      const d = dist.find(d => parseInt(d.note) === n);
+      const pct = d ? parseInt(d.pct) : 0;
+      return `<div class="note-bar-row">
+        <span class="note-bar-label">${n}</span>
+        <div class="note-bar-track"><div class="note-bar-fill" style="width:${pct}%"></div></div>
+        <span style="font-size:.7rem;color:#bbb;min-width:28px">${d?.nb||0}</span>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+async function loadProducts() {
+  try {
+    const url = `${API_URL}boutique.php?action=produits&vendeur_id=${vendeurId}&categorie=${currentCat}&tri=${currentTri}&page=${currentPage}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.success) return;
+
+    const grid = document.getElementById('products-grid');
+    const prod = data.produits || [];
+    const pag = data.pagination;
+    totalPages = pag.nb_pages || 1;
+
+    document.getElementById('prod-count').textContent = `${pag.total} produit${pag.total > 1 ? 's' : ''}`;
+
+    if (!prod.length) {
+      grid.innerHTML = `<div class="empty-grid"><i class="fas fa-box-open"></i>Aucun produit</div>`;
+    } else {
+      grid.innerHTML = prod.map(p => {
+      
+let imagePath = p.image_url || 'section4.jpg';
+        return `
+        <div class="prod-card" onclick="alert('Produit: ${p.nom} - ${fmtDA(p.prix)}')">
+          <div class="prod-img">
+            <img src="${imagePath}" alt="${p.nom}" onerror="this.src='section4.jpg'">
+            ${p.remise_pct > 0 ? `<span class="badge-promo">-${p.remise_pct}%</span>` : ''}
+            ${p.stock === 0 ? `<span class="badge-rupture">Rupture</span>` : ''}
+          </div>
+          <div class="prod-info">
+            <div class="prod-name">${p.nom}</div>
+            ${p.marque ? `<div class="prod-brand">${p.marque}</div>` : ''}
+            <div class="prod-prix">
+              ${p.prix_promo
+                ? `<span class="prix-promo">${fmtDA(p.prix_promo)}</span><span class="prix-old">${fmtDA(p.prix)}</span>`
+                : `<span class="prix-normal">${fmtDA(p.prix)}</span>`}
+            </div>
+            <button onclick="event.stopPropagation(); addToCart(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix_promo || p.prix})" style="background:#451d18;color:white;border:none;padding:6px 12px;border-radius:6px;margin-top:8px;width:100%;cursor:pointer;">🛒 Ajouter</button>
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    renderPagination(pag.page, totalPages);
+  } catch(e) {
+    document.getElementById('products-grid').innerHTML = '<div class="empty-grid"><i class="fas fa-exclamation-triangle"></i>Erreur de chargement</div>';
+  }
+}
+
+function renderPagination(page, total) {
+  const el = document.getElementById('pagination');
+  if (total <= 1) { el.innerHTML = ''; return; }
+  let html = `<button class="page-btn" onclick="goPage(${page-1})" ${page===1?'disabled':''}>‹</button>`;
+  for (let i = 1; i <= total; i++) {
+    if (total > 7 && Math.abs(i - page) > 2 && i !== 1 && i !== total) continue;
+    html += `<button class="page-btn ${i===page?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button class="page-btn" onclick="goPage(${page+1})" ${page===total?'disabled':''}>›</button>`;
+  el.innerHTML = html;
+}
+
+function goPage(p) {
+  if (p < 1 || p > totalPages) return;
+  currentPage = p;
+  window.scrollTo({ top: 200, behavior: 'smooth' });
+  loadProducts();
+}
+
+function filterCat(catId, el) {
+  currentCat = catId;
+  currentPage = 1;
+  document.querySelectorAll('.cat-link').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  const title = catId === 0 ? 'Tous les produits' : el.textContent.trim().replace(/\d+/, '').trim();
+  document.getElementById('section-title').textContent = title;
+  loadProducts();
+}
+
+function changeTri(val) {
+  currentTri = val;
+  currentPage = 1;
+  loadProducts();
+}
+
+function fmtDA(n) { return Number(n).toLocaleString('fr-DZ') + ' DA'; }
+function fmtDateShort(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('fr-DZ', { month: 'long', year: 'numeric' });
+}
+
+// Panier
+let cart = JSON.parse(localStorage.getItem('ikyo_cart')) || [];
+
+function addToCart(id, name, price) {
+  let existing = cart.find(i => i.id === id);
+  if(existing) existing.qty++;
+  else cart.push({ id, name, price, qty: 1, store: 'IKYO', img: 'section4.jpg' });
+  localStorage.setItem('ikyo_cart', JSON.stringify(cart));
+  alert(name + ' ajouté au panier !');
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  let total = cart.reduce((s,i) => s + i.qty, 0);
+  console.log('Panier:', total);
+}
+
+loadProfil();
+loadAvisSidebar();
+loadProducts();
+</script>
+</body>
+</html>

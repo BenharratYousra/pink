@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKYO – Suivi de commande</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        body { background:#f5f5f5; }
+        .header { background:#451d18; color:white; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; }
+        .header a { color:white; text-decoration:none; }
+        .main { max-width:900px; margin:0 auto; padding:20px; }
+        .card { background:white; border-radius:12px; padding:20px; margin-bottom:20px; }
+        .statut-bar { display:flex; justify-content:space-between; align-items:center; margin:20px 0; position:relative; }
+        .statut-bar::before { content:''; position:absolute; top:20px; left:0; right:0; height:3px; background:#ddd; z-index:0; }
+        .statut-bar .progress-line { position:absolute; top:20px; left:0; height:3px; background:#451d18; z-index:1; transition:width 0.5s; }
+        .step { display:flex; flex-direction:column; align-items:center; gap:8px; z-index:2; }
+        .step-icon { width:40px; height:40px; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; color:#999; font-size:14px; }
+        .step-icon.done { background:#451d18; color:white; }
+        .step-icon.active { background:#451d18; color:white; box-shadow:0 0 0 4px rgba(69,29,24,0.2); }
+        .step-label { font-size:11px; color:#666; text-align:center; max-width:70px; }
+        .step-label.active { color:#451d18; font-weight:bold; }
+        .map-container { width:100%; height:350px; border-radius:10px; overflow:hidden; border:1px solid #ddd; }
+        .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+        .info-item label { font-size:12px; color:#888; display:block; margin-bottom:4px; }
+        .info-item span { font-weight:500; }
+        .badge { padding:5px 14px; border-radius:20px; font-size:12px; font-weight:500; display:inline-block; }
+        .badge.en_attente { background:#fff3cd; color:#856404; }
+        .badge.confirmee { background:#cce5ff; color:#004085; }
+        .badge.en_preparation { background:#fff3cd; color:#856404; }
+        .badge.expediee { background:#d4edda; color:#155724; }
+        .badge.en_livraison { background:#d1ecf1; color:#0c5460; }
+        .badge.livree { background:#d4edda; color:#155724; }
+        .badge.annulee { background:#f8d7da; color:#721c24; }
+        .refresh-btn { background:#451d18; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; }
+        .refresh-btn:hover { background:#5c2820; }
+        .no-data { text-align:center; padding:40px; color:#888; }
+        .positions-list { max-height:200px; overflow-y:auto; }
+        .pos-item { padding:10px; border-bottom:1px solid #eee; font-size:13px; display:flex; gap:10px; align-items:flex-start; }
+        .pos-item i { color:#451d18; margin-top:2px; }
+        .pos-time { color:#888; font-size:11px; }
+        table { width:100%; border-collapse:collapse; font-size:14px; }
+        th, td { padding:10px; text-align:left; border-bottom:1px solid #eee; }
+        th { color:#888; font-weight:500; }
+        @media(max-width:600px) { .info-grid { grid-template-columns:1fr; } .statut-bar .step-label { font-size:9px; max-width:50px; } }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="index.html"><i class="fas fa-arrow-left"></i> Retour</a>
+    <h2><i class="fas fa-map-marker-alt"></i> Suivi de commande</h2>
+    <button class="refresh-btn" onclick="refresh()"><i class="fas fa-sync-alt"></i></button>
+</div>
+
+<div class="main">
+
+    <!-- Rechercher commande -->
+    <div class="card" id="search-card">
+        <h3 style="margin-bottom:15px;"><i class="fas fa-search"></i> Trouver ma commande</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <input type="text" id="numero-input" placeholder="Numéro de commande (ex: CMD-2024-001)" style="flex:1;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;">
+            <button class="refresh-btn" onclick="rechercherCommande()"><i class="fas fa-search"></i> Rechercher</button>
+        </div>
+        <p id="search-error" style="color:#e74c3c;margin-top:8px;font-size:13px;display:none;"></p>
+    </div>
+
+    <!-- Contenu principal (caché par défaut) -->
+    <div id="main-content" style="display:none;">
+
+        <!-- Statut -->
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:10px;">
+                <div>
+                    <p style="color:#888;font-size:13px;">Commande</p>
+                    <h3 id="cmd-numero" style="color:#451d18;"></h3>
+                </div>
+                <span id="cmd-statut-badge" class="badge"></span>
+            </div>
+
+            <!-- Barre de progression -->
+            <div class="statut-bar">
+                <div class="progress-line" id="progress-line"></div>
+                <div class="step">
+                    <div class="step-icon" id="step-1"><i class="fas fa-check"></i></div>
+                    <span class="step-label">Confirmée</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" id="step-2"><i class="fas fa-box"></i></div>
+                    <span class="step-label">Préparation</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" id="step-3"><i class="fas fa-truck"></i></div>
+                    <span class="step-label">Expédiée</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" id="step-4"><i class="fas fa-motorcycle"></i></div>
+                    <span class="step-label">En livraison</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" id="step-5"><i class="fas fa-home"></i></div>
+                    <span class="step-label">Livrée</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte GPS -->
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                <h3><i class="fas fa-map"></i> Position en temps réel</h3>
+                <button class="refresh-btn" onclick="refreshGPS()" style="padding:8px 14px;font-size:13px;"><i class="fas fa-sync-alt"></i> Actualiser</button>
+            </div>
+            <div id="map-container" class="map-container">
+                <div style="height:100%;display:flex;align-items:center;justify-content:center;color:#888;">
+                    <div style="text-align:center;">
+                        <i class="fas fa-map-marker-alt" style="font-size:40px;color:#ddd;margin-bottom:10px;display:block;"></i>
+                        Aucune position GPS disponible
+                    </div>
+                </div>
+            </div>
+            <div id="derniere-pos" style="margin-top:12px;font-size:13px;color:#666;display:none;">
+                <i class="fas fa-clock"></i> Dernière mise à jour : <span id="pos-time"></span>
+                &nbsp;|&nbsp;
+                <a href="#" id="open-maps" onclick="ouvrirGoogleMaps(event)" style="color:#451d18;"><i class="fas fa-external-link-alt"></i> Ouvrir dans Google Maps</a>
+            </div>
+        </div>
+
+        <!-- Infos commande -->
+        <div class="card">
+            <h3 style="margin-bottom:15px;"><i class="fas fa-info-circle"></i> Détails</h3>
+            <div class="info-grid">
+                <div class="info-item"><label>Magasin</label><span id="cmd-magasin">-</span></div>
+                <div class="info-item"><label>Total</label><span id="cmd-total">-</span></div>
+                <div class="info-item"><label>Adresse livraison</label><span id="cmd-adresse">-</span></div>
+                <div class="info-item"><label>Mode paiement</label><span id="cmd-paiement">-</span></div>
+                <div class="info-item"><label>Date commande</label><span id="cmd-date">-</span></div>
+                <div class="info-item"><label>Frais livraison</label><span id="cmd-frais">-</span></div>
+            </div>
+        </div>
+
+        <!-- Historique GPS -->
+        <div class="card">
+            <h3 style="margin-bottom:15px;"><i class="fas fa-history"></i> Historique des positions</h3>
+            <div class="positions-list" id="positions-list">
+                <div class="no-data">Aucun historique disponible</div>
+            </div>
+        </div>
+
+        <!-- Produits -->
+        <div class="card">
+            <h3 style="margin-bottom:15px;"><i class="fas fa-shopping-bag"></i> Articles commandés</h3>
+            <table>
+                <thead><tr><th>Produit</th><th>Qté</th><th>Prix unit.</th><th>Total</th></tr></thead>
+                <tbody id="produits-list"></tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const API_URL = 'api/commandes.php';
+let commandeData = null;
+let dernierePosition = null;
+
+// Vérifier si client connecté
+const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+// Récupérer le numéro depuis l'URL si présent
+window.addEventListener('load', function() {
+    const params = new URLSearchParams(window.location.search);
+    const num = params.get('commande');
+    const id = params.get('id');
+    if (num) { document.getElementById('numero-input').value = num; rechercherCommande(); }
+    else if (id) { chargerCommande(id); }
+});
+
+async function rechercherCommande() {
+    const numero = document.getElementById('numero-input').value.trim();
+    if (!numero) { showError('Entrez un numéro de commande'); return; }
+
+    try {
+        const res = await fetch(`${API_URL}?action=mes_commandes`);
+        const data = await res.json();
+        if (data.success && data.commandes) {
+            const cmd = data.commandes.find(c => c.numero_commande === numero);
+            if (cmd) { chargerCommande(cmd.id); }
+            else { showError('Commande introuvable. Vérifiez le numéro.'); }
+        } else {
+            showError('Erreur: ' + (data.message || 'Non connecté'));
+        }
+    } catch(e) {
+        showError('Erreur serveur: ' + e.message);
+    }
+}
+
+async function chargerCommande(id) {
+    try {
+        const res = await fetch(`${API_URL}?action=detail&id=${id}`);
+        const data = await res.json();
+        if (data.success && data.commande) {
+            commandeData = data.commande;
+            afficherCommande(data.commande);
+            await chargerGPS(id);
+            document.getElementById('search-card').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        } else {
+            showError(data.message || 'Commande introuvable');
+        }
+    } catch(e) {
+        showError('Erreur: ' + e.message);
+    }
+}
+
+function afficherCommande(cmd) {
+    document.getElementById('cmd-numero').textContent = cmd.numero_commande;
+    document.getElementById('cmd-magasin').textContent = cmd.nom_magasin || '-';
+    document.getElementById('cmd-total').textContent = (cmd.total_final || 0).toLocaleString() + ' DA';
+    document.getElementById('cmd-adresse').textContent = cmd.adresse_livraison || '-';
+    document.getElementById('cmd-paiement').textContent = cmd.mode_paiement || '-';
+    document.getElementById('cmd-frais').textContent = (cmd.frais_livraison || 0).toLocaleString() + ' DA';
+    document.getElementById('cmd-date').textContent = new Date(cmd.created_at).toLocaleDateString('fr-FR');
+
+    // Badge statut
+    const badge = document.getElementById('cmd-statut-badge');
+    badge.className = 'badge ' + cmd.statut;
+    badge.textContent = formatStatut(cmd.statut);
+
+    // Barre progression
+    mettreAJourProgression(cmd.statut);
+
+    // Produits
+    if (cmd.lignes && cmd.lignes.length > 0) {
+        document.getElementById('produits-list').innerHTML = cmd.lignes.map(l => `
+            <tr>
+                <td>${l.produit_nom || '-'}</td>
+                <td>${l.quantite}</td>
+                <td>${(l.prix_unit || 0).toLocaleString()} DA</td>
+                <td>${((l.prix_unit || 0) * l.quantite).toLocaleString()} DA</td>
+            </tr>
+        `).join('');
+    }
+}
+
+async function chargerGPS(commandeId) {
+    try {
+        const res = await fetch(`${API_URL}?action=gps_positions&id=${commandeId}`);
+        const data = await res.json();
+        if (data.success) {
+            afficherGPS(data.positions, data.position_client);
+        }
+    } catch(e) { console.error('GPS:', e); }
+}
+
+function afficherGPS(positions, posClient) {
+    const list = document.getElementById('positions-list');
+
+    if (!positions || positions.length === 0) {
+        list.innerHTML = '<div class="no-data">Aucune position GPS enregistrée</div>';
+        return;
+    }
+
+    // Historique
+    list.innerHTML = positions.slice().reverse().map(p => `
+        <div class="pos-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+                <div>${p.statut_msg || 'Position mise à jour'}</div>
+                <div class="pos-time">${new Date(p.enregistre_le).toLocaleString('fr-FR')} — Lat: ${parseFloat(p.latitude).toFixed(5)}, Lng: ${parseFloat(p.longitude).toFixed(5)}</div>
+            </div>
+        </div>
+    `).join('');
+
+    // Dernière position → carte
+    const last = positions[positions.length - 1];
+    dernierePosition = last;
+
+    const lat = parseFloat(last.latitude);
+    const lng = parseFloat(last.longitude);
+
+    // Carte OpenStreetMap
+    let mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng-0.02},${lat-0.02},${lng+0.02},${lat+0.02}&layer=mapnik&marker=${lat},${lng}`;
+
+    document.getElementById('map-container').innerHTML = `
+        <iframe width="100%" height="350" frameborder="0" style="border:0;"
+            src="${mapUrl}" allowfullscreen></iframe>
+    `;
+
+    document.getElementById('derniere-pos').style.display = 'block';
+    document.getElementById('pos-time').textContent = new Date(last.enregistre_le).toLocaleString('fr-FR');
+}
+
+function ouvrirGoogleMaps(e) {
+    e.preventDefault();
+    if (dernierePosition) {
+        window.open(`https://www.google.com/maps?q=${dernierePosition.latitude},${dernierePosition.longitude}`);
+    }
+}
+
+function mettreAJourProgression(statut) {
+    const etapes = { 'confirmee': 1, 'en_preparation': 2, 'expediee': 3, 'en_livraison': 4, 'livree': 5 };
+    const etape = etapes[statut] || 0;
+    const pct = etape === 0 ? 0 : ((etape - 1) / 4) * 100;
+
+    document.getElementById('progress-line').style.width = pct + '%';
+
+    for (let i = 1; i <= 5; i++) {
+        const el = document.getElementById('step-' + i);
+        el.className = 'step-icon';
+        if (i < etape) el.classList.add('done');
+        else if (i === etape) el.classList.add('active');
+    }
+}
+
+function formatStatut(s) {
+    const map = {
+        'en_attente': 'En attente', 'confirmee': 'Confirmée',
+        'en_preparation': 'En préparation', 'expediee': 'Expédiée',
+        'en_livraison': 'En livraison', 'livree': 'Livrée', 'annulee': 'Annulée'
+    };
+    return map[s] || s;
+}
+
+function showError(msg) {
+    const el = document.getElementById('search-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+}
+
+async function refreshGPS() {
+    if (commandeData) await chargerGPS(commandeData.id);
+}
+
+function refresh() {
+    if (commandeData) chargerCommande(commandeData.id);
+}
+
+// Auto-refresh toutes les 30 secondes si commande en livraison
+setInterval(() => {
+    if (commandeData && commandeData.statut === 'en_livraison') refreshGPS();
+}, 30000);
+</script>
+</body>
+</html>

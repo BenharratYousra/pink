@@ -43,8 +43,8 @@ function _sendViaPHPMailer(string $to, string $toName, string $subject, string $
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'votre@gmail.com';   // ← changez
-        $mail->Password   = 'votre_app_password'; // ← changez (App Password Gmail)
+        $mail->Username   = 'yousrabenharrat30@gmail.com';   // ← changez
+        $mail->Password   = 'ymmd lmtb oddd uscu'; // ← changez (App Password Gmail)
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet    = 'UTF-8';
